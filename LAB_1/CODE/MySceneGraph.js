@@ -8,6 +8,9 @@ var TEXTURES_INDEX = 3;
 var MATERIALS_INDEX = 4;
 var NODES_INDEX = 5;
 
+
+var VIEWS_INDEX = 0;
+
 /**
  * MySceneGraph class, representing the scene graph.
  */
@@ -21,6 +24,15 @@ class MySceneGraph {
         // Establish bidirectional references between scene and graph.
         this.scene = scene;
         scene.graph = this;
+
+
+        this.axis_length;
+        this.root;
+        this.perspective = [];
+        this.ambientRGB = [];
+        this.backgroundRGB = [];
+
+
 
         this.nodes = [];
 
@@ -70,8 +82,9 @@ class MySceneGraph {
      * @param {XML root element} rootElement
      */
     parseXMLFile(rootElement) {
-        if (rootElement.nodeName != "SCENE")
-            return "root tag <SCENE> missing";
+        if (rootElement.nodeName != "yas")
+            return "root tag <yas> missing";
+
 
         var nodes = rootElement.children;
 
@@ -86,8 +99,43 @@ class MySceneGraph {
 
         // Processes each node, verifying errors.
 
-        // <INITIALS>
+        // <scene>
         var index;
+        if ((index = nodeNames.indexOf("scene")) == -1)
+            return "tag <scene> missing";
+        else{
+            if ((error = this.parseScene(nodes[index])) != null)
+                return error;
+        }
+        //<views>
+        if ((index = nodeNames.indexOf("views")) == -1)
+            return "tag <views> missing";
+        else {
+            if (index != VIEWS_INDEX)
+                this.onXMLMinorError("tag <views> out of order");
+            if ((error = this.parseViews(nodes[index])) != null)
+                return error;
+        }
+        //<ambient>
+        if ((index = nodeNames.indexOf("ambient")) == -1)
+            return "tag <ambient> missing";
+        else {
+            if (index != VIEWS_INDEX)
+                this.onXMLMinorError("tag <ambient> out of order");
+            if ((error = this.parseAmbient(nodes[index])) != null)
+                return error;
+        }
+
+
+
+
+
+
+
+
+
+
+
         if ((index = nodeNames.indexOf("INITIALS")) == -1)
             return "tag <INITIALS> missing";
         else {
@@ -159,6 +207,96 @@ class MySceneGraph {
                 return error;
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * Parses the <Scene> block.
+     */
+    parseScene(sceneNode) {      
+        this.root = this.reader.getString(sceneNode, 'root');
+        this.axis_length = this.reader.getFloat(sceneNode, 'axis_length');
+
+        this.scene.axis_length = this.axis_length;
+      
+        this.log("Scene Parsed");
+
+        return null;
+    }
+    /**
+     * Parses the <views> block.
+     */
+    parseViews(viewsNodes){
+
+        var perspectiveElements = viewsNodes.getElementsByTagName('perspective');
+
+
+        for (let perspectiveElement of perspectiveElements) {
+            var id = this.reader.getString(perspectiveElement, 'id');
+            var near = this.reader.getFloat(perspectiveElement, 'near');
+            var far = this.reader.getFloat(perspectiveElement, 'far');
+            var angle = this.reader.getFloat(perspectiveElement, 'angle');
+
+            //TODO: Write geCoords Function
+            var from = this.getCoords(perspectiveElement.getElementsByTagName('from')[0]);
+            var to = this.getCoords(perspectiveElement.getElementsByTagName('to')[0]);
+
+            var vecFrom = new vec3.fromValues(from.xCoord, from.yCoord, from.zCoord);
+            var vecTo = new vec3.fromValues(to.xCoord, to.yCoord, to.zCoord);
+
+
+            var camera = new CGFcamera(angle * DEGREE_TO_RAD, 
+                                    near, 
+                                    far,
+                                    vecFrom,
+                                    vecTo);
+
+            this.perspective.push(camera);
+        }
+
+        this.log("views parsed");
+    }
+
+    /* parses the <ambient> block */
+    parseAmbient(ambientNodes){
+
+        var ambientChild = ambientNodes.getElementsByTagName('ambient');
+        var backgroundChild = ambientNodes.getElementsByTagName('background');
+
+        this.backgroundRGB = this.getRGBArray(ambientChild);
+        this.ambientRGB = this.getRGBArray(backgroundChild);
+        
+        this.log("ambient Parsed");
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      * Parses the <INITIALS> block.
@@ -238,6 +376,15 @@ class MySceneGraph {
                 this.onXMLMinorError("failed to parse coordinates of initial translation; assuming zero");
             }
 
+
+                for(var i = 0; i < initialsNode[0].getElementsByTagName('translation').length; i++){
+                                        
+                    var x = parseFloat(initialsNode[0].getElementsByTagName('translation')[i].attributes.getNamedItem("x").value);
+                    var y = parseFloat(initialsNode[0].getElementsByTagName('translation')[i].attributes.getNamedItem("y").value);
+                    var z = parseFloat(initialsNode[0].getElementsByTagName('translation')[i].attributes.getNamedItem("z").value);
+                    
+                    this.initialTranslate.push([x, y, z])
+                }
             //TODO: Save translation data
         }
 
@@ -247,7 +394,7 @@ class MySceneGraph {
 
         //TODO: Parse Reference length
 
-        this.log("Parsed initials");
+        this.log("Parsed a");
 
         return null;
     }
@@ -444,6 +591,47 @@ class MySceneGraph {
         return null;
     }
 
+
+
+
+
+
+   /*
+     * Translate Element Coords into an usable x,y,z object
+     * @param {string} element coords
+     */
+    getRGBArray(xmlRGB){
+        this.log(xmlRGB);
+        var rVal = this.reader.getFloat(xmlRGB, 'r');
+        var gVal = this.reader.getFloat(xmlRGB, 'g');
+        var bVal = this.reader.getFloat(xmlRGB, 'b');
+        var aVal = this.reader.getFloat(xmlRGB, 'a');
+
+        var rgb = {
+            r: rVal,
+            g: gVal,
+            b: bVal,
+            a: aVal
+        };
+        return rgb;
+    }
+   /*
+     * Translate Element Coords into an usable x,y,z object
+     * @param {string} element coords
+     */
+    getCoords(xmlCoords){
+        var x = this.reader.getFloat(xmlCoords, 'x');
+        var y = this.reader.getFloat(xmlCoords, 'y');
+        var z = this.reader.getFloat(xmlCoords, 'z');
+
+        var coords = {
+            xCoord: x,
+            yCoord: y,
+            zCoord: z
+        };
+        return coords;
+    }
+
     /*
      * Callback to be executed on any read error, showing an error on the console.
      * @param {string} message
@@ -457,7 +645,7 @@ class MySceneGraph {
      * Callback to be executed on any minor error, showing a warning on the console.
      * @param {string} message
      */
-    onXMLMinorErro(message) {
+    onXMLMinorError(message) {
         console.warn("Warning: " + message);
     }
 
