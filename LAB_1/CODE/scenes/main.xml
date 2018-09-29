@@ -26,8 +26,8 @@
                 </omni>
                 <spot id="ss" enabled="tt" angle="2" exponent="2">
                         <!-- atencao, "target" e' diferente de "direction" -->
-                        <location x="2" y="2" z="2" w=”2” />
-<target x="2" y="2" z="2" />
+                        <location x="2" y="2" z="2" w="2" />
+                        <target x="2" y="2" z="2" />
                         <ambient r="2" g="2" b="2" a="2" />
                         <di2use r="2" g="2" b="2" a="2" />
                         <specular r="2" g="2" b="2" a="2" />

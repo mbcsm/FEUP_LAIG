@@ -29,8 +29,10 @@ class MySceneGraph {
         this.axis_length;
         this.root;
         this.perspective = [];
-        this.ambientRGB = [];
-        this.backgroundRGB = [];
+        this.ambient = [];
+        this.background = [];
+        this.spot = [];
+        this.omni = [];
 
 
 
@@ -253,7 +255,6 @@ class MySceneGraph {
             var vecFrom = new vec3.fromValues(from.xCoord, from.yCoord, from.zCoord);
             var vecTo = new vec3.fromValues(to.xCoord, to.yCoord, to.zCoord);
 
-
             var camera = new CGFcamera(angle * DEGREE_TO_RAD, 
                                     near, 
                                     far,
@@ -269,13 +270,70 @@ class MySceneGraph {
     /* parses the <ambient> block */
     parseAmbient(ambientNodes){
 
-        var ambientChild = ambientNodes.getElementsByTagName('ambient');
-        var backgroundChild = ambientNodes.getElementsByTagName('background');
+        var ambientChild = ambientNodes.getElementsByTagName('ambient')[0];
+        var backgroundChild = ambientNodes.getElementsByTagName('background')[0];
 
-        this.backgroundRGB = this.getRGBArray(ambientChild);
-        this.ambientRGB = this.getRGBArray(backgroundChild);
+        this.background = this.getRGBArray(ambientChild);
+        this.ambient = this.getRGBArray(backgroundChild);
         
         this.log("ambient Parsed");
+    }
+    /* parses the <lights> block */
+    parseAmbient(LightNodes){
+
+        var omniNodes = LightNodes.getElementsByTagName('omni');
+        var spotNodes = LightNodes.getElementsByTagName('spot');
+
+        for (let omni of omniNodes) {
+
+            var idVal = this.reader.getString(omni, 'id');
+            var enabledVal = this.reader.getBoolean(omni, 'enabled');
+
+            var ambientVal = this.getRGBAElement(omni.getElementsByTagName('ambient')[0]);
+            var diffuseVal = this.getRGBAElement(omni.getElementsByTagName('di2use')[0]);
+            var specularVal = this.getRGBAElement(omni.getElementsByTagName('specular')[0]);
+            var locationVal = this.getCoords(omni.getElementsByTagName('location')[0])
+            
+            var omniArray = {
+                id: idVal,
+                enabled: enabledVal,
+                ambient: ambientVal,
+                diffuse: diffuseVal,
+                specular: specularVal,
+                location: locationVal
+            }
+
+            this.omni.push(omniArray);
+        }
+
+
+        for (let spot of spotNodes) {
+
+            var idVal = this.reader.getString(omni, 'id');
+            var enabledVal = this.reader.getBoolean(omni, 'enabled');
+
+            var ambientVal = this.getRGBAElement(omni.getElementsByTagName('ambient')[0]);
+            var diffuseVal = this.getRGBAElement(omni.getElementsByTagName('di2use')[0]);
+            var specularVal = this.getRGBAElement(omni.getElementsByTagName('specular')[0]);
+            var locationVal = this.getCoords(omni.getElementsByTagName('location')[0]);
+            var targetVal = this.getCoords(omni.getElementsByTagName('target')[0]);
+            
+            var spotArray = {
+                id: idVal,
+                enabled: enabledVal,
+                ambient: ambientVal,
+                diffuse: diffuseVal,
+                specular: specularVal,
+                location: locationVal,
+                target: targetVal
+            }
+
+            this.spot.push(spotArray);
+        }
+
+
+
+        this.log("light Parsed");
     }
 
 
@@ -596,12 +654,20 @@ class MySceneGraph {
 
 
 
+
+
+
+
+
+
+
+
+
    /*
      * Translate Element Coords into an usable x,y,z object
      * @param {string} element coords
      */
     getRGBArray(xmlRGB){
-        this.log(xmlRGB);
         var rVal = this.reader.getFloat(xmlRGB, 'r');
         var gVal = this.reader.getFloat(xmlRGB, 'g');
         var bVal = this.reader.getFloat(xmlRGB, 'b');
@@ -623,11 +689,13 @@ class MySceneGraph {
         var x = this.reader.getFloat(xmlCoords, 'x');
         var y = this.reader.getFloat(xmlCoords, 'y');
         var z = this.reader.getFloat(xmlCoords, 'z');
+        var w = this.reader.getFloat(xmlCoords, 'w');
 
         var coords = {
             xCoord: x,
             yCoord: y,
-            zCoord: z
+            zCoord: z,
+            wCoord: w
         };
         return coords;
     }
