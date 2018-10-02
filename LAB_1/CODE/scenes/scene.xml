@@ -4,34 +4,33 @@
 
     <scene root="unico_comp" axis_length="1.0" />
 
-    <views default="unico_view" > <!--perguntar ao prof o que deve estar no default-->
+    <views default="unico_view">        <!--perguntar ao prof o que deve estar no default-->
         <!-- tem de existir, pelo menos, uma vista de -->
         <!-- entre as seguintes (perspective ou ortho) -->
         <perspective id="unico_view" near="0.1" far="500.0" angle="0">
             <from x="1" y="1" z="1" />
             <to x="0" y="0" z="0" />
         </perspective>
-        <!--   <ortho id="ss" near="ff" far="ff"
-                  left="ff" right="ff" top="ff" bottom="ff" />  -->
-       </views>
+        <!--   <ortho id="ss" near="ff" far="ff" left="ff" right="ff" top="ff" bottom="ff" />  -->
+    </views>
 
-       <ambient>
-           <ambient r="0.2" g="0.2" b="0.2" a="1" />
-           <background r="0" g="0" b="0" a="1" />
-       </ambient>
+    <ambient>
+        <ambient r="0.2" g="0.2" b="0.2" a="1" />
+        <background r="0" g="0" b="0" a="1" />
+    </ambient>
 
-       <lights>
-           <!-- Deve existir um ou mais blocos "omni" ou "spot" -->
+    <lights>
+        <!-- Deve existir um ou mais blocos "omni" ou "spot" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
-        <omni id="unico_light" enabled="1" >
+        <omni id="unico_light" enabled="1">
             <location x="0" y="10" z="10" w="1" />
             <ambient r="0.2" g="0.2" b="0.2" a="1" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
         </omni>
-           <!--<spot id="ss" enabled="tt" angle="ff" exponent="ff">-->
-               <!-- atencao, "target" e' diferente de "direction" -->
-           <!--  <location x="ff" y="ff" z="ff" />
+        <!--<spot id="ss" enabled="tt" angle="ff" exponent="ff">-->
+        <!-- atencao, "target" e' diferente de "direction" -->
+        <!--  <location x="ff" y="ff" z="ff" />
              <target x="ff" y="ff" z="ff" />
              <ambient r="ff" g="ff" b="ff" a="ff" />
              <diffuse r="ff" g="ff" b="ff" a="ff" />
@@ -48,7 +47,7 @@
     <materials>
         <!-- Deve existir um ou mais blocos "material" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
-        <material id="unico_mat" shininess = "40" >
+        <material id="unico_mat" shininess = "40">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
             <ambient r="0.4" g="0.4" b="0.4" a="1.0" />
             <diffuse r="0.4" g="0.4" b="0.4" a="1.0" />
@@ -79,18 +78,16 @@
             <!-- os parametros devem ser interpretados, genericamente, -->
             <!-- como em WebGL; o cilindro deve adicionalmente ter tampas -->
             <!--   <rectangle x1="ff" y1="ff" x2="ff" y2="ff" />-->
-            <!--   <triangle x1="ff" y1="ff" z1="ff"
-                         x2="ff" y2="ff" z2="ff"
-                         x3="ff" y3="ff" z3="ff" /> -->
-               <cylinder base="1.0" top="1.0" height="2.5" slices="20" stacks="5" />
-           <!--    <sphere radius="ff" slices="ii" stacks="ii" /> -->
-           <!--    <torus inner="ff" outer="ff" slices="ii" loops="ii" /> -->
-           </primitive >
-       </primitives >
+            <!--   <triangle x1="ff" y1="ff" z1="ff" x2="ff" y2="ff" z2="ff" x3="ff" y3="ff" z3="ff" /> -->
+            <cylinder base="1.0" top="1.0" height="2.5" slices="20" stacks="5" />
+            <!--    <sphere radius="ff" slices="ii" stacks="ii" /> -->
+            <!--    <torus inner="ff" outer="ff" slices="ii" loops="ii" /> -->
+        </primitive >
+    </primitives >
 
-       <components>
-           <component id="unico_comp">
-               <!-- Uma "component" e' um objeto composto e pode ser -->
+    <components>
+        <component id="unico_comp">
+            <!-- Uma "component" e' um objeto composto e pode ser -->
             <!-- usada em nos intermédios -->
             <!-- bloco "transformation" e' obrigatorio -->
             <transformation>
@@ -101,11 +98,11 @@
                 <!-- usando zero ou mais das instrucoes seguintes, sem -->
                 <!-- limite nem ordem -->
                 <!-- ex: bloco transformation pode ficar sem conteudo -->
-               <!--<translate x="ff" y="ff" z="ff" />
+                <!--<translate x="ff" y="ff" z="ff" />
                <rotate axis="cc" angle="ff" />
                <scale x="ff" y="ff" z="ff" /> -->
-           </transformation>
-           <!-- declaracao obrigatoria de pelo menos um material; -->
+            </transformation>
+            <!-- declaracao obrigatoria de pelo menos um material; -->
             <!-- o material id="inherit", mantem (herda) material do "pai" -->
             <!-- se varios materiais declarados, o default e' o -->
             <!-- primeiro material; de cada vez que se pressione a tecla m/M, -->
