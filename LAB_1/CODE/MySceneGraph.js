@@ -37,6 +37,7 @@ class MySceneGraph {
         this.omni = [];
         this.textures = [];
         this.materials = [];
+        this.transforms=[];
         this.primitives = [];
 
 
@@ -50,7 +51,7 @@ class MySceneGraph {
         this.axisCoords['y'] = [0, 1, 0];
         this.axisCoords['z'] = [0, 0, 1];
 
-        // File reading 
+        // File reading
         this.reader = new CGFXMLreader();
 
         /*
@@ -149,6 +150,16 @@ class MySceneGraph {
             if (index != MATERIAL_INDEX)
                 this.onXMLMinorError("tag <materials> out of order");
             if ((error = this.parseMaterials(nodes[index])) != null)
+                return error;
+        }
+
+        //transformations
+        if ((index = nodeNames.indexOf("transformations")) == -1)
+            return "tag <transformations> missing";
+        else {
+            if (index != VIEWS_INDEX)
+                this.onXMLMinorError("tag <tranformations> out of order");
+            if ((error = this.parseTransformations(nodes[index])) != null)
                 return error;
         }
 
@@ -334,6 +345,103 @@ class MySceneGraph {
 
         this.log("material Parsed");
     }
+
+    parseTransformations(transformationsNodes){
+
+        var transformationsElements = transformationsNodes.getElementsByTagName('transformation');
+
+
+        for (let transformation of transformationsElements) {
+            var idVal = this.reader.getString(transformationsElement, 'id');
+
+
+            var mat= mat4.create();
+            mat4.identity(mat);
+
+
+            var transf = transformation.children[0];
+
+            var attributeArray = [];
+
+            for (let transfAttributes of transf.attributes) {
+                var attribute = {
+                    name : transfAttributes.nodeName,
+                    val : transfAttributes.nodeValue
+                };
+                attributeArray.push(attribute);
+            }
+
+            var trfTag = {
+                name : transf.nodeName,
+                attributes : attributeArray
+            };
+
+            var transformsRead= [];
+
+            transformsRead.push(trfTag);
+
+            var transforms = transformsRead.reverse();
+
+            for(var i=0; i<transforms.length; i++){
+                var trf = transforms.pop();
+                if(trf.name=='translate'){
+                    var x = trf.attributtes[0];
+                    var y = trf.attributtes[1];
+                    var z = trf.attributtes[2];
+
+                    mat4.translate(mat, mat, [x, y, z]);
+
+                    //fazer check que a translation foi introduzida corretamente no xml
+
+                }else if(trf.name=='rotate'){
+
+                    var axis = trf.attributtes[0];
+                    var angle = trf.attributtes[1];
+
+                    var rotArray= [];
+
+                    if (axis=='x'){
+                        rotArray.push(1);
+                        rotArray.push(0);
+                        rotArray.push(0);
+                    }else if (axis=='y'){
+                        rotArray.push(0);
+                        rotArray.push(1);
+                        rotArray.push(0);
+                    }else if (axis=='z'){
+                        rotArray.push(0);
+                        rotArray.push(0);
+                        rotArray.push(1);
+                    }
+
+
+                    mat4.rotate(mat, mat, DEGREE_TO_RAD*angle, rotArray);
+
+                } else if(trf.name=='scale'){
+
+                    var x = trf.attributtes[0];
+                    var y = trf.attributtes[1];
+                    var z = trf.attributtes[2];
+
+                    mat4.scale(mat, mat, [x,y,z]);
+
+                }
+            }
+
+            var object = {
+                id: idVal,
+                mat: mat
+            };
+
+            this.transforms.push(object);
+
+        }
+
+
+
+        this.log("Parsed transformations");
+    }
+
     /* parses the <primitives> block */
     parsePrimitives(primitivesNodes) {
 
