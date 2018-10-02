@@ -128,6 +128,16 @@ class MySceneGraph {
                 return error;
         }
 
+        //textures
+        if ((index = nodeNames.indexOf("textures")) == -1)
+            return "tag <textures> missing";
+        else {
+            if (index != VIEWS_INDEX)
+                this.onXMLMinorError("tag <textures> out of order");
+            if ((error = this.parseTextures(nodes[index])) != null)
+                return error;
+        }
+
 
 
 
@@ -220,7 +230,6 @@ class MySceneGraph {
 
 
 
-
     /**
      * Parses the <Scene> block.
      */
@@ -279,7 +288,7 @@ class MySceneGraph {
         this.log("ambient Parsed");
     }
     /* parses the <lights> block */
-    parseAmbient(LightNodes){
+    parseLights(LightNodes){
 
         var omniNodes = LightNodes.getElementsByTagName('omni');
         var spotNodes = LightNodes.getElementsByTagName('spot');
@@ -335,6 +344,45 @@ class MySceneGraph {
 
         this.log("light Parsed");
     }
+
+    /**
+     * Parses the <TEXTURES> block.
+     * @param {textures block element} texturesNode
+     */
+    parseTextures(texturesNode) {
+        // TODO: Parse block
+        var textureElements = texturesNodes.getElementsByTagName('texture');
+
+
+        for (let textureElem of textureElements) {
+            var idVal = this.reader.getString(textureElement, 'id');
+            var urlVal = this.reader.getString(textureElement, 'file');
+
+            var textureArray = {
+                id: idVal,
+                urL: urlVal
+            }
+
+            this.textureElem.push(textureArray);
+
+        }
+
+        console.log("Parsed textures");
+
+        return null;
+    }
+
+    /**
+     * Parses the <MATERIALS> node.
+     * @param {materials block element} materialsNode
+     */
+    parseMaterials(materialsNode) {
+        // TODO: Parse block
+        this.log("Parsed materials");
+        return null;
+
+    }
+
 
 
 
