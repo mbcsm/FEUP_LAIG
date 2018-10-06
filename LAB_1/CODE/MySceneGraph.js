@@ -9,6 +9,7 @@ var MATERIALS_INDEX = 4;
 var NODES_INDEX = 5;
 var MATERIAL_INDEX = 6;
 var PRIMITIVES_INDEX = 7;
+var COMPONENTS_INDEX = 8;
 
 
 var VIEWS_INDEX = 0;
@@ -37,8 +38,9 @@ class MySceneGraph {
         this.omni = [];
         this.textures = [];
         this.materials = [];
-        this.transforms=[];
         this.primitives = [];
+        this.transforms=[];
+        this.components = [];
 
 
 
@@ -51,7 +53,7 @@ class MySceneGraph {
         this.axisCoords['y'] = [0, 1, 0];
         this.axisCoords['z'] = [0, 0, 1];
 
-        // File reading
+        // File reading 
         this.reader = new CGFXMLreader();
 
         /*
@@ -170,6 +172,16 @@ class MySceneGraph {
             if (index != PRIMITIVES_INDEX)
                 this.onXMLMinorError("tag <primitives> out of order");
             if ((error = this.parsePrimitives(nodes[index])) != null)
+                return error;
+        }
+
+        //<components>
+        if ((index = nodeNames.indexOf("components")) == -1)
+            return "tag <components> missing";
+        else {
+            if (index != COMPONENTS_INDEX)
+                this.onXMLMinorError("tag <components> out of order");
+            if ((error = this.parseComponents(nodes[index])) != null)
                 return error;
         }
     }
@@ -345,7 +357,6 @@ class MySceneGraph {
 
         this.log("material Parsed");
     }
-
     parseTransformations(transformationsNodes){
 
         var transformationsElements = transformationsNodes.getElementsByTagName('transformation');
@@ -436,12 +447,8 @@ class MySceneGraph {
             this.transforms.push(object);
 
         }
-
-
-
         this.log("Parsed transformations");
     }
-
     /* parses the <primitives> block */
     parsePrimitives(primitivesNodes) {
 
@@ -457,24 +464,108 @@ class MySceneGraph {
 
             for (let primAttributes of prim.attributes) {
                 var attribute = {
-                    name : primAttributes.nodeName,
-                    val : primAttributes.nodeValue
+                    name: primAttributes.nodeName,
+                    val: primAttributes.nodeValue
                 };
                 attributeArray.push(attribute)
             }
 
             var object = {
-                id : idVal,
-                name : prim.nodeName,
-                attributes : attributeArray
+                id: idVal,
+                name: prim.nodeName,
+                attributes: attributeArray
             };
 
             this.primitives.push(object);
+        }
+
+        this.log("primitives Parsed");
+    }
+
+    /* parses the <component> block */
+    parseComponents(componentNodes) {
+
+        var componentNodes = componentNodes.getElementsByTagName('component');
+
+        for (let component of componentNodes) {
+
+
+            var transformationArray = [];
+            var materialArray = [];
+            var textureArray = [];
+            var childrenArray = [];
+
+
+            var idVal = this.reader.getString(component, 'id');
+
+
+            var transformationNode = component.getElementsByTagName('transformation')[0];
+            var materialsNode = component.getElementsByTagName('materials')[0];
+            var textureNode = component.getElementsByTagName('texture')[0];
+            var childrenNode = component.getElementsByTagName('children')[0];
+
+
+            //Transformation
+            for (let transformationChild of transformationNode.children) {
+                var transformationRef = this.reader.getString(transformationChild, "id");
+                var transformationObj = {
+                    id: transformationRef
+                };
+                transformationArray.push(transformationObj);
+            }
+
+            //material
+            for (let materialsChild of materialsNode.children) {
+                var materialRef = this.reader.getString(materialsChild, "id");
+                var materialObj = {
+                    id: materialRef
+                };
+                materialArray.push(materialObj);
+            }
+
+            //texture
+            var textureRef = this.reader.getString(textureNode, "id");
+            var lengthSRef = this.reader.getString(textureNode, "length_s");
+            var lengthTRef = this.reader.getString(textureNode, "length_t");
+            var materialObj = {
+                id: textureRef,
+                length_s: lengthSRef,
+                length_t: lengthTRef
+            };
+            textureArray.push(materialObj);
+
+
+            //children
+            for (let childrenChild of childrenNode.children) {
+                var childrenRef = this.reader.getString(childrenChild, "id");
+                var childrenType = childrenChild.nodeName;
+                var childrenObj = {
+                    type : childrenType,
+                    ref : childrenRef
+                };
+                
+                textureArray.push(childrenObj);
+            }
+
+
+            var componentArray = {
+                transformation: transformationArray,
+                material: materialArray,
+                texture: textureArray,
+                children: childrenArray
+            }
+            this.components.push(componentArray);
 
         }
 
-        this.log("material Parsed");
+        this.log("components Parsed");
     }
+
+
+
+
+
+
 
 
 
