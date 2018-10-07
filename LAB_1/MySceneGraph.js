@@ -336,7 +336,7 @@ class MySceneGraph {
         for (let material of materialNodes) {
 
             var idVal = this.reader.getString(material, 'id');
-            var shininessVal = this.reader.getFloat(material, 'shininess');
+            var shininessVal = this.reader.getBoolean(material, 'shininess');
 
             var emissionVal = this.getRGBArray(material.getElementsByTagName('emission')[0]);
             var ambientVal = this.getRGBArray(material.getElementsByTagName('ambient')[0]);
@@ -363,7 +363,7 @@ class MySceneGraph {
 
 
         for (let transformation of transformationsElements) {
-            var idVal = this.reader.getString(transformation    , 'id');
+            var idVal = this.reader.getString(transformationsElement, 'id');
 
 
             var mat= mat4.create();
@@ -396,7 +396,7 @@ class MySceneGraph {
             for(var i=0; i<transforms.length; i++){
                 var trf = transforms.pop();
                 if(trf.name=='translate'){
-                    var x = trf.attributtes[0].angle;
+                    var x = trf.attributtes[0];
                     var y = trf.attributtes[1];
                     var z = trf.attributtes[2];
 
@@ -429,9 +429,10 @@ class MySceneGraph {
                     mat4.rotate(mat, mat, DEGREE_TO_RAD*angle, rotArray);
 
                 } else if(trf.name=='scale'){
-                    var x = trf.attributes[0].val;
-                    var y = trf.attributes[1].val;
-                    var z = trf.attributes[2].val;
+
+                    var x = trf.attributtes[0];
+                    var y = trf.attributtes[1];
+                    var z = trf.attributtes[2];
 
                     mat4.scale(mat, mat, [x,y,z]);
 
@@ -595,8 +596,7 @@ class MySceneGraph {
         var x = this.reader.getFloat(xmlCoords, 'x');
         var y = this.reader.getFloat(xmlCoords, 'y');
         var z = this.reader.getFloat(xmlCoords, 'z');
-        if(xmlCoords.attributes.length==4)
-            var w = this.reader.getFloat(xmlCoords, 'w');
+        var w = this.reader.getFloat(xmlCoords, 'w');
 
         var coords = {
             xCoord: x,
