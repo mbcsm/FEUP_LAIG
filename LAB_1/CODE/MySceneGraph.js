@@ -46,8 +46,6 @@ class MySceneGraph {
 
         this.nodes = [];
 
-        this.idRoot = null; // The id of the root element.
-
         this.axisCoords = [];
         this.axisCoords['x'] = [1, 0, 0];
         this.axisCoords['y'] = [0, 1, 0];
@@ -469,16 +467,41 @@ class MySceneGraph {
                 attributeArray.push(attribute)
             }
 
-            var object = {
+            var primitiveObject = {
                 id: idVal,
                 name: prim.nodeName,
                 attributes: attributeArray
             };
 
-            this.primitives.push(object);
+            var primitiveBuilt = {
+                id : idVal,
+                object : this.primitiveBuilder(primitiveObject)
+            }
+            this.primitives.push(primitiveBuilt);
         }
 
         this.log("primitives Parsed");
+    }
+
+    primitiveBuilder(object){
+        var primitiveBuilt; 
+
+        switch(object.name){
+            case "cylinder":
+                var base = object.attributes[0].val;
+                var top =  object.attributes[1].val;
+                var height =  object.attributes[2].val;
+                var slices =  object.attributes[3].val;
+                var stacks = object.attributes[4].val;;
+                
+                primitiveBuilt = new MyCylinder(this.scene, slices, stacks);
+
+                break;
+        }
+     
+
+        return primitiveBuilt;
+
     }
 
     /* parses the <component> block */
@@ -543,11 +566,12 @@ class MySceneGraph {
                     ref : childrenRef
                 };
                 
-                textureArray.push(childrenObj);
+                childrenArray.push(childrenObj);
             }
 
 
             var componentArray = {
+                id : idVal,
                 transformation: transformationArray,
                 material: materialArray,
                 texture: textureArray,
@@ -637,7 +661,55 @@ class MySceneGraph {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-        // entry point for graph rendering
-        //TODO: Render loop starting at root of graph
+        this.scene.gl.viewport(0, 0, this.scene.gl.canvas.width, this.scene.gl.canvas.height);
+		this.scene.gl.clear(this.scene.gl.COLOR_BUFFER_BIT | this.scene.gl.DEPTH_BUFFER_BIT);
+
+		// Initialize Model-View matrix as identity (no transformation)
+		this.scene.updateProjectionMatrix();
+		this.scene.loadIdentity();
+
+		// Apply transformations corresponding to the camera position relative to the origin
+		this.scene.applyViewMatrix();
+
+		// Update all lights used
+
+		this.scene.axis.display();
+		//this.axis.display();
+
+		// ---- END Background, camera and axis setup
+
+		// ---- BEGIN Scene drawing section
+        
+        this.graphLoop(this.root);
+    }
+
+
+    graphLoop(root){
+        this.scene.pushMatrix();
+        var component;
+        for (var i = 0; i < this.components.length; i++) {
+            if(this.components[i].id == root){
+                component = this.components[i];
+            }
+        }
+
+        if(component == null){
+          console.error("The component " + root + " does not exist");
+          return 1;
+        }
+
+
+        var component;
+        for (var i = 0; i < this.primitives.length; i++) {
+            if(this.primitives[i].id ==  component.children[0].ref){
+                this.primitives[i].object.display();
+            }
+        }
+
+       
+        this.scene.popMatrix();
+
+        return 0;
+
     }
 }
