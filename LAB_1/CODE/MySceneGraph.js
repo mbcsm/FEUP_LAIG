@@ -29,9 +29,11 @@ class MySceneGraph {
         scene.graph = this;
 
 
-        this.axis_length;
+        this.referenceLength;
         this.root;
         this.perspective = [];
+        this.near;
+        this.far;
         this.ambient = [];
         this.background = [];
         this.spot = [];
@@ -83,6 +85,7 @@ class MySceneGraph {
 
         // As the graph loaded ok, signal the scene so that any additional initialization depending on the graph can take place
         this.scene.onGraphLoaded();
+        
     }
 
     /**
@@ -189,9 +192,9 @@ class MySceneGraph {
      */
     parseScene(sceneNode) {
         this.root = this.reader.getString(sceneNode, 'root');
-        this.axis_length = this.reader.getFloat(sceneNode, 'axis_length');
+        this.referenceLength = this.reader.getFloat(sceneNode, 'axis_length');
 
-        this.scene.axis_length = this.axis_length;
+        this.scene.referenceLength = this.referenceLength;
 
         this.log("Scene Parsed");
 
@@ -225,6 +228,9 @@ class MySceneGraph {
                 vecTo);
 
             this.perspective.push(camera);
+
+            this.near = near;
+            this.far = far;
         }
 
         this.log("views parsed");
@@ -661,24 +667,9 @@ class MySceneGraph {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-        this.scene.gl.viewport(0, 0, this.scene.gl.canvas.width, this.scene.gl.canvas.height);
-		this.scene.gl.clear(this.scene.gl.COLOR_BUFFER_BIT | this.scene.gl.DEPTH_BUFFER_BIT);
-
-		// Initialize Model-View matrix as identity (no transformation)
-		this.scene.updateProjectionMatrix();
-		this.scene.loadIdentity();
-
-		// Apply transformations corresponding to the camera position relative to the origin
-		this.scene.applyViewMatrix();
-
-		// Update all lights used
-
-		this.scene.axis.display();
-		//this.axis.display();
-
-		// ---- END Background, camera and axis setup
-
-		// ---- BEGIN Scene drawing section
+        
+    
+        console.log("asd");
         
         this.graphLoop(this.root);
     }
