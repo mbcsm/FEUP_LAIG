@@ -347,13 +347,17 @@ class MySceneGraph {
             var diffuseVal = this.getRGBArray(material.getElementsByTagName('diffuse')[0]);
             var specularVal = this.getRGBArray(material.getElementsByTagName('specular')[0]);
 
+            var appearanceVal = new CGFappearance(this.scene);
+            appearanceVal.setEmission(emissionVal.r, emissionVal.g, emissionVal.b, emissionVal.a);
+            appearanceVal.setAmbient(ambientVal.r, ambientVal.g, ambientVal.b, ambientVal.a);
+            appearanceVal.setDiffuse(diffuseVal.r, diffuseVal.g, diffuseVal.b, diffuseVal.a);
+            appearanceVal.setSpecular(specularVal.r, specularVal.g, specularVal.b, specularVal.a);
+            appearanceVal.setShininess(shininessVal);
+            appearanceVal.setTextureWrap('REPEAT', 'REPEAT');
+
             var materialArray = {
                 id: idVal,
-                shininess: shininessVal,
-                emission: emissionVal,
-                ambient: ambientVal,
-                diffuse: diffuseVal,
-                specular: specularVal
+                appearance : appearanceVal
             }
 
             this.materials.push(materialArray);
@@ -493,6 +497,31 @@ class MySceneGraph {
         var primitiveBuilt; 
 
         switch(object.name){
+            case "rectangle":
+                var x1 = object.attributes[0].val;
+                var y1 =  object.attributes[1].val;
+                var x2 =  object.attributes[2].val;
+                var y2 =  object.attributes[3].val;
+                
+                primitiveBuilt = new MyQuad(this.scene, x1, y1, x2, y2, 0.0, 1.0, 0.0, 1.0);
+
+                break;
+
+            case "triangle":
+                var x1 = object.attributes[0].val;
+                var y1 =  object.attributes[1].val;
+                var z1 =  object.attributes[2].val;
+                var x2 =  object.attributes[3].val;
+                var y2 =  object.attributes[4].val;
+                var z2 =  object.attributes[5].val;
+                var x3 =  object.attributes[6].val;
+                var y3 =  object.attributes[7].val;
+                var z3 =  object.attributes[8].val;
+                
+                primitiveBuilt = new MyTriangle(this.scene, x1, y1, z1, x2, y2, z2, x3, y3, z3, 0.0, 1.0, 0.0, 1.0);
+
+                break;
+            
             case "cylinder":
                 var base = object.attributes[0].val;
                 var top =  object.attributes[1].val;
@@ -500,7 +529,7 @@ class MySceneGraph {
                 var slices =  object.attributes[3].val;
                 var stacks = object.attributes[4].val;;
                 
-                primitiveBuilt = new MyCylinder(this.scene, slices, stacks);
+                primitiveBuilt = new MyCylinder(this.scene, base, top, height, slices, stacks);
 
                 break;
         }
@@ -688,6 +717,7 @@ class MySceneGraph {
           console.error("The component " + root + " does not exist");
           return 1;
         }
+
 
 
         var component;

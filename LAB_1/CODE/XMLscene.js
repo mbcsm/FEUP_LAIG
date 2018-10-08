@@ -46,6 +46,7 @@ class XMLscene extends CGFscene {
      * Initializes the scene lights with the values read from the XML file.
      */
     initLights() {
+        /*
         var i = 0;
         // Lights index.
 
@@ -74,6 +75,14 @@ class XMLscene extends CGFscene {
                 i++;
             }
         }
+        */
+       this.lights[0].setPosition(2, 3, 3, 1);
+       this.lights[0].setAmbient(0, 0, 0, 1);
+       this.lights[0].setDiffuse(1.0, 1.0, 1.0, 1.0);
+       this.lights[0].setSpecular(1.0, 1.0, 1.0, 1.0);
+       this.lights[0].setVisible(true);
+       this.lights[0].enable();
+       this.lights[0].update();
     }
 
 
@@ -120,7 +129,8 @@ class XMLscene extends CGFscene {
             // Draw axis
             this.axis.display();
 
-            
+         
+
             var i = 0;
             
             for (var key in this.lightValues) {
@@ -140,7 +150,7 @@ class XMLscene extends CGFscene {
             
 
             // Displays the scene (MySceneGraph function).
-            //this.graph.displayScene();
+            this.graph.displayScene();
         }
         else {
             // Draw axis
