@@ -472,7 +472,7 @@ class MySceneGraph {
             for (let primAttributes of prim.attributes) {
                 var attribute = {
                     name: primAttributes.nodeName,
-                    val: primAttributes.nodeValue
+                    val: parseFloat(primAttributes.nodeValue)
                 };
                 attributeArray.push(attribute)
             }
@@ -528,9 +528,15 @@ class MySceneGraph {
                 var height =  object.attributes[2].val;
                 var slices =  object.attributes[3].val;
                 var stacks = object.attributes[4].val;;
-                
                 primitiveBuilt = new MyCylinder(this.scene, base, top, height, slices, stacks);
+                break;
 
+            case "sphere":
+                var radius = object.attributes[0].val;
+                var slices =  object.attributes[1].val;
+                var stacks =  object.attributes[2].val;
+                
+                primitiveBuilt = new MySphere(this.scene, radius, slices, stacks);
                 break;
         }
      

@@ -16,31 +16,29 @@ class MyCylinderSide extends CGFobject {
     
         
     initBuffers(){
-        var t = Math.PI*2/this.slices;
-        var ang = 0;
-    
         this.indices = [];
         this.vertices = [];
         this.normals = [];
         this.texCoords = [];
-        var verts = 0;
     
+        var ang = 0;
+        var verts = 0;
+
         for(var j = 0; j <= this.stacks; j++)
         {
             this.vertices.push(1, 0, j / this.stacks);
             this.normals.push(1, 0, 0);
             this.texCoords.push(0,j / this.stacks);
-            verts += 1;
+            verts++;
     
             for(var i = 1; i <= this.slices; i++)
             {
-                ang += t;
-                var x = Math.cos(ang);
-                var y = Math.sin(ang);
-                this.vertices.push(x, y, j / this.stacks);
-                this.normals.push(x, y, 0);
-                this.texCoords.push(i / this.slices, j / this.stacks);
+                ang += Math.PI*2/this.slices;
                 verts++;
+
+                this.vertices.push(Math.cos(ang), Math.sin(ang), j / this.stacks);
+                this.normals.push(Math.cos(ang), Math.sin(ang), 0);
+                this.texCoords.push(i / this.slices, j / this.stacks);
     
                 if(j > 0 && i > 0)
                 {
@@ -51,7 +49,6 @@ class MyCylinderSide extends CGFobject {
         }
 
         this.primitiveType = this.scene.gl.TRIANGLES;
-    
         this.initGLBuffers();
     }
 }
