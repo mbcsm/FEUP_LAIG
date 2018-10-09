@@ -129,6 +129,9 @@ class XMLscene extends CGFscene {
             // Draw axis
             this.axis.display();
 
+
+            
+
          
 
             var i = 0;

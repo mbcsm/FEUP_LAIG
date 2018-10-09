@@ -373,8 +373,6 @@ class MySceneGraph {
         for (let transformation of transformationsElements) {
             var idVal = this.reader.getString(transformation, 'id');
 
-
-           
             this.transforms.push(this.transformationBuilder(transformation, idVal));
 
         }
@@ -384,31 +382,34 @@ class MySceneGraph {
         var mat = mat4.create();
         mat4.identity(mat);
 
-        var transf = transformation.children[0];
 
-        var attributeArray = [];
-
-        for (let transfAttributes of transf.attributes) {
-            var attribute = {
-                name: transfAttributes.nodeName,
-                val: transfAttributes.nodeValue
-            };
-            attributeArray.push(attribute);
-        }
-
-        var trfTag = {
-            name: transf.nodeName,
-            attributes: attributeArray
-        };
 
         var transformsRead = [];
 
-        transformsRead.push(trfTag);
+        for(let t of transformation.children){
 
-        var transforms = transformsRead.reverse();
+            var attributeArray = [];
 
-        for (var i = 0; i < transforms.length; i++) {
-            var trf = transforms.pop();
+            for (let transfAttributes of t.attributes) {
+                var attribute = {
+                    name: transfAttributes.nodeName,
+                    val: transfAttributes.nodeValue
+                };
+                attributeArray.push(attribute);
+            }
+    
+            var trfTag = {
+                name: t.nodeName,
+                attributes: attributeArray
+            };
+    
+    
+            transformsRead.push(trfTag);
+        }
+
+
+        for (var i = transformsRead.length - 1; i >= 0; i--) {
+            var trf = transformsRead[i];
             if (trf.name == 'translate') {
                 var x = trf.attributes[0].val;
                 var y = trf.attributes[1].val;
@@ -440,7 +441,7 @@ class MySceneGraph {
                 }
 
 
-                mat4.rotate(mat, mat, DEGREE_TO_RAD * angle, rotArray);
+                mat4.rotate(mat, mat, DEGREE_TO_RAD * parseFloat(angle)/2, rotArray);
 
             } else if (trf.name == 'scale') {
                 var x = trf.attributes[0].val;
@@ -452,6 +453,7 @@ class MySceneGraph {
             }
         }
 
+        console.log(mat);
         var object = {
             id: idVal,
             mat: mat
@@ -556,7 +558,7 @@ class MySceneGraph {
         for (let component of componentNodes) {
 
 
-            var transformationArray = [];
+            var transformationBuilt;
             var materialArray = [];
             var textureArray = [];
             var childrenArray = [];
@@ -572,18 +574,20 @@ class MySceneGraph {
 
 
             //Transformation         
-            var transformationTag = transformationNode.getElementsByTagName('transformationref');
             if(transformationNode.children.length > 0){
-                if (transformationTag.length > 0) {
-                    var transformationRef = this.reader.getString(transformationNode, "id");
+
+                //var transformationTag = transformationNode.getElementsByTagName('transformationref');
+                if (transformationNode.children[0].nodeName == "transformationref") {
+                    var transformationRef = transformationNode.children[0].attributes[0].nodeValue;
                     
                     for (var i = 0; i < this.transforms.length; i++) {
                         if (this.transforms[i].id == transformationRef) {
-                            transformationArray.push(this.transforms[i]);
+                            transformationBuilt = this.transforms[i];
                         }
                     }
+
                 } else {
-                    transformationArray.push(this.transformationBuilder(transformationNode, "null"));
+                    transformationBuilt = this.transformationBuilder(transformationNode, "null");
                 }
             }
                 
@@ -630,7 +634,7 @@ class MySceneGraph {
 
             var componentArray = {
                 id: idVal,
-                transformation: transformationArray,
+                transformation: transformationBuilt,
                 material: materialArray,
                 texture: textureArray,
                 children: childrenArray
@@ -641,12 +645,6 @@ class MySceneGraph {
 
         this.log("components Parsed");
     }
-
-
-
-
-
-
 
 
 
@@ -719,16 +717,14 @@ class MySceneGraph {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-
-
-        console.log("asd");
-
-        this.graphLoop(this.root);
+        this.graphLoop(this.root, null, null);
     }
 
 
-    graphLoop(root) {
+    graphLoop(root, text, mat) {
         var component;
+        var texture = text;
+        var material = mat;
         for (var i = 0; i < this.components.length; i++) {
             if (this.components[i].id == root) {
                 component = this.components[i];
@@ -739,25 +735,28 @@ class MySceneGraph {
             return 1;
         }
 
-        for(let children of component.children){
-            if(children.type == 'primitiveref'){
-                for (var i = 0; i < this.primitives.length; i++) {
-                    if (this.primitives[i].id == component.children[0].ref) {
-                        //this.scene.pushMatrix();
-                        this.primitives[i].object.display();
-                        //this.scene.popMatrix();
-                    }
-                }
-            }else{
-                this.graphLoop(children.ref);
-            }
+        if(component.transformation != null){
+            this.scene.multMatrix (component.transformation.mat);
         }
 
 
 
-     
+        for(let children of component.children){
+            this.scene.pushMatrix();
+
+            if(children.type == 'primitiveref'){
+                for (var i = 0; i < this.primitives.length; i++) {
+                    if (this.primitives[i].id == component.children[0].ref) {
+                        this.primitives[i].object.display();
+                    }
+                }
+            }else{
+                this.graphLoop(children.ref, texture, material);
+            }
 
 
+            this.scene.popMatrix();
+        }  
         return 0;
 
     }
