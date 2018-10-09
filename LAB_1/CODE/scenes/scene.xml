@@ -601,8 +601,8 @@
                </materials>
                <texture id="inherit" />
                <children>
-                   <componentref id="vert_post1" />
-                   <componentref id="vert_post2" />
+                   <!--<componentref id="vert_post1" />-->
+                    <!--<componentref id="vert_post2" />-->
                    <componentref id="top" />
                </children>
            </component>

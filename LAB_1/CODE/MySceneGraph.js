@@ -318,9 +318,11 @@ class MySceneGraph {
             var idVal = this.reader.getString(textureElem, 'id');
             var urlVal = this.reader.getString(textureElem, 'file');
 
+            var textureVal = new CGFtexture(this.scene,"./scenes/" + urlVal);
+
             var textureArray = {
                 id: idVal,
-                urL: urlVal
+                texture: textureVal
             }
 
             this.textures.push(textureArray);
@@ -558,8 +560,8 @@ class MySceneGraph {
 
 
             var transformationBuilt;
-            var materialArray = [];
-            var textureArray = [];
+            var materialBuilt;
+            var textureBuilt;
             var childrenArray = [];
 
 
@@ -593,13 +595,14 @@ class MySceneGraph {
 
 
             //material
-            for (let materialsChild of materialsNode.children) {
-                var materialRef = this.reader.getString(materialsChild, "id");
-                var materialObj = {
-                    id: materialRef
-                };
-                materialArray.push(materialObj);
+            var materialRef = materialsNode.children[0].attributes[0].nodeValue;
+            for(let mat of this.materials){
+                if(mat.id == materialRef){
+                    materialBuilt = mat.appearance;
+
+                }
             }
+
 
             //texture
             var lengthSRef;
@@ -609,13 +612,19 @@ class MySceneGraph {
                 lengthSRef = textureNode.attributes[1].val;
                 lengthTRef = textureNode.attributes[2].val;
             }
-
+            var text;
+            for(let text of this.textures){
+                if(text.id == textureRef){
+                    text = text.texture;
+                }
+            }
             var materialObj = {
                 id: textureRef,
+                texture: text,
                 length_s: lengthSRef,
                 length_t: lengthTRef
             };
-            textureArray.push(materialObj);
+            textureBuilt = materialObj;
 
 
             //children
@@ -634,8 +643,8 @@ class MySceneGraph {
             var componentArray = {
                 id: idVal,
                 transformation: transformationBuilt,
-                material: materialArray,
-                texture: textureArray,
+                material: materialBuilt,
+                texture: textureBuilt,
                 children: childrenArray
             }
             this.components.push(componentArray);
@@ -734,12 +743,19 @@ class MySceneGraph {
             return 1;
         }
 
-        
-        //console.log(component.transformation.mat);
-        //console.log(this.scene.getMatrix());
-        if(component.transformation != null){
+
+        if(component.texture != null)
+            texture = component.texture.texture;
+
+        if(component.material != null)
+            material = component.material.appearance;
+
+        if(component.transformation != null)
             this.scene.multMatrix (component.transformation.mat);
-        }
+        
+
+        if(texture && material != null)
+            material.setTexture(texture);
 
 
 
@@ -749,6 +765,8 @@ class MySceneGraph {
             if(children.type == 'primitiveref'){
                 for (var i = 0; i < this.primitives.length; i++) {
                     if (this.primitives[i].id == component.children[0].ref) {
+                        if(material != null)
+                            material.apply();
                         this.primitives[i].object.display();
                     }
                 }

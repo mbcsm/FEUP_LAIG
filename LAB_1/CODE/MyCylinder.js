@@ -19,16 +19,17 @@ class MyCylinder extends CGFobject {
     
         
     display(){
-        this.scene.pushMatrix();
-            this.scene.scale(1, 1, this.height);
-            this.side.display();
-        this.scene.popMatrix();
 
-        this.scene.pushMatrix();
-            this.top.display();
-        this.scene.popMatrix();
-        this.scene.pushMatrix();
-            this.bottom.display();
-        this.scene.popMatrix();
+            this.scene.pushMatrix();
+                this.scene.scale(1, 1, this.height);
+                this.side.display();
+            this.scene.popMatrix();
+
+            this.scene.pushMatrix();
+                this.top.display();
+            this.scene.popMatrix();
+            this.scene.pushMatrix();
+                this.bottom.display();
+            this.scene.popMatrix();
     }
 }
