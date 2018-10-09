@@ -441,7 +441,7 @@ class MySceneGraph {
                 }
 
 
-                mat4.rotate(mat, mat, DEGREE_TO_RAD * parseFloat(angle)/2, rotArray);
+                mat4.rotate(mat, mat, DEGREE_TO_RAD * parseFloat(angle), rotArray);
 
             } else if (trf.name == 'scale') {
                 var x = trf.attributes[0].val;
@@ -453,7 +453,6 @@ class MySceneGraph {
             }
         }
 
-        console.log(mat);
         var object = {
             id: idVal,
             mat: mat
@@ -735,6 +734,9 @@ class MySceneGraph {
             return 1;
         }
 
+        
+        //console.log(component.transformation.mat);
+        //console.log(this.scene.getMatrix());
         if(component.transformation != null){
             this.scene.multMatrix (component.transformation.mat);
         }
@@ -753,7 +755,6 @@ class MySceneGraph {
             }else{
                 this.graphLoop(children.ref, texture, material);
             }
-
 
             this.scene.popMatrix();
         }  
