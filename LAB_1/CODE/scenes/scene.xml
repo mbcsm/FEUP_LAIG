@@ -92,220 +92,156 @@
         </transformation>
 
         <transformation id="sideCube1">
-            <translate x="1.0" y="1.0" z="0.0" />
-            <rotate axis="x" angle="0" />
-            <scale x="1.0" y="1.0" z="1.0" />
+            <translate x="0.0" y="0.0" z="0.0" />
         </transformation>
 
         <transformation id="sideCube2">
-            <translate x="1.0" y="1.0" z="0.0" />
-            <rotate axis="x" angle="0" />
-            <scale x="1.0" y="1.0" z="1.0" />
+            <translate x="0.0" y="0.0" z="1.0" />
         </transformation>
 
         <transformation id="sideCube3">
-            <translate x="1.0" y="1.0" z="0.0" />
-            <rotate axis="x" angle="0" />
-            <scale x="1.0" y="1.0" z="1.0" />
+            <rotate axis="x" angle="90" />
         </transformation>
 
         <transformation id="sideCube4">
-            <translate x="1.0" y="1.0" z="0.0" />
-            <rotate axis="x" angle="0" />
-            <scale x="1.0" y="1.0" z="1.0" />
+            <rotate axis="x" angle="-90" />
         </transformation>
 
         <transformation id="sideCube5">
-            <translate x="1.0" y="1.0" z="0.0" />
-            <rotate axis="x" angle="0" />
-            <scale x="1.0" y="1.0" z="1.0" />
+            <rotate axis="y" angle="90" />
         </transformation>
 
         <transformation id="sideCube6">
-            <translate x="1.0" y="1.0" z="0.0" />
-            <rotate axis="x" angle="0" />
-            <scale x="1.0" y="1.0" z="1.0" />
+            <rotate axis="y" angle="-90" />
         </transformation>
 
         <transformation id="court">
-            <translate x="1.0" y="1.0" z="0.0" />
-            <rotate axis="x" angle="0" />
-            <scale x="1.0" y="1.0" z="1.0" />
+            <scale x="50.0" y="100.0" z="1.0" />
         </transformation>
 
         <transformation id="net_post">
-            <translate x="1.0" y="1.0" z="0.0" />
-            <rotate axis="x" angle="0" />
-            <scale x="1.0" y="1.0" z="1.0" />
+            <scale x="0.5" y="0.5" z="5.0" />
         </transformation>
 
 
         <transformation id="net_post1">
-            <translate x="1.0" y="1.0" z="0.0" />
-            <rotate axis="x" angle="0" />
-            <scale x="1.0" y="1.0" z="1.0" />
+            <translate x="-20.0" y="0.0" z="2.5" />
         </transformation>
 
         <transformation id="net_post2">
-            <translate x="1.0" y="1.0" z="0.0" />
-            <rotate axis="x" angle="0" />
-            <scale x="1.0" y="1.0" z="1.0" />
+            <translate x="20.0" y="0.0" z="2.5" />
         </transformation>
 
         <transformation id="net_front">
-            <translate x="1.0" y="1.0" z="0.0" />
-            <rotate axis="x" angle="0" />
-            <scale x="1.0" y="1.0" z="1.0" />
+            <rotate axis="y" angle="90" />
+            <scale x="40.0" y="5.0" z="1.0" />
         </transformation>
 
         <transformation id="net_back">
-            <translate x="1.0" y="1.0" z="0.0" />
-            <rotate axis="x" angle="0" />
-            <scale x="1.0" y="1.0" z="1.0" />
+            <rotate axis="y" angle="-90" />
+            <scale x="40.0" y="5.0" z="1.0" />
         </transformation>
 
         <transformation id="net">
-            <translate x="1.0" y="1.0" z="0.0" />
-            <rotate axis="x" angle="0" />
-            <scale x="1.0" y="1.0" z="1.0" />
+            <translate x="0.0" y="0.0" z="0.0" />
         </transformation>
 
         <transformation id="lamp1">
-            <translate x="1.0" y="1.0" z="0.0" />
-            <rotate axis="x" angle="0" />
-            <scale x="1.0" y="1.0" z="1.0" />
+            <translate x="-17.0" y="45.0" z="0.0" />
         </transformation>
 
         <transformation id="lamp2">
-            <translate x="1.0" y="1.0" z="0.0" />
-            <rotate axis="x" angle="0" />
-            <scale x="1.0" y="1.0" z="1.0" />
+            <translate x="17.0" y="45.0" z="0.0" />
         </transformation>
 
         <transformation id="lamp3">
-            <translate x="1.0" y="1.0" z="0.0" />
-            <rotate axis="x" angle="0" />
-            <scale x="1.0" y="1.0" z="1.0" />
+            <translate x="-17.0" y="-45.0" z="0.0" />
         </transformation>
 
         <transformation id="lamp4">
-            <translate x="1.0" y="1.0" z="0.0" />
-            <rotate axis="x" angle="0" />
-            <scale x="1.0" y="1.0" z="1.0" />
+            <translate x="17.0" y="-45.0" z="0.0" />
         </transformation>
 
         <transformation id="lamp_vert_post">
-            <translate x="1.0" y="1.0" z="0.0" />
-            <rotate axis="x" angle="0" />
-            <scale x="1.0" y="1.0" z="1.0" />
+            <translate x="0.0" y="0.0" z="15.0" />
+            <scale x="4.0" y="4.0" z="30.0" />
         </transformation>
 
         <transformation id="lamp_hor_post">
-            <translate x="1.0" y="1.0" z="0.0" />
-            <rotate axis="x" angle="0" />
-            <scale x="1.0" y="1.0" z="1.0" />
+            <translate x="0.0" y="0.0" z="30.0" />
+            <rotate axis="y" angle="90" />
+            <scale x="1.5" y="1.5" z="5.0" />
         </transformation>
 
         <transformation id="lamp_light1">
-            <translate x="1.0" y="1.0" z="0.0" />
-            <rotate axis="x" angle="0" />
-            <scale x="1.0" y="1.0" z="1.0" />
+            <translate x="2.5" y="0.0" z="30.0" />
         </transformation>
 
         <transformation id="lamp_light2">
-            <translate x="1.0" y="1.0" z="0.0" />
-            <rotate axis="x" angle="0" />
-            <scale x="1.0" y="1.0" z="1.0" />
+            <translate x="-2.5" y="0.0" z="30.0" />
         </transformation>
 
         <transformation id="lamp_light">
-            <translate x="1.0" y="1.0" z="0.0" />
-            <rotate axis="x" angle="0" />
-            <scale x="1.0" y="1.0" z="1.0" />
+            <scale x="1.5" y="3.0" z="1.5" />
         </transformation>
 
         <transformation id="ball">
-            <translate x="1.0" y="1.0" z="0.0" />
-            <rotate axis="x" angle="0" />
-            <scale x="1.0" y="1.0" z="1.0" />
+            <translate x="-10.0" y="10.0" z="1.0" />
+            <scale x="0.3" y="0.3" z="0.3" />
         </transformation>
 
         <transformation id="bench">
-            <translate x="1.0" y="1.0" z="0.0" />
-            <rotate axis="x" angle="0" />
-            <scale x="1.0" y="1.0" z="1.0" />
+            <translate x="0.0" y="0.0" z="0.0" />
         </transformation>
 
         <transformation id="bench_top">
-            <translate x="1.0" y="1.0" z="0.0" />
-            <rotate axis="x" angle="0" />
-            <scale x="1.0" y="1.0" z="1.0" />
+            <translate x="0.0" y="0.0" z="0.0" />
         </transformation>
 
         <transformation id="bench_post1">
-            <translate x="1.0" y="1.0" z="0.0" />
-            <rotate axis="x" angle="0" />
-            <scale x="1.0" y="1.0" z="1.0" />
+            <translate x="-24.5" y="-3.0" z="10.0" />
         </transformation>
 
         <transformation id="bench_post2">
-            <translate x="1.0" y="1.0" z="0.0" />
-            <rotate axis="x" angle="0" />
-            <scale x="1.0" y="1.0" z="1.0" />
+            <translate x="-24.5" y="3.0" z="10.0" />
         </transformation>
 
         <transformation id="bench_post">
-            <translate x="1.0" y="1.0" z="0.0" />
-            <rotate axis="x" angle="0" />
-            <scale x="1.0" y="1.0" z="1.0" />
+            <scale x="1.5" y="1.5" z="10.0" />
         </transformation>
 
         <transformation id="top">
-            <translate x="1.0" y="1.0" z="0.0" />
-            <rotate axis="x" angle="0" />
-            <scale x="1.0" y="1.0" z="1.0" />
+            <translate x="-25.0" y="-3.5" z="10.2" />
+            <scale x="2.0" y="7.0" z="0.8" />
         </transformation>
 
         <transformation id="bench_seat">
-            <translate x="1.0" y="1.0" z="0.0" />
-            <rotate axis="x" angle="0" />
-            <scale x="1.0" y="1.0" z="1.0" />
+            <translate x="0.0" y="0.0" z="0.0" />
         </transformation>
 
         <transformation id="bench_seat_top">
-            <translate x="1.0" y="1.0" z="0.0" />
-            <rotate axis="x" angle="0" />
-            <scale x="1.0" y="1.0" z="1.0" />
+            <translate x="-23.5" y="0.0" z="4.0" />
+            <scale x="2.0" y="4.0" z="0.5" />
         </transformation>
 
         <transformation id="bench_seat_leg1">
-            <translate x="1.0" y="1.0" z="0.0" />
-            <rotate axis="x" angle="0" />
-            <scale x="1.0" y="1.0" z="1.0" />
+            <translate x="-23.2" y="-1.8" z="2.0" />
         </transformation>
 
         <transformation id="bench_seat_leg2">
-            <translate x="1.0" y="1.0" z="0.0" />
-            <rotate axis="x" angle="0" />
-            <scale x="1.0" y="1.0" z="1.0" />
+            <translate x="-23.2" y="1.8" z="2.0" />
         </transformation>
 
         <transformation id="bench_seat_leg3">
-            <translate x="1.0" y="1.0" z="0.0" />
-            <rotate axis="x" angle="0" />
-            <scale x="1.0" y="1.0" z="1.0" />
+            <translate x="-20.9" y="1.8" z="0.0" />
         </transformation>
 
         <transformation id="bench_seat_leg4">
-            <translate x="1.0" y="1.0" z="0.0" />
-            <rotate axis="x" angle="0" />
-            <scale x="1.0" y="1.0" z="1.0" />
+            <translate x="-20.9" y="-1.8" z="0.0" />
         </transformation>
 
         <transformation id="bench_seat_leg">
-            <translate x="1.0" y="1.0" z="0.0" />
-            <rotate axis="x" angle="0" />
-            <scale x="1.0" y="1.0" z="1.0" />
+            <scale x="1.0" y="1.0" z="4.0" />
         </transformation>
     </transformations>
 
@@ -412,7 +348,7 @@
                <materials>
                    <material id="inherit" />
                </materials>
-               <texture id="court_text" length_s="1.0" length_t="1.0" />
+               <texture id="court_text" length_s="5.0" length_t="100.0" />
                <children>
                    <primitiveref id="rectangle" />
                </children>
