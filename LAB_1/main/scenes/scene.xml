@@ -13,55 +13,55 @@
         </perspective>
         <!--   <ortho id="ss" near="ff" far="ff"
                   left="ff" right="ff" top="ff" bottom="ff" />  -->
-       </views>
+    </views>
 
-       <ambient>
-           <ambient r="0.2" g="0.2" b="0.2" a="1" />
-           <background r="0" g="0" b="0" a="1" />
-       </ambient>
+    <ambient>
+        <ambient r="0.0" g="0.0" b="0.0" a="1" />
+        <background r="0" g="0" b="0" a="1" />
+    </ambient>
 
-       <lights>
-           <!-- Deve existir um ou mais blocos "omni" ou "spot" -->
+    <lights>
+        <!-- Deve existir um ou mais blocos "omni" ou "spot" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
         <omni id="light1" enabled="1" >
-            <location x="-10" y="10" z="20" w="1" />
+            <location x="-5" y="5" z="5" w="1" />
             <ambient r="0.2" g="0.2" b="0.2" a="1" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
         </omni>
-           <omni id="light2" enabled="1" >
-               <location x="10" y="10" z="20" w="1" />
-               <ambient r="0.2" g="0.2" b="0.2" a="1" />
-               <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
-               <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-           </omni>
-           <omni id="light3" enabled="1" >
-               <location x="-10" y="-10" z="20" w="1" />
-               <ambient r="0.2" g="0.2" b="0.2" a="1" />
-               <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
-               <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-           </omni>
-           <omni id="light4" enabled="1" >
-               <location x="10" y="-10" z="20" w="1" />
-               <ambient r="0.2" g="0.2" b="0.2" a="1" />
-               <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
-               <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-           </omni>
-           <!--<spot id="ss" enabled="tt" angle="ff" exponent="ff">-->
-               <!-- atencao, "target" e' diferente de "direction" -->
-           <!--  <location x="ff" y="ff" z="ff" />
-             <target x="ff" y="ff" z="ff" />
-             <ambient r="ff" g="ff" b="ff" a="ff" />
-             <diffuse r="ff" g="ff" b="ff" a="ff" />
-             <specular r="ff" g="ff" b="ff" a="ff" />
-         </spot>-->
+        <omni id="light2" enabled="1" >
+            <location x="10" y="10" z="20" w="1" />
+            <ambient r="0.2" g="0.2" b="0.2" a="1" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+        </omni>
+        <omni id="light3" enabled="1" >
+            <location x="-10" y="-10" z="20" w="1" />
+            <ambient r="0.2" g="0.2" b="0.2" a="1" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+        </omni>
+        <omni id="light4" enabled="1" >
+            <location x="10" y="-10" z="20" w="1" />
+            <ambient r="0.2" g="0.2" b="0.2" a="1" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+        </omni>
+        <!--<spot id="ss" enabled="tt" angle="ff" exponent="ff">-->
+        <!-- atencao, "target" e' diferente de "direction" -->
+        <!--  <location x="ff" y="ff" z="ff" />
+          <target x="ff" y="ff" z="ff" />
+          <ambient r="ff" g="ff" b="ff" a="ff" />
+          <diffuse r="ff" g="ff" b="ff" a="ff" />
+          <specular r="ff" g="ff" b="ff" a="ff" />
+      </spot>-->
     </lights>
 
     <textures>
         <!-- Deve existir um ou mais blocos "texture" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
-        <texture id="ball_text" file="/images/ball.jpg" />
-        <texture id="court_text" file="/images/court.jpg" />
+        <texture id="ball_text" file="images/ball.jpg" />
+        <texture id="court_text" file="images/court.jpg" />
     </textures>
 
     <materials>
@@ -92,106 +92,121 @@
         </transformation>
 
         <transformation id="sideCube1">
-            <translate x="0.0" y="0.0" z="0.0" />
+            <rotate axis="y" angle="90"/>
+            <translate x="0.5" y="0.0" z="0" />
         </transformation>
 
         <transformation id="sideCube2">
-            <translate x="0.0" y="0.0" z="1.0" />
+            <rotate axis="y" angle="-90"/>
+            <translate x="-0.5" y="0.0" z="0" />
         </transformation>
 
         <transformation id="sideCube3">
-            <rotate axis="x" angle="90" />
+            <translate x="0" y="0.0" z="0.5" />
         </transformation>
 
         <transformation id="sideCube4">
-            <rotate axis="x" angle="-90" />
+            <rotate axis="y" angle="-180"/>
+            <translate x="0" y="0.0" z="-0.5" />
         </transformation>
 
         <transformation id="sideCube5">
-            <rotate axis="y" angle="90" />
+            <rotate axis="x" angle="90"/>
+            <translate x="0" y="-0.5" z="0" />
         </transformation>
 
         <transformation id="sideCube6">
-            <rotate axis="y" angle="-90" />
+            <rotate axis="x" angle="-90"/>
+            <translate x="0" y="0.5" z="0" />
         </transformation>
 
         <transformation id="court">
-            <scale x="50.0" y="100.0" z="1.0" />
+            <scale x="8.0" y="11.0" z="1.0" />
+            <rotate axis="x" angle="-90"/>
         </transformation>
 
         <transformation id="net_post">
-            <scale x="0.5" y="0.5" z="5.0" />
+            <scale x="0.05" y="0.05" z="0.5" />
         </transformation>
 
 
         <transformation id="net_post1">
-            <translate x="-20.0" y="0.0" z="2.5" />
+            <translate x="0.0" y="2.5" z="0.0" />
+            <rotate axis="y" angle="90"/>
         </transformation>
 
         <transformation id="net_post2">
-            <translate x="20.0" y="0.0" z="2.5" />
+            <translate x="0.0" y="-2.5" z="0.0" />
+            <rotate axis="y" angle="90"/>
         </transformation>
 
         <transformation id="net_front">
-            <rotate axis="y" angle="90" />
-            <scale x="40.0" y="5.0" z="1.0" />
+            <translate x="0.5" y="0.0" z="0.0" />
+            <scale x="0.5" y="5.0" z="1.0" />
         </transformation>
 
         <transformation id="net_back">
-            <rotate axis="y" angle="-90" />
-            <scale x="40.0" y="5.0" z="1.0" />
+            <rotate axis="y" angle="180"/>
+            <translate x="0.5" y="0.0" z="0.0" />
+            <scale x="0.5" y="5.0" z="1.0" />
         </transformation>
 
         <transformation id="net">
-            <translate x="0.0" y="0.0" z="0.0" />
+            <rotate axis="z" angle="90"/>
         </transformation>
 
         <transformation id="lamp1">
-            <translate x="-17.0" y="45.0" z="0.0" />
+            <translate x="3.8" y="0.0" z="5.3" />
         </transformation>
 
         <transformation id="lamp2">
-            <translate x="17.0" y="45.0" z="0.0" />
+            <translate x="-3.8" y="0.0" z="5.3" />
         </transformation>
 
         <transformation id="lamp3">
-            <translate x="-17.0" y="-45.0" z="0.0" />
+            <translate x="-3.8" y="0.0" z="-5.3" />
         </transformation>
 
         <transformation id="lamp4">
-            <translate x="17.0" y="-45.0" z="0.0" />
+            <translate x="3.8" y="0.0" z="-5.3" />
         </transformation>
 
         <transformation id="lamp_vert_post">
-            <translate x="0.0" y="0.0" z="15.0" />
-            <scale x="4.0" y="4.0" z="30.0" />
+            <translate x="0.0" y="0.0" z="0.0" />
+            <rotate axis="z" angle="90" />
+            <scale x="0.05" y="0.05" z="3.5" />
         </transformation>
 
         <transformation id="lamp_hor_post">
-            <translate x="0.0" y="0.0" z="30.0" />
-            <rotate axis="y" angle="90" />
-            <scale x="1.5" y="1.5" z="5.0" />
+            <scale x="0.08" y="0.08" z="1.0" />
+            <translate x="3.5" y="0.0" z="-0.5" />
+            <rotate axis="y" angle="-90" />
         </transformation>
 
         <transformation id="lamp_light1">
-            <translate x="2.5" y="0.0" z="30.0" />
+            <translate x="0.5" y="0.0" z="3.55" />
         </transformation>
 
         <transformation id="lamp_light2">
-            <translate x="-2.5" y="0.0" z="30.0" />
+            <translate x="-0.5" y="0.0" z="3.55" />
         </transformation>
 
         <transformation id="lamp_light">
-            <scale x="1.5" y="3.0" z="1.5" />
+            <scale x="0.25" y="0.4" z="0.15" />
+        </transformation>
+
+        <transformation id="lamp">
+            <rotate axis="x" angle="-90" />
         </transformation>
 
         <transformation id="ball">
-            <translate x="-10.0" y="10.0" z="1.0" />
-            <scale x="0.3" y="0.3" z="0.3" />
+            <scale x="0.05" y="0.05" z="0.05" />
+            <translate x="1.0" y="0.05" z="2.0" />
         </transformation>
 
         <transformation id="bench">
-            <translate x="0.0" y="0.0" z="0.0" />
+            <rotate axis="y" angle="90" />
+            <translate x="-3.7" y="0.0" z="0.0" />
         </transformation>
 
         <transformation id="bench_top">
@@ -199,20 +214,21 @@
         </transformation>
 
         <transformation id="bench_post1">
-            <translate x="-24.5" y="-3.0" z="10.0" />
+            <translate x="-0.7" y="0.0" z="0.0" />
         </transformation>
 
         <transformation id="bench_post2">
-            <translate x="-24.5" y="3.0" z="10.0" />
+            <translate x="0.7" y="0.0" z="0.0" />
         </transformation>
 
         <transformation id="bench_post">
-            <scale x="1.5" y="1.5" z="10.0" />
+            <scale x="0.06" y="0.06" z="1.6" />
+            <rotate axis="x" angle="-90" />
         </transformation>
 
         <transformation id="top">
-            <translate x="-25.0" y="-3.5" z="10.2" />
-            <scale x="2.0" y="7.0" z="0.8" />
+            <scale x="1.6" y="0.1" z="0.8" />
+            <translate x="0.0" y="1.6" z="0.3" />
         </transformation>
 
         <transformation id="bench_seat">
@@ -220,28 +236,29 @@
         </transformation>
 
         <transformation id="bench_seat_top">
-            <translate x="-23.5" y="0.0" z="4.0" />
-            <scale x="2.0" y="4.0" z="0.5" />
+            <scale x="1.1" y="0.07" z="0.5" />
+            <translate x="0.0" y="0.3" z="0.24" />
         </transformation>
 
         <transformation id="bench_seat_leg1">
-            <translate x="-23.2" y="-1.8" z="2.0" />
+            <translate x="0.5" y="0.0" z="0.1" />
         </transformation>
 
         <transformation id="bench_seat_leg2">
-            <translate x="-23.2" y="1.8" z="2.0" />
+            <translate x="-0.5" y="0.0" z="0.1" />
         </transformation>
 
         <transformation id="bench_seat_leg3">
-            <translate x="-20.9" y="1.8" z="0.0" />
+            <translate x="-0.5" y="0.0" z="0.4" />
         </transformation>
 
         <transformation id="bench_seat_leg4">
-            <translate x="-20.9" y="-1.8" z="0.0" />
+            <translate x="0.5" y="0.0" z="0.4" />
         </transformation>
 
         <transformation id="bench_seat_leg">
-            <scale x="1.0" y="1.0" z="4.0" />
+            <scale x="0.05" y="0.05" z="0.3" />
+            <rotate axis="x" angle="-90" />
         </transformation>
     </transformations>
 
@@ -261,18 +278,18 @@
              <cylinder base="1.0" top="1.0" height="2.5" slices="20" stacks="5" />
              <sphere radius="ff" slices="ii" stacks="ii" />
               <torus inner="ff" outer="ff" slices="ii" loops="ii" /> -->
-           </primitive >
+        </primitive >
         <primitive id="cylinder">
             <cylinder base="1.0" top="1.0" height="1.0" slices="40" stacks="40" />
         </primitive>
         <primitive id="ball">
             <sphere radius="0.2" slices="40" stacks="40" />
         </primitive>
-       </primitives >
+    </primitives >
 
-       <components>
-           <component id="campo_tenis">
-               <!-- Uma "component" e' um objeto composto e pode ser -->
+    <components>
+        <component id="campo_tenis">
+            <!-- Uma "component" e' um objeto composto e pode ser -->
             <!-- usada em nos intermédios -->
             <!-- bloco "transformation" e' obrigatorio -->
             <transformation>
@@ -283,11 +300,11 @@
                 <!-- usando zero ou mais das instrucoes seguintes, sem -->
                 <!-- limite nem ordem -->
                 <!-- ex: bloco transformation pode ficar sem conteudo -->
-               <!--<translate x="ff" y="ff" z="ff" />
-               <rotate axis="cc" angle="ff" />
-               <scale x="ff" y="ff" z="ff" /> -->
-           </transformation>
-           <!-- declaracao obrigatoria de pelo menos um material; -->
+                <!--<translate x="ff" y="ff" z="ff" />
+                <rotate axis="cc" angle="ff" />
+                <scale x="ff" y="ff" z="ff" /> -->
+            </transformation>
+            <!-- declaracao obrigatoria de pelo menos um material; -->
             <!-- o material id="inherit", mantem (herda) material do "pai" -->
             <!-- se varios materiais declarados, o default e' o -->
             <!-- primeiro material; de cada vez que se pressione a tecla m/M, -->
@@ -327,530 +344,536 @@
             </children>
         </component>
 
-           <component id="court">
-               <transformation>
-                   <transformationref id="court" />
-               </transformation>
-               <materials>
-                   <material id="default" />
-               </materials>
-               <texture id="none" />
-               <children>
-                   <componentref id="floor" />
-                   <componentref id="net" />
-               </children>
-           </component>
+        <component id="court">
+            <transformation>
+                <transformationref id="default" />
+            </transformation>
+            <materials>
+                <material id="default" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="floor" />
+                <componentref id="net" />
+            </children>
+        </component>
 
-           <component id="floor">
-               <transformation>
-                   <transformationref id="default" />
-               </transformation>
-               <materials>
-                   <material id="inherit" />
-               </materials>
-               <texture id="court_text" length_s="5.0" length_t="100.0" />
-               <children>
-                   <primitiveref id="rectangle" />
-               </children>
-           </component>
+        <component id="floor">
+            <transformation>
+                <transformationref id="court" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="court_text" length_s="8.0" length_t="11.0" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
 
-           <component id="net">
-               <transformation>
-                   <transformationref id="net" />
-               </transformation>
-               <materials>
-                   <material id="default" />
-               </materials>
-               <texture id="none" />
-               <children>
-                   <componentref id="net_front" />
-                   <componentref id="net_back" />
-                   <componentref id="post1" />
-                   <componentref id="post2" />
-               </children>
-           </component>
-
-           <component id="net_back">
-               <transformation>
-                   <transformationref id="net_back" />
-               </transformation>
-               <materials>
-                   <material id="inherit" />
-               </materials>
-               <texture id="inherit" />
-               <children>
-                   <primitiveref id="rectangle" />
-               </children>
-           </component>
-
-           <component id="net_front">
-               <transformation>
-                   <transformationref id="net_front" />
-               </transformation>
-               <materials>
-                   <material id="inherit" />
-               </materials>
-               <texture id="inherit" />
-               <children>
-                   <primitiveref id="rectangle" />
-               </children>
-           </component>
-
-           <component id="post1">
-               <transformation>
-                   <transformationref id="net_post1" />
-               </transformation>
-               <materials>
-                   <material id="default" />
-               </materials>
-               <texture id="none"/>
-               <children>
-                   <componentref id="post" />
-               </children>
-           </component>
-
-           <component id="post2">
-               <transformation>
-                   <transformationref id="net_post2" />
-               </transformation>
-               <materials>
-                   <material id="default" />
-               </materials>
-               <texture id="none" />
-               <children>
-                   <componentref id="post" />
-               </children>
-           </component>
-
-           <component id="post">
-               <transformation>
-                   <transformationref id="net_post" />
-               </transformation>
-               <materials>
-                   <material id="inherit" />
-               </materials>
-               <texture id="inherit" />
-               <children>
-                   <primitiveref id="cylinder" />
-               </children>
-           </component>
-
-           <component id="lamp1">
-               <transformation>
-                   <transformationref id="lamp1" />
-               </transformation>
-               <materials>
-                   <material id="lamp" />
-               </materials>
-               <texture id="none" />
-               <children>
-                   <componentref id="hor_post" />
-                   <componentref id="vert_post" />
-                   <componentref id="light1" />
-                   <componentref id="light2" />
-               </children>
-           </component>
-
-           <component id="lamp2">
-               <transformation>
-                   <transformationref id="lamp2" />
-               </transformation>
-               <materials>
-                   <material id="lamp" />
-               </materials>
-               <texture id="none" />
-               <children>
-                   <componentref id="hor_post" />
-                   <componentref id="vert_post" />
-                   <componentref id="light1" />
-                   <componentref id="light2" />
-               </children>
-           </component>
-
-           <component id="lamp3">
-               <transformation>
-                   <transformationref id="lamp3" />
-               </transformation>
-               <materials>
-                   <material id="lamp" />
-               </materials>
-               <texture id="none" />
-               <children>
-                   <componentref id="hor_post" />
-                   <componentref id="vert_post" />
-                   <componentref id="light1" />
-                   <componentref id="light2" />
-               </children>
-           </component>
-
-           <component id="lamp4">
-               <transformation>
-                   <transformationref id="lamp4" />
-               </transformation>
-               <materials>
-                   <material id="lamp" />
-               </materials>
-               <texture id="none" />
-               <children>
-                   <componentref id="hor_post" />
-                   <componentref id="vert_post" />
-                   <componentref id="light1" />
-                   <componentref id="light2" />
-               </children>
-           </component>
-
-           <component id="light1">
-               <transformation>
-                   <transformationref id="lamp_light1" />
-               </transformation>
-               <materials>
-                   <material id="inherit" />
-               </materials>
-               <texture id="inherit" />
-               <children>
-                   <componentref id="light" />
-               </children>
-           </component>
-
-           <component id="light2">
-               <transformation>
-                   <transformationref id="lamp_light2" />
-               </transformation>
-               <materials>
-                   <material id="inherit" />
-               </materials>
-               <texture id="inherit" />
-               <children>
-                   <componentref id="light" />
-               </children>
-           </component>
+        <component id="net">
+            <transformation>
+                <transformationref id="net" />
+            </transformation>
+            <materials>
+                <material id="default" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="net_front" />
+                <componentref id="net_back" />
+                <componentref id="post1" />
+                <componentref id="post2" />
+            </children>
+        </component>
 
 
-           <component id="light">
-               <transformation>
-                   <transformationref id="lamp_light" />
-               </transformation>
-               <materials>
-                   <material id="inherit" />
-               </materials>
-               <texture id="inherit" />
-               <children>
-                   <componentref id="cube" />
-               </children>
-           </component>
 
-           <component id="hor_post">
-               <transformation>
-                   <transformationref id="lamp_hor_post" />
-               </transformation>
-               <materials>
-                   <material id="inherit" />
-               </materials>
-               <texture id="inherit" />
-               <children>
-                   <primitiveref id="cylinder" />
-               </children>
-           </component>
+            <component id="net_back">
+                <transformation>
+                    <transformationref id="net_back" />
+                </transformation>
+                <materials>
+                    <material id="inherit" />
+                </materials>
+                <texture id="inherit" />
+                <children>
+                    <primitiveref id="rectangle" />
+                </children>
+            </component>
 
-           <component id="vert_post">
-               <transformation>
-                   <transformationref id="lamp_vert_post" />
-               </transformation>
-               <materials>
-                   <material id="inherit" />
-               </materials>
-               <texture id="inherit" />
-               <children>
-                   <primitiveref id="cylinder" />
-               </children>
-           </component>
+            <component id="net_front">
+                <transformation>
+                    <transformationref id="net_front" />
+                </transformation>
+                <materials>
+                    <material id="inherit" />
+                </materials>
+                <texture id="inherit" />
+                <children>
+                    <primitiveref id="rectangle" />
+                </children>
+            </component>
 
-           <component id="ball">
-               <transformation>
-                   <transformationref id="ball" />
-               </transformation>
-               <materials>
-                   <material id="default" />
-               </materials>
-               <texture id="ball_text" />
-               <children>
-                   <primitiveref id="ball" />
-               </children>
-           </component>
+            <component id="post1">
+                <transformation>
+                    <transformationref id="net_post1" />
+                </transformation>
+                <materials>
+                    <material id="default" />
+                </materials>
+                <texture id="none"/>
+                <children>
+                    <componentref id="post" />
+                </children>
+            </component>
 
-           <component id="bench">
-               <transformation>
-                   <transformationref id="bench" />
-               </transformation>
-               <materials>
-                   <material id="default" />
-               </materials>
-               <texture id="none" />
-               <children>
-                   <componentref id="bench_top" />
-                   <componentref id="seat" />
-               </children>
-           </component>
+            <component id="post2">
+                <transformation>
+                    <transformationref id="net_post2" />
+                </transformation>
+                <materials>
+                    <material id="default" />
+                </materials>
+                <texture id="none" />
+                <children>
+                    <componentref id="post" />
+                </children>
+            </component>
 
-           <component id="bench_top">
-               <transformation>
-                   <transformationref id="bench_top" />
-               </transformation>
-               <materials>
-                   <material id="lamp" />
-               </materials>
-               <texture id="inherit" />
-               <children>
-                   <!--<componentref id="vert_post1" />-->
-                    <!--<componentref id="vert_post2" />-->
-                   <componentref id="top" />
-               </children>
-           </component>
+            <component id="post">
+                <transformation>
+                    <transformationref id="net_post" />
+                </transformation>
+                <materials>
+                    <material id="inherit" />
+                </materials>
+                <texture id="inherit" />
+                <children>
+                    <primitiveref id="cylinder" />
+                </children>
+            </component>
 
-           <component id="bench_vert_post1">
-               <transformation>
-                   <transformationref id="bench_post1" />
-               </transformation>
-               <materials>
-                   <material id="inherit" />
-               </materials>
-               <texture id="inherit" />
-               <children>
-                   <componentref id="vert_post" />
-               </children>
-           </component>
+            <component id="lamp1">
+                <transformation>
+                    <transformationref id="lamp1" />
+                </transformation>
+                <materials>
+                    <material id="lamp" />
+                </materials>
+                <texture id="none" />
+                <children>
+                    <componentref id="lamp" />
+                </children>
+            </component>
 
-           <component id="bench_vert_post2">
-               <transformation>
-                   <transformationref id="bench_post2" />
-               </transformation>
-               <materials>
-                   <material id="inherit" />
-               </materials>
-               <texture id="inherit" />
-               <children>
-                   <componentref id="vert_post" />
-               </children>
-           </component>
+            <component id="lamp2">
+                <transformation>
+                    <transformationref id="lamp2" />
+                </transformation>
+                <materials>
+                    <material id="lamp" />
+                </materials>
+                <texture id="none" />
+                <children>
+                    <componentref id="lamp" />
+                </children>
+            </component>
 
-           <component id="bench_vert_post">
-               <transformation>
-                   <transformationref id="bench_post" />
-               </transformation>
-               <materials>
-                   <material id="inherit" />
-               </materials>
-               <texture id="inherit" />
-               <children>
-                   <primitiveref id="cylinder" />
-               </children>
-           </component>
+            <component id="lamp3">
+                <transformation>
+                    <transformationref id="lamp3" />
+                </transformation>
+                <materials>
+                    <material id="lamp" />
+                </materials>
+                <texture id="none" />
+                <children>
+                    <componentref id="lamp" />
+                </children>
+            </component>
 
-           <component id="top">
-               <transformation>
-                   <transformationref id="top" />
-               </transformation>
-               <materials>
-                   <material id="inherit" />
-               </materials>
-               <texture id="inherit" />
-               <children>
-                   <componentref id="cube" />
-               </children>
-           </component>
+            <component id="lamp4">
+                <transformation>
+                    <transformationref id="lamp4" />
+                </transformation>
+                <materials>
+                    <material id="lamp" />
+                </materials>
+                <texture id="none" />
+                <children>
+                    <componentref id="lamp" />
+                </children>
+            </component>
 
-           <component id="seat">
-               <transformation>
-                   <transformationref id="bench_seat" />
-               </transformation>
-               <materials>
-                   <material id="default" />
-               </materials>
-               <texture id="inherit" />
-               <children>
-                   <componentref id="seat_top" />
-                   <componentref id="leg1" />
-                   <componentref id="leg2" />
-                   <componentref id="leg3" />
-                   <componentref id="leg4" />
-               </children>
-           </component>
+        <component id="lamp">
+            <transformation>
+                <transformationref id="lamp" />
+            </transformation>
+            <materials>
+                <material id="lamp" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="hor_post" />
+                <componentref id="vert_post" />
+                <componentref id="light1" />
+                <componentref id="light2" />
+            </children>
+        </component>
 
-           <component id="seat_top">
-               <transformation>
-                   <transformationref id="bench_seat_top" />
-               </transformation>
-               <materials>
-                   <material id="inherit" />
-               </materials>
-               <texture id="inherit" />
-               <children>
-                   <componentref id="cube" />
-               </children>
-           </component>
+            <component id="light1">
+                <transformation>
+                    <transformationref id="lamp_light1" />
+                </transformation>
+                <materials>
+                    <material id="inherit" />
+                </materials>
+                <texture id="inherit" />
+                <children>
+                    <componentref id="light" />
+                </children>
+            </component>
 
-           <component id="leg1">
-               <transformation>
-                   <transformationref id="bench_seat_leg1" />
-               </transformation>
-               <materials>
-                   <material id="inherit" />
-               </materials>
-               <texture id="inherit" />
-               <children>
-                   <componentref id="leg" />
-               </children>
-           </component>
-
-           <component id="leg2">
-               <transformation>
-                   <transformationref id="bench_seat_leg2" />
-               </transformation>
-               <materials>
-                   <material id="inherit" />
-               </materials>
-               <texture id="inherit" />
-               <children>
-                   <componentref id="leg" />
-               </children>
-           </component>
-
-           <component id="leg3">
-               <transformation>
-                   <transformationref id="bench_seat_leg3" />
-               </transformation>
-               <materials>
-                   <material id="inherit" />
-               </materials>
-               <texture id="inherit" />
-               <children>
-                   <componentref id="leg" />
-               </children>
-           </component>
-
-           <component id="leg4">
-               <transformation>
-                   <transformationref id="bench_seat_leg4" />
-               </transformation>
-               <materials>
-                   <material id="inherit" />
-               </materials>
-               <texture id="inherit" />
-               <children>
-                   <componentref id="leg" />
-               </children>
-           </component>
-
-           <component id="leg">
-               <transformation>
-                   <transformationref id="bench_seat_leg" />
-               </transformation>
-               <materials>
-                   <material id="inherit" />
-               </materials>
-               <texture id="inherit" />
-               <children>
-                   <primitiveref id="cylinder" />
-               </children>
-           </component>
-
-           <component id="cube">
-               <transformation>
-                   <transformationref id="default" />
-               </transformation>
-               <materials>
-                   <material id="inherit" />
-               </materials>
-               <texture id="inherit" />
-               <children>
-                   <componentref id="sideCube1" />
-                   <componentref id="sideCube2" />
-                   <componentref id="sideCube3" />
-                   <componentref id="sideCube4" />
-                   <componentref id="sideCube5" />
-                   <componentref id="sideCube6" />
-               </children>
-           </component>
-
-           <component id="sideCube1">
-               <transformation>
-                   <transformationref id="sideCube1" />
-               </transformation>
-               <materials>
-                   <material id="unico_mat" />
-               </materials>
-               <texture id="unica_text" length_s="1.0" length_t="1.0" />
-               <children>
-                   <primitiveref id="rectangle" />
-               </children>
-           </component>
-
-           <component id="sideCube2">
-               <transformation>
-                   <transformationref id="sideCube2" />
-               </transformation>
-               <materials>
-                   <material id="unico_mat" />
-               </materials>
-               <texture id="unica_text" length_s="1.0" length_t="1.0" />
-               <children>
-                   <primitiveref id="rectangle" />
-               </children>
-           </component>
-
-           <component id="sideCube3">
-               <transformation>
-                   <transformationref id="sideCube3" />
-               </transformation>
-               <materials>
-                   <material id="unico_mat" />
-               </materials>
-               <texture id="unica_text" length_s="1.0" length_t="1.0" />
-               <children>
-                   <primitiveref id="rectangle" />
-               </children>
-           </component>
-
-           <component id="sideCube4">
-               <transformation>
-                   <transformationref id="sideCube4"/>
-               </transformation>
-               <materials>
-                   <material id="unico_mat" />
-               </materials>
-               <texture id="unica_text" length_s="1.0" length_t="1.0" />
-               <children>
-                   <primitiveref id="rectangle" />
-               </children>
-           </component>
-
-           <component id="sideCube5">
-               <transformation>
-                   <transformationref id="sideCube5" />
-               </transformation>
-               <materials>
-                   <material id="unico_mat" />
-               </materials>
-               <texture id="unica_text" length_s="1.0" length_t="1.0" />
-               <children>
-                   <primitiveref id="rectangle" />
-               </children>
-           </component>
-
-           <component id="sideCube6">
-               <transformation>
-                   <transformationref id="sideCube6" />
-               </transformation>
-               <materials>
-                   <material id="unico_mat" />
-               </materials>
-               <texture id="unica_text" length_s="1.0" length_t="1.0" />
-               <children>
-                   <primitiveref id="rectangle" />
-               </children>
-           </component>
+            <component id="light2">
+                <transformation>
+                    <transformationref id="lamp_light2" />
+                </transformation>
+                <materials>
+                    <material id="inherit" />
+                </materials>
+                <texture id="inherit" />
+                <children>
+                    <componentref id="light" />
+                </children>
+            </component>
 
 
-       </components>
+            <component id="light">
+                <transformation>
+                    <transformationref id="lamp_light" />
+                </transformation>
+                <materials>
+                    <material id="inherit" />
+                </materials>
+                <texture id="inherit" />
+                <children>
+                    <componentref id="cube" />
+                </children>
+            </component>
+
+            <component id="hor_post">
+                <transformation>
+                    <transformationref id="lamp_hor_post" />
+                </transformation>
+                <materials>
+                    <material id="inherit" />
+                </materials>
+                <texture id="inherit" />
+                <children>
+                    <primitiveref id="cylinder" />
+                </children>
+            </component>
+
+            <component id="vert_post">
+                <transformation>
+                    <transformationref id="lamp_vert_post" />
+                </transformation>
+                <materials>
+                    <material id="inherit" />
+                </materials>
+                <texture id="inherit" />
+                <children>
+                    <primitiveref id="cylinder" />
+                </children>
+            </component>
+
+            <component id="ball">
+                <transformation>
+                    <transformationref id="ball" />
+                </transformation>
+                <materials>
+                    <material id="default" />
+                </materials>
+                <texture id="ball_text" />
+                <children>
+                    <primitiveref id="ball" />
+                </children>
+            </component>
+
+            <component id="bench">
+                <transformation>
+                    <transformationref id="bench" />
+                </transformation>
+                <materials>
+                    <material id="default" />
+                </materials>
+                <texture id="none" />
+                <children>
+                    <componentref id="bench_top" />
+                    <componentref id="seat" />
+                </children>
+            </component>
+
+            <component id="bench_top">
+                <transformation>
+                    <transformationref id="bench_top" />
+                </transformation>
+                <materials>
+                    <material id="lamp" />
+                </materials>
+                <texture id="inherit" />
+                <children>
+                    <componentref id="bench_vert_post1" />
+                    <componentref id="bench_vert_post2" />
+                    <componentref id="top" />
+            </children>
+        </component>
+
+        <component id="bench_vert_post1">
+            <transformation>
+                <transformationref id="bench_post1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="bench_vert_post" />
+            </children>
+        </component>
+
+        <component id="bench_vert_post2">
+            <transformation>
+                <transformationref id="bench_post2" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="bench_vert_post" />
+            </children>
+        </component>
+
+        <component id="bench_vert_post">
+            <transformation>
+                <transformationref id="bench_post" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="cylinder" />
+            </children>
+        </component>
+
+        <component id="top">
+            <transformation>
+                <transformationref id="top" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="cube" />
+            </children>
+        </component>
+
+        <component id="seat">
+            <transformation>
+                <transformationref id="bench_seat" />
+            </transformation>
+            <materials>
+                <material id="default" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="seat_top" />
+                <componentref id="leg1" />
+                <componentref id="leg2" />
+                <componentref id="leg3" />
+                <componentref id="leg4" />
+            </children>
+        </component>
+
+        <component id="seat_top">
+            <transformation>
+                <transformationref id="bench_seat_top" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="cube" />
+            </children>
+        </component>
+
+        <component id="leg1">
+            <transformation>
+                <transformationref id="bench_seat_leg1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="leg" />
+            </children>
+        </component>
+
+        <component id="leg2">
+            <transformation>
+                <transformationref id="bench_seat_leg2" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="leg" />
+            </children>
+        </component>
+
+        <component id="leg3">
+            <transformation>
+                <transformationref id="bench_seat_leg3" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="leg" />
+            </children>
+        </component>
+
+        <component id="leg4">
+            <transformation>
+                <transformationref id="bench_seat_leg4" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="leg" />
+            </children>
+        </component>
+
+        <component id="leg">
+            <transformation>
+                <transformationref id="bench_seat_leg" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="cylinder" />
+            </children>
+        </component>
+
+        <component id="cube">
+            <transformation>
+                <transformationref id="default" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="sideCube1" />
+                <componentref id="sideCube2" />
+                <componentref id="sideCube3" />
+                <componentref id="sideCube4" />
+                <componentref id="sideCube5" />
+                <componentref id="sideCube6" />
+            </children>
+        </component>
+
+        <component id="sideCube1">
+            <transformation>
+                <transformationref id="sideCube1" />
+            </transformation>
+            <materials>
+                <material id="unico_mat" />
+            </materials>
+            <texture id="unica_text" length_s="1.0" length_t="1.0" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="sideCube2">
+            <transformation>
+                <transformationref id="sideCube2" />
+            </transformation>
+            <materials>
+                <material id="unico_mat" />
+            </materials>
+            <texture id="unica_text" length_s="1.0" length_t="1.0" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="sideCube3">
+            <transformation>
+                <transformationref id="sideCube3" />
+            </transformation>
+            <materials>
+                <material id="unico_mat" />
+            </materials>
+            <texture id="unica_text" length_s="1.0" length_t="1.0" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="sideCube4">
+            <transformation>
+                <transformationref id="sideCube4"/>
+            </transformation>
+            <materials>
+                <material id="unico_mat" />
+            </materials>
+            <texture id="unica_text" length_s="1.0" length_t="1.0" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="sideCube5">
+            <transformation>
+                <transformationref id="sideCube5" />
+            </transformation>
+            <materials>
+                <material id="unico_mat" />
+            </materials>
+            <texture id="unica_text" length_s="1.0" length_t="1.0" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="sideCube6">
+            <transformation>
+                <transformationref id="sideCube6" />
+            </transformation>
+            <materials>
+                <material id="unico_mat" />
+            </materials>
+            <texture id="unica_text" length_s="1.0" length_t="1.0" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+
+    </components>
 
 </yas>
