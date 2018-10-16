@@ -62,6 +62,8 @@
         <!-- Os identificadores "id" nao podem ser repetidos -->
         <texture id="ball_text" file="images/ball_text.jpg" />
         <texture id="court_text" file="images/court_text.jpg" />
+        <texture id="net" file="images/net.jpg" />
+        <texture id="sidePost" file="images/sidePost.jpg" />
     </textures>
 
     <materials>
@@ -378,7 +380,7 @@
             <materials>
                 <material id="default" />
             </materials>
-            <texture id="none" />
+            <texture id="net" length_s="1.0" length_t="1.0" />
             <children>
                 <componentref id="net_front" />
                 <componentref id="net_back" />
@@ -435,7 +437,7 @@
                 <materials>
                     <material id="default" />
                 </materials>
-                <texture id="none" />
+                    <texture id="sidePost" length_s="1.0" length_t="1.0" />
                 <children>
                     <componentref id="post" />
                 </children>
@@ -448,7 +450,7 @@
                 <materials>
                     <material id="inherit" />
                 </materials>
-                <texture id="inherit" />
+                    <texture id="sidePost" length_s="1.0" length_t="1.0" />
                 <children>
                     <primitiveref id="cylinder" />
                 </children>
@@ -595,7 +597,7 @@
                 <materials>
                     <material id="default" />
                 </materials>
-                <texture id="ball_text" />
+                    <texture id="ball_text" length_s="1.0" length_t="1.0" />
                 <children>
                     <primitiveref id="ball" />
                 </children>

@@ -620,7 +620,7 @@ class MySceneGraph {
             var textureRef = textureNode.attributes[0].nodeValue;
             if(textureRef == "inherit" || textureRef == "none"){
                 textureBuilt = textureRef;
-            }
+            }   
             else{
                 if (textureNode.attributes.length > 1) {
                     lengthSRef = textureNode.attributes[1].nodeValue;
@@ -638,10 +638,10 @@ class MySceneGraph {
                     length_s: lengthSRef,
                     length_t: lengthTRef
                 };
+                textureBuilt = materialObj;
             }
             
 
-            textureBuilt = materialObj;
 
 
             //children
@@ -784,6 +784,8 @@ class MySceneGraph {
             material = component.material;        
         if(texture != "none" && texture != null && material != null)
             material.setTexture(texture.texture);
+        if(component.texture != null && component.texture == "none")
+            material.setTexture(null);
 
         
 
