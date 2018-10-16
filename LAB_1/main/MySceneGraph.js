@@ -137,6 +137,16 @@ class MySceneGraph {
                 return error;
         }
 
+        //<lights>
+        if ((index = nodeNames.indexOf("lights")) == -1)
+            return "tag <lights> missing";
+        else {
+            if (index != PRIMITIVES_INDEX)
+                this.onXMLMinorError("tag <lights> out of order");
+            if ((error = this.parseLights(nodes[index])) != null)
+                return error;
+        }
+
         //textures
         if ((index = nodeNames.indexOf("textures")) == -1)
             return "tag <textures> missing";
@@ -259,7 +269,7 @@ class MySceneGraph {
             var enabledVal = this.reader.getBoolean(omni, 'enabled');
 
             var ambientVal = this.getRGBArray(omni.getElementsByTagName('ambient')[0]);
-            var diffuseVal = this.getRGBArray(omni.getElementsByTagName('di2use')[0]);
+            var diffuseVal = this.getRGBArray(omni.getElementsByTagName('diffuse')[0]);
             var specularVal = this.getRGBArray(omni.getElementsByTagName('specular')[0]);
             var locationVal = this.getCoords(omni.getElementsByTagName('location')[0])
 
@@ -282,7 +292,7 @@ class MySceneGraph {
             var enabledVal = this.reader.getBoolean(omni, 'enabled');
 
             var ambientVal = this.getRGBArray(omni.getElementsByTagName('ambient')[0]);
-            var diffuseVal = this.getRGBArray(omni.getElementsByTagName('di2use')[0]);
+            var diffuseVal = this.getRGBArray(omni.getElementsByTagName('diffuse')[0]);
             var specularVal = this.getRGBArray(omni.getElementsByTagName('specular')[0]);
             var locationVal = this.getCoords(omni.getElementsByTagName('location')[0]);
             var targetVal = this.getCoords(omni.getElementsByTagName('target')[0]);
