@@ -6,7 +6,7 @@ var DEGREE_TO_RAD = Math.PI / 180;
 class XMLscene extends CGFscene {
     /**
      * @constructor
-     * @param {MyInterface} myinterface 
+     * @param {MyInterface} myinterface
      */
     constructor(myinterface) {
         super();
@@ -46,25 +46,26 @@ class XMLscene extends CGFscene {
      * Initializes the scene lights with the values read from the XML file.
      */
     initLights() {
+
         var i = 0;
         // Lights index.
 
         // Reads the lights from the scene graph.
-        for (var key in this.graph.lights) {
+        for (var key in this.graph.omni) {
             if (i >= 8)
                 break;              // Only eight lights allowed by WebGL.
 
-            if (this.graph.lights.hasOwnProperty(key)) {
-                var light = this.graph.lights[key];
+            if (this.graph.omni.hasOwnProperty(key)) {
+                var light = this.graph.omni[key];
 
                 //lights are predefined in cgfscene
-                this.lights[i].setPosition(light[5][0], light[5][1], light[5][2], light[5][3]);
-                this.lights[i].setAmbient(light[2][0], light[2][1], light[2][2], light[2][3]);
-                this.lights[i].setDiffuse(light[3][0], light[3][1], light[3][2], light[3][3]);
-                this.lights[i].setSpecular(light[4][0], light[4][1], light[4][2], light[4][3]);
+                this.lights[i].setPosition(light.location.wCoord, light.location.xCoord, light.location.yCoord, light.location.zCoord);
+                this.lights[i].setAmbient(light.ambient.r, light.ambient.g, light.ambient.b, light.ambient.a);
+                this.lights[i].setDiffuse(light.diffuse.r, light.diffuse.g, light.diffuse.b, light.diffuse.a);
+                this.lights[i].setSpecular(light.specular.r, light.specular.g, light.specular.b, light.specular.a);
 
                 this.lights[i].setVisible(true);
-                if (light[0])
+                if (light.enabled)
                     this.lights[i].enable();
                 else
                     this.lights[i].disable();
@@ -74,18 +75,18 @@ class XMLscene extends CGFscene {
                 i++;
             }
         }
-
-       this.lights[0].setPosition(2, 3, 3, 1);
-       this.lights[0].setAmbient(0, 0, 0, 1);
-       this.lights[0].setDiffuse(1.0, 1.0, 1.0, 1.0);
-       this.lights[0].setSpecular(1.0, 1.0, 1.0, 1.0);
-       this.lights[0].setVisible(true);
-       this.lights[0].enable();
-       this.lights[0].update();
+        /*
+               this.lights[0].setPosition(2, 3, 3, 1);
+               this.lights[0].setAmbient(0, 0, 0, 1);
+               this.lights[0].setDiffuse(1.0, 1.0, 1.0, 1.0);
+               this.lights[0].setSpecular(1.0, 1.0, 1.0, 1.0);
+               this.lights[0].setVisible(true);
+               this.lights[0].enable();
+               this.lights[0].update();*/
     }
 
 
-    /* Handler called when the graph is finally loaded. 
+    /* Handler called when the graph is finally loaded.
      * As loading is asynchronous, this may be called already after the application has started the run loop
      */
     onGraphLoaded() {
@@ -129,12 +130,12 @@ class XMLscene extends CGFscene {
             this.axis.display();
 
 
-            
 
-         
+
+
 
             var i = 0;
-            
+
             for (var key in this.lightValues) {
                 if (this.lightValues.hasOwnProperty(key)) {
                     if (this.lightValues[key]) {
@@ -149,7 +150,7 @@ class XMLscene extends CGFscene {
                     i++;
                 }
             }
-            
+
 
             // Displays the scene (MySceneGraph function).
             this.graph.displayScene();
