@@ -60,24 +60,24 @@
     <textures>
         <!-- Deve existir um ou mais blocos "texture" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
-        <texture id="ball_text" file="images/ball.jpg" />
-        <texture id="court_text" file="images/court.jpg" />
+        <texture id="ball_text" file="images/ball_text.jpg" />
+        <texture id="court_text" file="images/court_text.jpg" />
     </textures>
 
     <materials>
         <!-- Deve existir um ou mais blocos "material" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
-        <material id="default" shininess = "20" > <!--branco-->
+        <material id="default" shininess = "120" > <!--branco-->
             <emission r="0.0" g="0.0" b="0.0" a="0.0" />
-            <ambient r="0.1" g="0.1" b="0.1" a="1.0" />
-            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
-            <specular r="0.1" g="0.1" b="0.1" a="1.0" />
+            <ambient r="0.3" g="0.3" b="0.3" a="1.0" />
+            <diffuse r="0.6" g="0.6" b="0.6" a="1.0" />
+            <specular r="0" g="0.2" b="0.8" a="1.0" />
         </material>
-        <material id="lamp" shininess = "60" >
-            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
-            <ambient r="0.25" g="0.25" b="0.25" a="1.0" />
-            <diffuse r="0.4" g="0.4" b="0.4" a="1.0" />
-            <specular r="0.7" g="0.7" b="0.7" a="1.0" />
+        <material id="lamp" shininess = "120" >
+            <emission r="0.0" g="0.0" b="0.0" a="0.0" />
+            <ambient r="0.3" g="0.3" b="0.3" a="1.0" />
+            <diffuse r="0.6" g="0.6" b="0.6" a="1.0" />
+            <specular r="0" g="0.2" b="0.8" a="1.0" />
         </material>
     </materials>
 

@@ -11,7 +11,6 @@ var MATERIAL_INDEX = 6;
 var PRIMITIVES_INDEX = 7;
 var COMPONENTS_INDEX = 8;
 
-
 var VIEWS_INDEX = 0;
 
 /**
@@ -45,6 +44,8 @@ class MySceneGraph {
         this.components = [];
 
 
+
+        this.textTest = new CGFtexture(this.scene,"./scenes/images/court_text.jpg");
 
         this.nodes = [];
 
@@ -288,8 +289,8 @@ class MySceneGraph {
 
         for (let spot of spotNodes) {
 
-            var idVal = this.reader.getString(omni, 'id');
-            var enabledVal = this.reader.getBoolean(omni, 'enabled');
+            var idVal = this.reader.getString(spot, 'id');
+            var enabledVal = this.reader.getBoolean(spot, 'enabled');
 
             var ambientVal = this.getRGBArray(omni.getElementsByTagName('ambient')[0]);
             var diffuseVal = this.getRGBArray(omni.getElementsByTagName('diffuse')[0]);
@@ -309,9 +310,6 @@ class MySceneGraph {
 
             this.spot.push(spotArray);
         }
-
-
-
         this.log("light Parsed");
     }
 
@@ -365,7 +363,7 @@ class MySceneGraph {
             appearanceVal.setDiffuse(diffuseVal.r, diffuseVal.g, diffuseVal.b, diffuseVal.a);
             appearanceVal.setSpecular(specularVal.r, specularVal.g, specularVal.b, specularVal.a);
             appearanceVal.setShininess(shininessVal);
-            appearanceVal.setTextureWrap('REPEAT', 'REPEAT');
+            appearanceVal.setTextureWrap('CLAMP_TO_EDGE', 'CLAMP_TO_EDGE');
 
             var materialArray = {
                 id: idVal,
@@ -606,6 +604,8 @@ class MySceneGraph {
 
             //material
             var materialRef = materialsNode.children[0].attributes[0].nodeValue;
+            if(materialRef == "inherit")
+                materialBuilt = materialRef;
             for(let mat of this.materials){
                 if(mat.id == materialRef){
                     materialBuilt = mat.appearance;
@@ -617,23 +617,30 @@ class MySceneGraph {
             //texture
             var lengthSRef;
             var lengthTRef;
-            var textureRef = textureNode.attributes[0].val;
-            if (textureNode.attributes > 1) {
-                lengthSRef = textureNode.attributes[1].val;
-                lengthTRef = textureNode.attributes[2].val;
+            var textureRef = textureNode.attributes[0].nodeValue;
+            if(textureRef == "inherit" || textureRef == "none"){
+                textureBuilt = textureRef;
             }
-            var text;
-            for(let text of this.textures){
-                if(text.id == textureRef){
-                    text = text.texture;
+            else{
+                if (textureNode.attributes.length > 1) {
+                    lengthSRef = textureNode.attributes[1].nodeValue;
+                    lengthTRef = textureNode.attributes[2].nodeValue;
                 }
+                var textureVal;
+                for(let text of this.textures){
+                    if(text.id == textureRef){
+                        textureVal = text.texture;
+                    }
+                }
+                var materialObj = {
+                    id: textureRef,
+                    texture: textureVal,
+                    length_s: lengthSRef,
+                    length_t: lengthTRef
+                };
             }
-            var materialObj = {
-                id: textureRef,
-                texture: text,
-                length_s: lengthSRef,
-                length_t: lengthTRef
-            };
+            
+
             textureBuilt = materialObj;
 
 
@@ -735,6 +742,18 @@ class MySceneGraph {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
+
+        /*
+        var material = new CGFappearance(this.scene);
+        material.setAmbient(0.3,0.3,0.3,1);
+        material.setDiffuse(0.6,0.6,0.6,1);
+        material.setSpecular(0,0.2,0.8,1);
+        material.setShininess(120);
+        material.setTexture(this.textTest);
+        material.setTextureWrap('CLAMP_TO_EDGE', 'CLAMP_TO_EDGE');
+        material.apply();
+*/
+
         this.graphLoop(this.root, null, null);
     }
 
@@ -754,20 +773,19 @@ class MySceneGraph {
         }
 
 
-        if(component.texture != null)
-            texture = component.texture.texture;
-
-        if(component.material != null)
-            material = component.material.appearance;
-
+            
         if(component.transformation != null)
             this.scene.multMatrix (component.transformation.mat);
+
         
+        if(component.texture != null && component.texture != "inherit")
+            texture = component.texture;
+        if(component.material != null && component.material != "inherit")
+            material = component.material;        
+        if(texture != "none" && texture != null && material != null)
+            material.setTexture(texture.texture);
 
-        if(texture && material != null)
-            material.setTexture(texture);
-
-
+        
 
         for(let children of component.children){
             this.scene.pushMatrix();
@@ -775,7 +793,7 @@ class MySceneGraph {
             if(children.type == 'primitiveref'){
                 for (var i = 0; i < this.primitives.length; i++) {
                     if (this.primitives[i].id == component.children[0].ref) {
-                        if(material != null)
+                        if(material!= null)
                             material.apply();
                         this.primitives[i].object.display();
                     }
