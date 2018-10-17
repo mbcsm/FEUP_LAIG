@@ -552,6 +552,15 @@ class MySceneGraph {
 
                 primitiveBuilt = new MySphere(this.scene, radius, slices, stacks);
                 break;
+
+            case "torus":
+                var inner = object.attributes[0].val;
+                var outer = object.attributes[1].val;
+                var slices = object.attributes[2].val;
+                var loops = object.attributes[3].val;
+
+                primitiveBuilt = new MyTorus(this.scene, inner, outer, slices, loops);
+                break;
         }
 
 
@@ -742,18 +751,6 @@ class MySceneGraph {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-
-        /*
-        var material = new CGFappearance(this.scene);
-        material.setAmbient(0.3,0.3,0.3,1);
-        material.setDiffuse(0.6,0.6,0.6,1);
-        material.setSpecular(0,0.2,0.8,1);
-        material.setShininess(120);
-        material.setTexture(this.textTest);
-        material.setTextureWrap('CLAMP_TO_EDGE', 'CLAMP_TO_EDGE');
-        material.apply();
-*/
-
         this.graphLoop(this.root, null, null);
     }
 

@@ -21,6 +21,7 @@ serialInclude(['lib/CGF.js',
                 'MyCylinderSide.js',
                 'MyCylinderBase.js',
                 'MySphere.js',
+                'MyTorus.js',
 
 
 main=function()

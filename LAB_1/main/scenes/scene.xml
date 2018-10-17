@@ -186,10 +186,12 @@
         </transformation>
 
         <transformation id="lamp_light1">
+            <scale x="0.08" y="0.08" z="1.0" />
             <translate x="0.5" y="0.0" z="3.55" />
         </transformation>
 
         <transformation id="lamp_light2">
+            <scale x="0.08" y="0.08" z="1.0" />
             <translate x="-0.5" y="0.0" z="3.55" />
         </transformation>
 
@@ -286,6 +288,9 @@
         </primitive>
         <primitive id="ball">
             <sphere radius="0.2" slices="40" stacks="40" />
+        </primitive>
+        <primitive id="torus">
+            <torus inner="5" outer="9" slices="10" loops="20" /> 
         </primitive>
     </primitives >
 
@@ -531,7 +536,7 @@
                 <materials>
                     <material id="inherit" />
                 </materials>
-                <texture id="inherit" />
+                    <texture id="none" />
                 <children>
                     <componentref id="light" />
                 </children>
@@ -544,7 +549,7 @@
                 <materials>
                     <material id="inherit" />
                 </materials>
-                <texture id="inherit" />
+                    <texture id="none" />
                 <children>
                     <componentref id="light" />
                 </children>
@@ -558,9 +563,9 @@
                 <materials>
                     <material id="inherit" />
                 </materials>
-                <texture id="inherit" />
+                <texture id="none" />
                 <children>
-                    <componentref id="cube" />
+                    <primitiveref id="torus" />
                 </children>
             </component>
 

@@ -23,17 +23,20 @@ class MySphere extends CGFobject {
         this.indices = [];
         this.vertices = [];
         this.normals = [];
+        this.texCoords = [];
 
         var ind = 0;
         var theta = 0;
         for (var i = 0; i <= this.stacks*2; i++) {
             var alpha = 0;
             var yCoord = Math.sin(theta);
+            this.texCoords.push(0,j / this.stacks);
             for (var j = 0; j <= this.slices*2; j++) {
                 var xCoord = Math.cos(alpha) * Math.cos(theta);
                 var zCoord = Math.sin(alpha) * Math.cos(theta);
                 this.vertices.push(xCoord, yCoord, zCoord);
                 this.normals.push(xCoord, yCoord, zCoord);
+                this.texCoords.push(i / this.slices, j / this.stacks);
                 ++ind;
                 alpha += this.sideAngle;
             }
