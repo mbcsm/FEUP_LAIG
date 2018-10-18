@@ -220,28 +220,31 @@ class MySceneGraph {
 
 
         for (let perspectiveElement of perspectiveElements) {
-            var id = this.reader.getString(perspectiveElement, 'id');
-            var near = this.reader.getFloat(perspectiveElement, 'near');
-            var far = this.reader.getFloat(perspectiveElement, 'far');
-            var angle = this.reader.getFloat(perspectiveElement, 'angle');
+            var idVal = this.reader.getString(perspectiveElement, 'id');
+            var nearVal = this.reader.getFloat(perspectiveElement, 'near');
+            var farVal = this.reader.getFloat(perspectiveElement, 'far');
+            var angleVal = this.reader.getFloat(perspectiveElement, 'angle');
 
             //TODO: Write geCoords Function
-            var from = this.getCoords(perspectiveElement.getElementsByTagName('from')[0]);
-            var to = this.getCoords(perspectiveElement.getElementsByTagName('to')[0]);
+            var fromVal = this.getCoords(perspectiveElement.getElementsByTagName('from')[0]);
+            var toVal = this.getCoords(perspectiveElement.getElementsByTagName('to')[0]);
 
-            var vecFrom = new vec3.fromValues(from.xCoord, from.yCoord, from.zCoord);
-            var vecTo = new vec3.fromValues(to.xCoord, to.yCoord, to.zCoord);
+            var vecFromVal = new vec3.fromValues(fromVal.xCoord, fromVal.yCoord, fromVal.zCoord);
+            var vecToVal = new vec3.fromValues(toVal.xCoord, toVal.yCoord, toVal.zCoord);
 
-            var camera = new CGFcamera(angle * DEGREE_TO_RAD,
-                near,
-                far,
-                vecFrom,
-                vecTo);
+            var cameraVal = new CGFcamera(angleVal * DEGREE_TO_RAD,
+                nearVal,
+                farVal,
+                vecFromVal,
+                vecToVal);
 
-            this.perspective.push(camera);
+            cameraVal.fov = 1;
 
-            this.near = near;
-            this.far = far;
+            var mCamera = {
+                    id: idVal,
+                    camera: cameraVal
+                };
+            this.perspective.push(mCamera);
         }
 
         this.log("views parsed");

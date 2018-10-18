@@ -75,14 +75,6 @@ class XMLscene extends CGFscene {
                 i++;
             }
         }
-        /*
-               this.lights[0].setPosition(2, 3, 3, 1);
-               this.lights[0].setAmbient(0, 0, 0, 1);
-               this.lights[0].setDiffuse(1.0, 1.0, 1.0, 1.0);
-               this.lights[0].setSpecular(1.0, 1.0, 1.0, 1.0);
-               this.lights[0].setVisible(true);
-               this.lights[0].enable();
-               this.lights[0].update();*/
     }
 
 
@@ -90,8 +82,8 @@ class XMLscene extends CGFscene {
      * As loading is asynchronous, this may be called already after the application has started the run loop
      */
     onGraphLoaded() {
-        this.camera.near = this.graph.near;
-        this.camera.far = this.graph.far;
+        this.camera = this.graph.perspective[0].camera;
+        
         //TODO: Change reference length according to parsed graph
         this.axis = new CGFaxis(this, this.graph.referenceLength);
 
