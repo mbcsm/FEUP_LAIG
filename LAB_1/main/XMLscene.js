@@ -13,6 +13,7 @@ class XMLscene extends CGFscene {
 
         this.interface = myinterface;
         this.lightValues = {};
+        this.prespectiveEnabled = 0;
     }
 
     /**
@@ -34,6 +35,8 @@ class XMLscene extends CGFscene {
         this.gl.depthFunc(this.gl.LEQUAL);
 
         this.axis = new CGFaxis(this);
+
+        this.views = 0;
     }
 
     /**
@@ -91,12 +94,22 @@ class XMLscene extends CGFscene {
 
         this.initLights();
 
+        this.prespectiveEnabled = this.graph.perspective[0].id;
+
         // Adds lights group.
         this.interface.addLightsGroup(this.graph.lights);
+        this.interface.addPrespectiveGroup(this.graph.perspective);
 
         this.sceneInited = true;
     }
 
+    updatePrespective(id) {
+        for(var i = 0 ; i < this.graph.perspective.length ; i++) {
+            if(this.graph.perspective[i].id == id) {
+                this.camera = this.graph.perspective[i].camera;
+            }
+        }
+    }
 
     /**
      * Displays the scene.
@@ -120,11 +133,6 @@ class XMLscene extends CGFscene {
         if (this.sceneInited) {
             // Draw axis
             this.axis.display();
-
-
-
-
-
 
             var i = 0;
 

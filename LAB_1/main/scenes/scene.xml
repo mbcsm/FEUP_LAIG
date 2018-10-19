@@ -4,11 +4,15 @@
 
     <scene root="campo_tenis" axis_length="1.0" />
 
-    <views default="unico_view" > <!--perguntar ao prof o que deve estar no default-->
+    <views default="far" > <!--perguntar ao prof o que deve estar no default-->
         <!-- tem de existir, pelo menos, uma vista de -->
         <!-- entre as seguintes (perspective ou ortho) -->
-        <perspective id="unico_view" near="0.1" far="500.0" angle="0">
+        <perspective id="far" near="0.1" far="500.0" angle="0">
             <from x="6" y="6" z="6" />
+            <to x="0" y="0" z="0" />
+        </perspective>
+        <perspective id="close" near="0.1" far="500.0" angle="0">
+            <from x="3" y="3" z="3" />
             <to x="0" y="0" z="0" />
         </perspective>
         <!--   <ortho id="ss" near="ff" far="ff"

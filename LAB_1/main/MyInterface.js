@@ -42,6 +42,22 @@ class MyInterface extends CGFinterface {
                 this.scene.lightValues[key] = lights[key][0];
                 group.add(this.scene.lightValues, key);
             }
+        }        
+    }
+
+    addPrespectiveGroup(prespectives) {
+        var viewsid = [];
+        for(let key of prespectives) { 
+            viewsid.push(key.id);
         }
+
+        var listbox = this.gui.add(this.scene, 'prespectiveEnabled', viewsid);
+        var self = this;
+
+        listbox.onChange(
+            function() {
+                self.scene.updatePrespective(listbox.getValue());
+            }
+        );
     }
 }
