@@ -304,6 +304,8 @@ class MySceneGraph {
 
         for (let omni of omniNodes) {
 
+            var typeVal= 'omni';
+
             var idVal = this.reader.getString(omni, 'id');
             var enabledVal = this.reader.getBoolean(omni, 'enabled');
 
@@ -319,16 +321,19 @@ class MySceneGraph {
                 ambient: ambientVal,
                 diffuse: diffuseVal,
                 specular: specularVal,
-                location: locationVal
+                location: locationVal,
+                type: typeVal
             }
 
             i++;
 
-            this.omni.push(omniArray);
+            this.lights.push(omniArray);
         }
 
 
         for (let spot of spotNodes) {
+
+            var typeVal= 'spot';
 
             var idVal = this.reader.getString(spot, 'id');
             var enabledVal = this.reader.getBoolean(spot, 'enabled');
@@ -352,12 +357,13 @@ class MySceneGraph {
                 diffuse: diffuseVal,
                 specular: specularVal,
                 location: locationVal,
-                target: targetVal
+                target: targetVal,
+                type: typeVal
             }
 
             i++;
 
-            this.spot.push(spotArray);
+            this.lights.push(spotArray);
         }
         this.log("light Parsed");
     }
