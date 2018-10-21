@@ -190,12 +190,12 @@
         </transformation>
 
         <transformation id="lamp_light1">
-            <scale x="0.08" y="0.08" z="1.0" />
+            <scale x="0.16" y="0.10" z="1.0" />
             <translate x="0.5" y="0.0" z="3.55" />
         </transformation>
 
         <transformation id="lamp_light2">
-            <scale x="0.08" y="0.08" z="1.0" />
+            <scale x="0.16" y="0.10" z="1.0" />
             <translate x="-0.5" y="0.0" z="3.55" />
         </transformation>
 
@@ -294,7 +294,7 @@
             <sphere radius="0.2" slices="40" stacks="40" />
         </primitive>
         <primitive id="torus">
-            <torus inner="5" outer="9" slices="10" loops="20" /> 
+            <torus inner="5" outer="9" slices="100" loops="100" /> 
         </primitive>
     </primitives >
 
