@@ -1,17 +1,15 @@
 var DEGREE_TO_RAD = Math.PI / 180;
 
 // Order of the groups in the XML document.
-var INITIALS_INDEX = 0;
-var ILLUMINATION_INDEX = 1;
-var LIGHTS_INDEX = 2;
-var TEXTURES_INDEX = 3;
-var MATERIALS_INDEX = 4;
-var NODES_INDEX = 5;
-var MATERIAL_INDEX = 6;
+var VIEWS_INDEX = 1;
+var AMBIENT_INDEX = 2;
+var LIGHTS_INDEX = 3;
+var TEXTURES_INDEX = 4;
+var MATERIALS_INDEX = 5;
+var TRANSFORMATIONS_INDEX = 6;
 var PRIMITIVES_INDEX = 7;
 var COMPONENTS_INDEX = 8;
 
-var VIEWS_INDEX = 0;
 
 /**
  * MySceneGraph class, representing the scene graph.
@@ -133,7 +131,7 @@ class MySceneGraph {
         if ((index = nodeNames.indexOf("ambient")) == -1)
             return "tag <ambient> missing";
         else {
-            if (index != VIEWS_INDEX)
+            if (index != AMBIENT_INDEX)
                 this.onXMLMinorError("tag <ambient> out of order");
             if ((error = this.parseAmbient(nodes[index])) != null)
                 return error;
@@ -143,7 +141,7 @@ class MySceneGraph {
         if ((index = nodeNames.indexOf("lights")) == -1)
             return "tag <lights> missing";
         else {
-            if (index != PRIMITIVES_INDEX)
+            if (index != LIGHTS_INDEX)
                 this.onXMLMinorError("tag <lights> out of order");
             if ((error = this.parseLights(nodes[index])) != null)
                 return error;
@@ -153,7 +151,7 @@ class MySceneGraph {
         if ((index = nodeNames.indexOf("textures")) == -1)
             return "tag <textures> missing";
         else {
-            if (index != VIEWS_INDEX)
+            if (index != TEXTURES_INDEX)
                 this.onXMLMinorError("tag <textures> out of order");
             if ((error = this.parseTextures(nodes[index])) != null)
                 return error;
@@ -162,7 +160,7 @@ class MySceneGraph {
         if ((index = nodeNames.indexOf("materials")) == -1)
             return "tag <materials> missing";
         else {
-            if (index != MATERIAL_INDEX)
+            if (index != MATERIALS_INDEX)
                 this.onXMLMinorError("tag <materials> out of order");
             if ((error = this.parseMaterials(nodes[index])) != null)
                 return error;
@@ -172,7 +170,7 @@ class MySceneGraph {
         if ((index = nodeNames.indexOf("transformations")) == -1)
             return "tag <transformations> missing";
         else {
-            if (index != VIEWS_INDEX)
+            if (index != TRANSFORMATIONS_INDEX)
                 this.onXMLMinorError("tag <tranformations> out of order");
             if ((error = this.parseTransformations(nodes[index])) != null)
                 return error;
