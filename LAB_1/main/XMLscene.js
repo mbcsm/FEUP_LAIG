@@ -121,6 +121,11 @@ class XMLscene extends CGFscene {
 
         // TODO: Change ambient and background details according to parsed graph
 
+        var ambient = this.graph.ambient;
+        var background = this.graph.background;
+        this.gl.clearColor(background.r,background.g,background.b,background.a);
+        this.setGlobalAmbientLight(ambient.r,ambient.g,ambient.b,ambient.a);
+
         this.initLights();
 
         this.prespectiveEnabled = this.graph.perspective[0].id;
