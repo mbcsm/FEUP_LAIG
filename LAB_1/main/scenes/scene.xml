@@ -67,7 +67,7 @@
         <texture id="court_text" file="images/court_text.jpg" />
         <texture id="net" file="images/net.jpg" />
         <texture id="sidePost" file="images/sidePost.jpg" />
-        <texture id="sidePost" file="images/bench.jpg" />
+        <texture id="bench" file="images/bench.jpg" />
     </textures>
 
     <materials>
