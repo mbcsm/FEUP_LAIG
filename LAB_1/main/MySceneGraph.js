@@ -28,7 +28,7 @@ class MySceneGraph {
 
         this.referenceLength;
         this.root;
-        this.perspective = [];
+        this.views = [];
         this.near;
         this.far;
         this.ambient = [];
@@ -216,6 +216,7 @@ class MySceneGraph {
     parseViews(viewsNodes) {
 
         var perspectiveElements = viewsNodes.getElementsByTagName('perspective');
+        var orthoElements = viewsNodes.getElementsByTagName('ortho');
 
 
         for (let perspectiveElement of perspectiveElements) {
@@ -243,8 +244,41 @@ class MySceneGraph {
                     id: idVal,
                     camera: cameraVal
                 };
-            this.perspective.push(mCamera);
+            this.views.push(mCamera);
         }
+        for (let orthoElement of orthoElements) {
+
+            var idVal = this.reader.getString(orthoElement, 'id');
+            var nearVal = this.reader.getFloat(orthoElement, 'near');
+            var farVal = this.reader.getFloat(orthoElement, 'far');
+            var bottomVal = this.reader.getFloat(orthoElement, 'bottom');
+            var topVal = this.reader.getFloat(orthoElement, 'top');
+            var rightVal = this.reader.getFloat(orthoElement, 'right');
+            var leftVal = this.reader.getFloat(orthoElement, 'left');
+
+            var upVal = new vec3.fromValues(0, 1, 0);
+            var positionVal = new vec3.fromValues(6, 6, 6);
+            var targetVal = new vec3.fromValues(0, 0, 0);
+
+            var cameraVal = new CGFcameraOrtho( leftVal, 
+                                                rightVal, 
+                                                bottomVal,
+                                                topVal, 
+                                                nearVal, 
+                                                farVal, 
+                                                positionVal, 
+                                                targetVal, 
+                                                upVal );
+
+            cameraVal.fov = 1;
+
+            var mCamera = {
+                    id: idVal,
+                    camera: cameraVal
+                };
+            this.views.push(mCamera);
+        }
+
 
         this.log("views parsed");
     }

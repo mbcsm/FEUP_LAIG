@@ -13,7 +13,7 @@ class XMLscene extends CGFscene {
 
         this.interface = myinterface;
         this.lightValues = {};
-        this.prespectiveEnabled = 0;
+        this.viewsEnabled = 0;
     }
 
     /**
@@ -114,7 +114,7 @@ class XMLscene extends CGFscene {
      * As loading is asynchronous, this may be called already after the application has started the run loop
      */
     onGraphLoaded() {
-        this.camera = this.graph.perspective[0].camera;
+        this.camera = this.graph.views[0].camera;
         
         //TODO: Change reference length according to parsed graph
         this.axis = new CGFaxis(this, this.graph.referenceLength);
@@ -128,7 +128,7 @@ class XMLscene extends CGFscene {
 
         this.initLights();
 
-        this.prespectiveEnabled = this.graph.perspective[0].id;
+        this.viewsEnabled = this.graph.views[0].id;
 
         // Adds lights group.
         this.interface.addLightsGroup(this.graph.omni);
@@ -138,10 +138,10 @@ class XMLscene extends CGFscene {
         this.sceneInited = true;
     }
 
-    updatePrespective(id) {
-        for(var i = 0 ; i < this.graph.perspective.length ; i++) {
-            if(this.graph.perspective[i].id == id) {
-                this.camera = this.graph.perspective[i].camera;
+    updateViews(id) {
+        for(var i = 0 ; i < this.graph.views.length ; i++) {
+            if(this.graph.views[i].id == id) {
+                this.camera = this.graph.views[i].camera;
             }
         }
     }
