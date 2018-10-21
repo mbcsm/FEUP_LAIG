@@ -133,7 +133,7 @@ class XMLscene extends CGFscene {
         // Adds lights group.
         this.interface.addLightsGroup(this.graph.omni);
        // this.interface.addLightsGroup(this.graph.spot);
-        this.interface.addPrespectiveGroup(this.graph.perspective);
+        this.interface.addViewsGroup(this.graph.views);
 
         this.sceneInited = true;
     }
