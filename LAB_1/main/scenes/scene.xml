@@ -68,6 +68,7 @@
         <texture id="court_text" file="images/court_text.jpg" />
         <texture id="net" file="images/net.jpg" />
         <texture id="sidePost" file="images/sidePost.jpg" />
+        <texture id="sidePost" file="images/bench.jpg" />
     </textures>
 
     <materials>
@@ -619,7 +620,7 @@
                 <materials>
                     <material id="default" />
                 </materials>
-                <texture id="none" />
+                <texture id="bench" length_s="1.0" length_t="1.0" />
                 <children>
                     <componentref id="bench_top" />
                     <componentref id="seat" />
