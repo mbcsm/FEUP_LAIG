@@ -35,6 +35,7 @@ class MySceneGraph {
         this.far;
         this.ambient = [];
         this.background = [];
+        this.lights = [];
         this.spot = [];
         this.omni = [];
         this.textures = [];
@@ -264,6 +265,8 @@ class MySceneGraph {
     /* parses the <lights> block */
     parseLights(LightNodes) {
 
+        var i=0;
+
         var omniNodes = LightNodes.getElementsByTagName('omni');
         var spotNodes = LightNodes.getElementsByTagName('spot');
 
@@ -278,6 +281,7 @@ class MySceneGraph {
             var locationVal = this.getCoords(omni.getElementsByTagName('location')[0])
 
             var omniArray = {
+                key: i,
                 id: idVal,
                 enabled: enabledVal,
                 ambient: ambientVal,
@@ -285,6 +289,8 @@ class MySceneGraph {
                 specular: specularVal,
                 location: locationVal
             }
+
+            i++;
 
             this.omni.push(omniArray);
         }
@@ -294,22 +300,30 @@ class MySceneGraph {
 
             var idVal = this.reader.getString(spot, 'id');
             var enabledVal = this.reader.getBoolean(spot, 'enabled');
+            var exponentVal = this.reader.getFloat(spot, 'exponent');
+            var angleVal = this.reader.getFloat(spot, 'angle');
+            
 
-            var ambientVal = this.getRGBArray(omni.getElementsByTagName('ambient')[0]);
-            var diffuseVal = this.getRGBArray(omni.getElementsByTagName('diffuse')[0]);
-            var specularVal = this.getRGBArray(omni.getElementsByTagName('specular')[0]);
-            var locationVal = this.getCoords(omni.getElementsByTagName('location')[0]);
-            var targetVal = this.getCoords(omni.getElementsByTagName('target')[0]);
+            var ambientVal = this.getRGBArray(spot.getElementsByTagName('ambient')[0]);
+            var diffuseVal = this.getRGBArray(spot.getElementsByTagName('diffuse')[0]);
+            var specularVal = this.getRGBArray(spot.getElementsByTagName('specular')[0]);
+            var locationVal = this.getCoords(spot.getElementsByTagName('location')[0]);
+            var targetVal = this.getCoords(spot.getElementsByTagName('target')[0]);
 
             var spotArray = {
+                key: i,
                 id: idVal,
                 enabled: enabledVal,
+                angle: (angleVal * DEGREE_TO_RAD),
+                exponent: exponentVal,
                 ambient: ambientVal,
                 diffuse: diffuseVal,
                 specular: specularVal,
                 location: locationVal,
                 target: targetVal
             }
+
+            i++;
 
             this.spot.push(spotArray);
         }

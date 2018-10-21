@@ -53,7 +53,7 @@ class XMLscene extends CGFscene {
         var i = 0;
         // Lights index.
 
-        // Reads the lights from the scene graph.
+        // Reads the omni lights from the scene graph.
         for (var key in this.graph.omni) {
             if (i >= 8)
                 break;              // Only eight lights allowed by WebGL.
@@ -66,6 +66,35 @@ class XMLscene extends CGFscene {
                 this.lights[i].setAmbient(light.ambient.r, light.ambient.g, light.ambient.b, light.ambient.a);
                 this.lights[i].setDiffuse(light.diffuse.r, light.diffuse.g, light.diffuse.b, light.diffuse.a);
                 this.lights[i].setSpecular(light.specular.r, light.specular.g, light.specular.b, light.specular.a);
+
+                this.lights[i].setVisible(true);
+                if (light.enabled)
+                    this.lights[i].enable();
+                else
+                    this.lights[i].disable();
+
+                this.lights[i].update();
+
+                i++;
+            }
+        }
+
+        // Reads the spot lights from the scene graph.
+        for (var key in this.graph.spot) {
+            if (i >= 8)
+                break;              // Only eight lights allowed by WebGL.
+
+            if (this.graph.spot.hasOwnProperty(key)) {
+                var light = this.graph.spot[key];
+
+                //lights are predefined in cgfscene
+                this.lights[i].setPosition(light.location.wCoord, light.location.xCoord, light.location.yCoord, light.location.zCoord);
+                this.lights[i].setAmbient(light.ambient.r, light.ambient.g, light.ambient.b, light.ambient.a);
+                this.lights[i].setDiffuse(light.diffuse.r, light.diffuse.g, light.diffuse.b, light.diffuse.a);
+                this.lights[i].setSpecular(light.specular.r, light.specular.g, light.specular.b, light.specular.a);
+                this.lights[i].setSpotCutOff(light.angle);
+                this.lights[i].setSpotDirection(light.target.xCoord - light.location.xCoord, light.target.yCoord - light.location.yCoord, light.target.zCoord - light.location.zCoord);
+                this.lights[i].setSpotExponent(light.exponent);
 
                 this.lights[i].setVisible(true);
                 if (light.enabled)
@@ -97,7 +126,8 @@ class XMLscene extends CGFscene {
         this.prespectiveEnabled = this.graph.perspective[0].id;
 
         // Adds lights group.
-        this.interface.addLightsGroup(this.graph.lights);
+        this.interface.addLightsGroup(this.graph.omni);
+       // this.interface.addLightsGroup(this.graph.spot);
         this.interface.addPrespectiveGroup(this.graph.perspective);
 
         this.sceneInited = true;
