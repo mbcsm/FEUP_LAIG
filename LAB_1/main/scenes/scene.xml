@@ -88,6 +88,7 @@
         <texture id="net" file="images/net.jpg" />
         <texture id="sidePost" file="images/sidePost.jpg" />
         <texture id="bench" file="images/bench.jpg" />
+        <texture id="lamp" file="images/lamp.jpg" />
     </textures>
 
     <materials>
@@ -377,6 +378,7 @@
                 <!-- deve existir uma ou mais tags "componentref" e/ou -->
                 <!-- "primitiveref", identificando outros -->
                 <!-- componentes ou primitivas -->
+                <componentref id="torus" />
                 <componentref id="court" />
                 <componentref id="lamp1" />
                 <componentref id="lamp2" />
@@ -384,6 +386,19 @@
                 <componentref id="lamp4" />
                 <componentref id="bench" />
                 <componentref id="ball" />
+            </children>
+        </component>
+
+        <component id="torus">
+            <transformation>
+                <transformationref id="lamp" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="court_text" length_s="8.0" length_t="11.0" />
+            <children>
+                <primitiveref id="ball" />
             </children>
         </component>
 
@@ -577,7 +592,7 @@
                 <materials>
                     <material id="inherit" />
                 </materials>
-                    <texture id="none" />
+                <texture id="lamp" length_s="8.0" length_t="11.0" />
                 <children>
                     <componentref id="light" />
                 </children>
@@ -590,7 +605,7 @@
                 <materials>
                     <material id="inherit" />
                 </materials>
-                    <texture id="none" />
+                <texture id="lamp" length_s="8.0" length_t="11.0" />
                 <children>
                     <componentref id="light" />
                 </children>
@@ -604,7 +619,7 @@
                 <materials>
                     <material id="inherit" />
                 </materials>
-                <texture id="none" />
+                <texture id="inherit" />
                 <children>
                     <primitiveref id="torus" />
                 </children>
@@ -851,7 +866,7 @@
             <materials>
                 <material id="unico_mat" />
             </materials>
-            <texture id="unica_text" length_s="1.0" length_t="1.0" />
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -864,7 +879,7 @@
             <materials>
                 <material id="unico_mat" />
             </materials>
-            <texture id="unica_text" length_s="1.0" length_t="1.0" />
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -877,7 +892,7 @@
             <materials>
                 <material id="unico_mat" />
             </materials>
-            <texture id="unica_text" length_s="1.0" length_t="1.0" />
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -890,7 +905,7 @@
             <materials>
                 <material id="unico_mat" />
             </materials>
-            <texture id="unica_text" length_s="1.0" length_t="1.0" />
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -903,7 +918,7 @@
             <materials>
                 <material id="unico_mat" />
             </materials>
-            <texture id="unica_text" length_s="1.0" length_t="1.0" />
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -916,7 +931,7 @@
             <materials>
                 <material id="unico_mat" />
             </materials>
-            <texture id="unica_text" length_s="1.0" length_t="1.0" />
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="rectangle" />
             </children>

@@ -259,7 +259,7 @@ class MySceneGraph {
             var leftVal = this.reader.getFloat(orthoElement, 'left');
 
             var upVal = new vec3.fromValues(0, 1, 0);
-            var positionVal = new vec3.fromValues(6, 6, 6);
+            var positionVal = new vec3.fromValues(6, 0, 0);
             var targetVal = new vec3.fromValues(0, 0, 0);
 
             var cameraVal = new CGFcameraOrtho( leftVal, 
@@ -847,7 +847,7 @@ class MySceneGraph {
         if(component.texture != null && component.texture == "none")
             material.setTexture(null);
 
-        
+        //console.log(root + "////" + component.texture.id + "////" + texture.id);
 
         for(let children of component.children){
             this.scene.pushMatrix();
