@@ -7,6 +7,7 @@ class MyInterface extends CGFinterface {
      */
     constructor() {
         super();
+        this.matCounter=0;
     }
 
     /**
@@ -61,4 +62,14 @@ class MyInterface extends CGFinterface {
             }
         );
     }
+
+    /*processKeyBoard(event){
+        console.log('processKeyBoard');
+        if(event.key=='m'){
+            this.scene.graph.matCounter++;
+            console.log('M pressed');
+        }
+    }*/
+
+
 }

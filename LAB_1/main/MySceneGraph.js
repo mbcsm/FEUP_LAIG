@@ -25,6 +25,8 @@ class MySceneGraph {
         this.scene = scene;
         scene.graph = this;
 
+        this.matCounter = 0;
+
 
         this.referenceLength;
         this.root;
@@ -404,6 +406,7 @@ class MySceneGraph {
 
         for (let material of materialNodes) {
 
+
             var idVal = this.reader.getString(material, 'id');
             var shininessVal = this.reader.getFloat(material, 'shininess');
 
@@ -426,6 +429,7 @@ class MySceneGraph {
             }
 
             this.materials.push(materialArray);
+
         }
 
         this.log("material Parsed");
@@ -632,7 +636,7 @@ class MySceneGraph {
 
 
             var transformationBuilt;
-            var materialBuilt;
+            var materialBuilt = [];
             var textureBuilt;
             var childrenArray = [];
 
@@ -664,19 +668,23 @@ class MySceneGraph {
                 }
             }
                 
-
+            var n=0;
 
             //material
-            var materialRef = materialsNode.children[0].attributes[0].nodeValue;
-            if(materialRef == "inherit")
-                materialBuilt = materialRef;
-            for(let mat of this.materials){
-                if(mat.id == materialRef){
-                    materialBuilt = mat.appearance;
-
+            for(let k of materialsNode.children){
+                var materialRef = k.attributes[0].nodeValue;
+                if(materialRef == "inherit")
+                    materialBuilt[n] = materialRef;
+                for(let mat of this.materials){
+                    if(mat.id == materialRef){
+                        materialBuilt[n] = mat.appearance;
+                    }
                 }
+                n++;
             }
+           
 
+        
 
             //texture
             var lengthSRef;
@@ -832,8 +840,8 @@ class MySceneGraph {
         
         if(component.texture != null && component.texture != "inherit")
             texture = component.texture;
-        if(component.material != null && component.material != "inherit")
-            material = component.material;        
+        if(component.material[this.matCounter] != null && component.material[this.matCounter] != "inherit")
+            material = component.material[this.matCounter];        
         if(texture != "none" && texture != null && material != null)
             material.setTexture(texture.texture);
         if(component.texture != null && component.texture == "none")
