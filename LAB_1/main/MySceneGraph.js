@@ -847,7 +847,6 @@ class MySceneGraph {
         if(component.texture != null && component.texture == "none")
             material.setTexture(null);
 
-        //console.log(root + "////" + component.texture.id + "////" + texture.id);
 
         for(let children of component.children){
             this.scene.pushMatrix();

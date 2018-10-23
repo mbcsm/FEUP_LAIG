@@ -241,8 +241,8 @@
         </transformation>
 
         <transformation id="ball">
-            <scale x="0.05" y="0.05" z="0.05" />
-            <translate x="1.0" y="0.05" z="2.0" />
+            <scale x="0.4" y="0.4" z="0.4" />
+            <translate x="1.0" y="0.1" z="5.0" />
         </transformation>
 
         <transformation id="bench">
@@ -378,7 +378,6 @@
                 <!-- deve existir uma ou mais tags "componentref" e/ou -->
                 <!-- "primitiveref", identificando outros -->
                 <!-- componentes ou primitivas -->
-                <componentref id="torus" />
                 <componentref id="court" />
                 <componentref id="lamp1" />
                 <componentref id="lamp2" />
@@ -389,18 +388,6 @@
             </children>
         </component>
 
-        <component id="torus">
-            <transformation>
-                <transformationref id="lamp" />
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="court_text" length_s="8.0" length_t="11.0" />
-            <children>
-                <primitiveref id="ball" />
-            </children>
-        </component>
 
         <component id="court">
             <transformation>
