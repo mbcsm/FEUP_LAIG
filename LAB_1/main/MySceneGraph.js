@@ -639,6 +639,7 @@ class MySceneGraph {
             var materialBuilt = [];
             var textureBuilt;
             var childrenArray = [];
+            var animationBuilt = null;
 
 
             var idVal = this.reader.getString(component, 'id');
@@ -713,7 +714,10 @@ class MySceneGraph {
                 textureBuilt = materialObj;
             }
             
-
+            //animation
+            if(idVal == "ball"){
+                animationBuilt = new LinearAnimation(this.scene, [new vec3.fromValues(0,0,0), new vec3.fromValues(0,0,-10)], 10 * 1000);
+            }   
 
 
             //children
@@ -734,6 +738,7 @@ class MySceneGraph {
                 transformation: transformationBuilt,
                 material: materialBuilt,
                 texture: textureBuilt,
+                animation: animationBuilt,
                 children: childrenArray
             }
             this.components.push(componentArray);
@@ -813,15 +818,17 @@ class MySceneGraph {
     /**
      * Displays the scene, processing each node, starting in the root node.
      */
-    displayScene() {
-        this.graphLoop(this.root, null, null);
+    displayScene(startTime) {
+        this.startTime = startTime;
+        this.graphLoop(this.root, null, null, null, startTime);
     }
 
 
-    graphLoop(root, text, mat) {
+    graphLoop(root, text, mat, anim) {
         var component;
         var texture = text;
         var material = mat;
+        var animation = anim;
         for (var i = 0; i < this.components.length; i++) {
             if (this.components[i].id == root) {
                 component = this.components[i];
@@ -831,8 +838,6 @@ class MySceneGraph {
             console.error("The component " + root + " does not exist");
             return 1;
         }
-
-
             
         if(component.transformation != null)
             this.scene.multMatrix (component.transformation.mat);
@@ -846,7 +851,15 @@ class MySceneGraph {
             material.setTexture(texture.texture);
         if(component.texture != null && component.texture == "none")
             material.setTexture(null);
+        
 
+
+        this.scene.pushMatrix();
+        if(component.animation != null){
+            animation = component.animation;
+            var currentTime = new Date().getTime();
+            animation.apply(currentTime - this.startTime);
+        }
 
         for(let children of component.children){
             this.scene.pushMatrix();
@@ -865,6 +878,7 @@ class MySceneGraph {
 
             this.scene.popMatrix();
         }  
+        this.scene.popMatrix();
         return 0;
 
     }

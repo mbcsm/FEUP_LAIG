@@ -36,6 +36,8 @@ class XMLscene extends CGFscene {
 
         this.axis = new CGFaxis(this);
 
+        this.startTime = new Date().getTime();
+
         this.views = 0;
     }
 
@@ -149,6 +151,7 @@ class XMLscene extends CGFscene {
     display() {
         // ---- BEGIN Background, camera and axis setup
 
+
         // Clear image and depth buffer everytime we update the scene
         this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
@@ -185,7 +188,7 @@ class XMLscene extends CGFscene {
 
 
             // Displays the scene (MySceneGraph function).
-            this.graph.displayScene();
+            this.graph.displayScene(this.startTime);
         }
         else {
             // Draw axis

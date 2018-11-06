@@ -281,7 +281,7 @@
             <translate x="0.0" y="0.3" z="0.24" />
         </transformation>
 
-        <transformation id="bench_seat_leg1">
+        <transformation id="benchmaterial_seat_leg1">
             <translate x="0.5" y="0.0" z="0.1" />
         </transformation>
 

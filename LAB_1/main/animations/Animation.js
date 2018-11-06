@@ -1,10 +1,16 @@
 class Animation {
 
-    constructor(scene, object) {
-
+    constructor(scene, object, controlPoints, time) {
         this.obect = object;
-        
-        this.initBuffers();
+        this.controlPoints = controlPoints;
+        this.time = time;
+    }
+    update(){
+
+    }
+    apply(){
+
     }
 }
+
     
