@@ -7,8 +7,9 @@ var LIGHTS_INDEX = 3;
 var TEXTURES_INDEX = 4;
 var MATERIALS_INDEX = 5;
 var TRANSFORMATIONS_INDEX = 6;
-var PRIMITIVES_INDEX = 7;
-var COMPONENTS_INDEX = 8;
+var ANIMATIONS_INDEX = 7
+var PRIMITIVES_INDEX = 8;
+var COMPONENTS_INDEX = 9;
 
 
 /**
@@ -40,6 +41,7 @@ class MySceneGraph {
         this.omni = [];
         this.textures = [];
         this.materials = [];
+        this.animations = [];
         this.primitives = [];
         this.transforms = [];
         this.components = [];
@@ -175,6 +177,16 @@ class MySceneGraph {
             if (index != TRANSFORMATIONS_INDEX)
                 this.onXMLMinorError("tag <tranformations> out of order");
             if ((error = this.parseTransformations(nodes[index])) != null)
+                return error;
+        }
+
+          //<Animations>
+        if ((index = nodeNames.indexOf("animations")) == -1)
+            return "tag <primitives> missing";
+        else {
+            if (index != ANIMATIONS_INDEX)
+                this.onXMLMinorError("tag <animations> out of order");
+            if ((error = this.parseAnimations(nodes[index])) != null)
                 return error;
         }
 
@@ -529,6 +541,36 @@ class MySceneGraph {
 
         return object;
     }
+
+    /* parses the <animations> block */
+    parseAnimations(animationsNodes) {
+
+        var linearAnimations = animationsNodes.getElementsByTagName('linear');
+
+
+        for (let linear of linearAnimations) {
+            var idVal = this.reader.getString(linear, 'id');
+            var spanVal = this.reader.getFloat(linear, 'span');
+
+            var controlPointsArray = [];
+            var controlPoints = animationsNodes.getElementsByTagName('controlpoint');
+            for(let point of controlPoints){
+                var xVal = this.reader.getFloat(point, 'xx');
+                var yVal = this.reader.getFloat(point, 'yy');
+                var zVal = this.reader.getFloat(point, 'zz');
+                controlPointsArray.push(new vec3.fromValues(xVal, yVal, zVal));
+            }
+
+            var object = {
+                id: idVal,
+                span: spanVal,
+                points: controlPointsArray
+            };
+            
+            this.animations.push(object);
+        }
+        this.log("Parsed animations");
+    }
     /* parses the <primitives> block */
     parsePrimitives(primitivesNodes) {
 
@@ -639,7 +681,7 @@ class MySceneGraph {
             var materialBuilt = [];
             var textureBuilt;
             var childrenArray = [];
-            var animationBuilt = null;
+            var animationsArray = [];
 
 
             var idVal = this.reader.getString(component, 'id');
@@ -647,6 +689,7 @@ class MySceneGraph {
 
             var transformationNode = component.getElementsByTagName('transformation')[0];
             var materialsNode = component.getElementsByTagName('materials')[0];
+            var animationsNode = component.getElementsByTagName('animations')[0];
             var textureNode = component.getElementsByTagName('texture')[0];
             var childrenNode = component.getElementsByTagName('children')[0];
 
@@ -669,8 +712,29 @@ class MySceneGraph {
                 }
             }
                 
-            var n=0;
 
+
+            
+            //animation
+            if(animationsNode != null){
+                var time = 0;
+                for (let animation of animationsNode.children) {
+                    var animationRef = animation.attributes[0].nodeValue;
+                    for (var i = 0; i < this.animations.length; i++) {
+                        if (this.animations[i].id == animationRef) {
+                            animationsArray.push(new LinearAnimation(this.scene, this.animations[i].points, this.animations[i].span * 1000, time * 1000));
+                            time += this.animations[i].span;
+                        }
+                    }
+                }
+            }
+            var animationObj = {
+                index: 0,
+                anim: animationsArray
+            };
+
+
+            var n=0;
             //material
             for(let k of materialsNode.children){
                 var materialRef = k.attributes[0].nodeValue;
@@ -714,11 +778,6 @@ class MySceneGraph {
                 textureBuilt = materialObj;
             }
             
-            //animation
-            if(idVal == "ball"){
-                animationBuilt = new LinearAnimation(this.scene, [new vec3.fromValues(0,0,0), new vec3.fromValues(0,0,-10)], 10 * 1000);
-            }   
-
 
             //children
             for (let childrenChild of childrenNode.children) {
@@ -738,7 +797,7 @@ class MySceneGraph {
                 transformation: transformationBuilt,
                 material: materialBuilt,
                 texture: textureBuilt,
-                animation: animationBuilt,
+                animation: animationObj,
                 children: childrenArray
             }
             this.components.push(componentArray);
@@ -855,10 +914,12 @@ class MySceneGraph {
 
 
         this.scene.pushMatrix();
-        if(component.animation != null){
-            animation = component.animation;
-            var currentTime = new Date().getTime();
-            animation.apply(currentTime - this.startTime);
+        if(component.animation.anim.length > 0){
+            for(let animation of component.animation.anim){
+                var currentTime = new Date().getTime();
+                animation.apply(currentTime - this.startTime);
+            }
+           
         }
 
         for(let children of component.children){

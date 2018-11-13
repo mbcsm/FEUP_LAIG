@@ -303,6 +303,14 @@
         </transformation>
     </transformations>
 
+    <animations>
+        <linear id="linearAnim" span="5" >
+            <controlpoint xx="0" yy="0" zz="0" />
+            <controlpoint xx="10" yy="10" zz="10" />
+        </linear>
+        <circular id="circularAnim" span="5" center="5 5 5" radius="5" startang="0" rotang="180" />
+    </animations>
+
     <primitives>
         <!-- Uma "primitive" e' uma primitiva e pode ser usada em nos folha -->
         <!-- Deve existir um ou mais blocos "primitive" -->
@@ -642,6 +650,11 @@
                 <transformation>
                     <transformationref id="ball" />
                 </transformation>
+                <animations>
+                    <animationref id="linearAnim" />
+                    <animationref id="linearAnim" />
+                    <animationref id="linearAnim" />
+                </animations>
                 <materials>
                     <material id="default" />
                 </materials>
