@@ -1,24 +1,26 @@
-class LinearAnimation extends Animation{
+class CircularAnimation extends Animation{
 
-    constructor(scene, controlPoints, time, startTime) {
+    constructor(scene, center, radius, startang, rotang, time, startTime) {
         super(scene);
 
         this.scene = scene;
+
+        var degToRad = Math.PI /180;
+
+        this.distance = (startang - rotang)*2*Math.PI*this.radius/360
+        this.velocity = this.distance / this.time;
+
+        this.center=center
+        this.startang=startang*degToRad;
+        this.rotang=rotang*degToRad;
+    
         this.time = time;
         this.endTime = time + startTime;
         this.startTime = startTime;
-        this.controlPoints = controlPoints;
-        this.distance = 0;
+        this.lastDelta;
+    
+        this.w = this.velocity / this.radius;
         this.ended = false;
-
-        this.segment = [];
-
-        for (var i = 0; i < controlPoints.length - 1; i++) {
-            this.distance += vec3.dist(vec3.fromValues(controlPoints[i][0], controlPoints[i][1], controlPoints[i][2]), vec3.fromValues(controlPoints[i + 1][0], controlPoints[i + 1][1], controlPoints[i + 1][2]));
-            this.segment.push(this.distance);
-        }
-        this.velocity = this.distance / (time);
-        this.previousAngle = 0;
     }
 
 
@@ -27,35 +29,23 @@ class LinearAnimation extends Animation{
         if(currentTime <= this.startTime){
             return;  
         }
+
         if(currentTime >= this.endTime){
-            this.scene.translate(this.controlPoints[this.controlPoints.length-1][0], this.controlPoints[this.controlPoints.length-1][1], this.controlPoints[this.controlPoints.length-1][2]);
             this.ended = true;
-            return;  
+            this.scene.rotate(90, 0, 1, 0);
+            this.scene.translate(this.radius, 0 , 0);
+            this.scene.rotate(this.lastDelta, 0, 1, 0);
+            this.scene.translate(this.center[0], this.center[1], this.center[2]);
         }
-        currentTime = currentTime - this.startTime;
 
-        //console.log([this.currentDistance, currentTime]);
+        var deltaTime = (currentTime-this.startTime);
 
-        this.currentDistance = this.velocity * currentTime;
+        var delta = this.startang + this.w * deltaTime;
+        this.lastDelta = delta;
 
-        var i = 0;
-        while (this.currentDistance > this.segment[i] && i < this.segment.length)
-            i++;
-
-        var controlPointStart = this.controlPoints[i];
-        var controlPointEnd = this.controlPoints[i + 1];
-
-        var lastDistance;
-        if (i == 0)
-            lastDistance = 0;
-        else
-            lastDistance = this.segment[i - 1];
-
-        var delta = (this.currentDistance - lastDistance) / (this.segment[i] - lastDistance);
-        var x = (controlPointEnd[0] - controlPointStart[0]) * delta + controlPointStart[0];
-        var y = (controlPointEnd[1] - controlPointStart[1]) * delta + controlPointStart[1];
-        var z = (controlPointEnd[2] - controlPointStart[2]) * delta + controlPointStart[2];
-        //console.log([x,y,z]);
-        this.scene.translate(x, y, z);
+        this.scene.rotate(90, 0, 1, 0);
+        this.scene.translate(this.radius, 0 , 0);
+        this.scene.rotate(delta, 0, 1, 0);
+        this.scene.translate(this.center[0], this.center[1], this.center[2]);
     }
 }

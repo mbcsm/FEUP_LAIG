@@ -651,9 +651,7 @@
                     <transformationref id="ball" />
                 </transformation>
                 <animations>
-                    <animationref id="linearAnim" />
-                    <animationref id="linearAnim" />
-                    <animationref id="linearAnim" />
+                    <animationref id="circularAnim" />
                 </animations>
                 <materials>
                     <material id="default" />

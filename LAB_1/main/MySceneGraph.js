@@ -546,6 +546,7 @@ class MySceneGraph {
     parseAnimations(animationsNodes) {
 
         var linearAnimations = animationsNodes.getElementsByTagName('linear');
+        var circularAnimations = animationsNodes.getElementsByTagName('circular');
 
 
         for (let linear of linearAnimations) {
@@ -563,8 +564,34 @@ class MySceneGraph {
 
             var object = {
                 id: idVal,
+                type: "linear",
                 span: spanVal,
                 points: controlPointsArray
+            };
+            
+            this.animations.push(object);
+        }
+        for (let circular of circularAnimations) {
+            var idVal = this.reader.getString(circular, 'id');
+            var spanVal = this.reader.getFloat(circular, 'span');
+            var centerVal = this.reader.getString(circular, 'center');
+            var radiusVal = this.reader.getFloat(circular, 'radius');
+            var startangVal = this.reader.getFloat(circular, 'startang');
+            var rotangVal = this.reader.getFloat(circular, 'rotang');
+
+            
+            var coord = centerVal.split(" ");
+            var x = parseFloat(coord[0]);
+            var centerVal = new vec3.fromValues(parseFloat(coord[0]), parseFloat(coord[1]), parseFloat(coord[2]));
+            
+            var object = {
+                id: idVal,
+                type: "circular",
+                span: spanVal,
+                center: centerVal,
+                radius: radiusVal,
+                startang: startangVal,
+                rotangVal: rotangVal
             };
             
             this.animations.push(object);
@@ -722,8 +749,16 @@ class MySceneGraph {
                     var animationRef = animation.attributes[0].nodeValue;
                     for (var i = 0; i < this.animations.length; i++) {
                         if (this.animations[i].id == animationRef) {
-                            animationsArray.push(new LinearAnimation(this.scene, this.animations[i].points, this.animations[i].span * 1000, time * 1000));
-                            time += this.animations[i].span;
+                            switch(this.animations[i].type){
+                                case "linear":
+                                    animationsArray.push(new LinearAnimation(this.scene, this.animations[i].points, this.animations[i].span * 1000, time * 1000));
+                                    time += this.animations[i].span;
+                                    break;
+                                case "circular":
+                                    animationsArray.push(new CircularAnimation(this.scene, this.animations[i].center, this.animations[i].radius, this.animations[i].startang, this.animations[i].rotang, this.animations[i].span * 1000, time * 1000));
+                                    time += this.animations[i].span;
+                                    break;
+                            }
                         }
                     }
                 }
