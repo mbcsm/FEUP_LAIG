@@ -591,7 +591,7 @@ class MySceneGraph {
                 center: centerVal,
                 radius: radiusVal,
                 startang: startangVal,
-                rotangVal: rotangVal
+                rotang: rotangVal
             };
             
             this.animations.push(object);
@@ -688,6 +688,12 @@ class MySceneGraph {
                 var loops = object.attributes[3].val;
 
                 primitiveBuilt = new MyTorus(this.scene, inner, outer, slices, loops);
+                break;
+            case 'plane':
+                var partsX = object.attributes[0].val;
+                var partsY = object.attributes[1].val;
+
+                primitiveBuilt = new MyPlane(this.scene, 1, 1, partsX, partsY);
                 break;
         }
 

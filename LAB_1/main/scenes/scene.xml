@@ -301,6 +301,11 @@
             <scale x="0.05" y="0.05" z="0.3" />
             <rotate axis="x" angle="-90" />
         </transformation>
+
+        <transformation id="plane">
+            <translate x="0" y="0" z="5.0" />
+        </transformation>
+
     </transformations>
 
     <animations>
@@ -308,7 +313,7 @@
             <controlpoint xx="0" yy="0" zz="0" />
             <controlpoint xx="10" yy="10" zz="10" />
         </linear>
-        <circular id="circularAnim" span="5" center="5 5 5" radius="5" startang="0" rotang="180" />
+        <circular id="circularAnim" span="5" center="5 0 0" radius="1" startang="0" rotang="360" />
     </animations>
 
     <primitives>
@@ -336,6 +341,9 @@
         </primitive>
         <primitive id="torus">
             <torus inner="5" outer="9" slices="100" loops="100" /> 
+        </primitive>
+        <primitive id="plane">
+            <plane npartsU="2" npartsV="2" />
         </primitive>
     </primitives >
 
@@ -393,6 +401,22 @@
                 <componentref id="lamp4" />
                 <componentref id="bench" />
                 <componentref id="ball" />
+                <componentref id="plane" />
+            </children>
+        </component>
+
+
+
+        <component id="plane">
+            <transformation>
+                <transformationref id="plane" />
+            </transformation>
+                <materials>
+                    <material id="bench"/>
+                </materials>
+                <texture id="bench" length_s="1.0" length_t="1.0" />
+            <children>
+                <primitiveref id="plane" />
             </children>
         </component>
 
@@ -651,7 +675,9 @@
                     <transformationref id="ball" />
                 </transformation>
                 <animations>
+                    <animationref id="linearAnim" />
                     <animationref id="circularAnim" />
+                    <animationref id="linearAnim" />
                 </animations>
                 <materials>
                     <material id="default" />
