@@ -627,7 +627,7 @@ class MySceneGraph {
 
             var primitiveBuilt = {
                 id: idVal,
-                object: this.primitiveBuilder(primitiveObject)
+                object: this.primitiveBuilder(primitiveObject, primitive)
             }
             this.primitives.push(primitiveBuilt);
         }
@@ -635,7 +635,7 @@ class MySceneGraph {
         this.log("primitives Parsed");
     }
 
-    primitiveBuilder(object) {
+    primitiveBuilder(object, primitive) {
         var primitiveBuilt;
 
         switch (object.name) {
@@ -694,6 +694,33 @@ class MySceneGraph {
                 var partsY = object.attributes[1].val;
 
                 primitiveBuilt = new MyPlane(this.scene, 1, 1, partsX, partsY);
+                break;
+
+            case 'patch':
+
+                var primitiveTag = primitive.getElementsByTagName('controlpoint');
+
+
+                var orderU = object.attributes[0].val;
+                var orderV = object.attributes[1].val;
+                var partsU = object.attributes[2].val;
+                var partsV = object.attributes[3].val;
+  
+                if(((orderU+1)*(orderV+1)) != primitiveTag.length){
+                  this.onXMLError("Wrong number of control points.");
+                  return null;
+                }else{
+                  var controlPoints = [];
+                  for (let controlPoint of primitiveTag) {
+                      var xVal = controlPoint.attributes[0].nodeValue;
+                      var yVal = controlPoint.attributes[1].nodeValue;
+                      var zVal = controlPoint.attributes[2].nodeValue;
+
+                      controlPoints.push(new vec3.fromValues(xVal, yVal, zVal));
+                  }
+  
+                  primitiveBuilt = new MyPatch(this.scene, orderU, orderV, partsU, partsV,controlPoints);
+                }
                 break;
         }
 

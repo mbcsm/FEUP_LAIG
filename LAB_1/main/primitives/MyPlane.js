@@ -7,39 +7,20 @@ class MyPlane extends CGFobject {
     constructor(scene, dimX, dimY, partsX, partsY) {
         super(scene);
 
-        var knots1 = this.getKnotsVector(1);
-        var knots2 = this.getKnotsVector(1);
+        this.dimX = dimX;
+        this.dimY = dimY;
+        this.partsX = partsX;
+        this.partsY = partsY;
+        this.controlPoints =[
+                [this.dimX/2, this.dimY/2, 0],
+                [this.dimX/2, -this.dimY/2, 0],
+                [-this.dimX/2, this.dimY/2, 0],
+                [-this.dimX/2, -this.dimY/2, 0]
+        ];
     
-        var controlPoints=[
-                                        [
-                                            [-dimX/2, -dimY/2, 0.0, 1 ],
-                                            [-dimX/2,  dimY/2, 0.0, 1 ]
-    
-                                        ],
-                                        [
-                            [dimX/2, -dimY/2, 0.0, 1 ],
-                            [dimX/2, dimY/2, 0.0, 1 ]
-                                        ]
-                                    ];
-    
-        var nurbsSurface = new CGFnurbsSurface(1, 1, knots1, knots2, controlPoints);
-    
-        var getSurfacePoint = function(u, v) {
-            return nurbsSurface.getPoint(u, v);
-        };
-  
-        CGFnurbsObject.call(this, scene, getSurfacePoint, partsX, partsY);
+        this.plane = new MyPatch(this.scene, 1 , 1, this.partsX, this.partsY, this.controlPoints);
     }
-  
-  getKnotsVector(degree) { 
-  
-      var v = new Array();
-      for (var i=0; i<=degree; i++) {
-          v.push(0);
-      }
-      for (var i=0; i<=degree; i++) {
-          v.push(1);
-      }
-      return v;
-  }
+    display(){
+        this.plane.display();
+    }
 }

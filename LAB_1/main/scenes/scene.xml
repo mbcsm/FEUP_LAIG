@@ -342,9 +342,27 @@
         <primitive id="torus">
             <torus inner="5" outer="9" slices="100" loops="100" /> 
         </primitive>
+
+        <primitive id="patch">
+            <patch orderU="2" orderV="3" partsU="20" partsV="20" >
+                <controlpoint x="-2.0" y="-2.0" z="1.0" />
+                <controlpoint x="-2.0" y="-1.0" z="-2.0" />
+                <controlpoint x="-2.0" y="1.0" z="5.0" />
+                <controlpoint x="-2.0" y="2.0" z="-1.0" />
+                <controlpoint x="0" y="-2.0" z="0" />
+                <controlpoint x="0" y="-1.0" z="-1.0" />
+                <controlpoint x="0" y="1.0" z="1.5" />
+                <controlpoint x="0" y="2.0" z="0" />
+                <controlpoint x="2.0" y="-2.0" z="-1.0" />
+                <controlpoint x="2.0" y="-1.0" z="2.0" />
+                <controlpoint x="2.0" y="1.0" z="-5.0" />
+                <controlpoint x="2.0" y="2.0" z="1.0" />
+            </patch>
+        </primitive>
         <primitive id="plane">
             <plane npartsU="2" npartsV="2" />
         </primitive>
+        
     </primitives >
 
     <components>
@@ -394,6 +412,7 @@
                 <!-- deve existir uma ou mais tags "componentref" e/ou -->
                 <!-- "primitiveref", identificando outros -->
                 <!-- componentes ou primitivas -->
+                <componentref id="patch" />
                 <componentref id="court" />
                 <componentref id="lamp1" />
                 <componentref id="lamp2" />
@@ -401,22 +420,21 @@
                 <componentref id="lamp4" />
                 <componentref id="bench" />
                 <componentref id="ball" />
-                <componentref id="plane" />
             </children>
         </component>
 
 
 
-        <component id="plane">
+        <component id="patch">
             <transformation>
                 <transformationref id="plane" />
             </transformation>
                 <materials>
                     <material id="bench"/>
                 </materials>
-                <texture id="bench" length_s="1.0" length_t="1.0" />
+            <texture id="court_text" length_s="8.0" length_t="11.0" />
             <children>
-                <primitiveref id="plane" />
+                <primitiveref id="patch" />
             </children>
         </component>
 
