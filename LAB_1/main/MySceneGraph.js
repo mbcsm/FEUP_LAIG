@@ -48,7 +48,7 @@ class MySceneGraph {
 
 
 
-        this.textTest = new CGFtexture(this.scene,"./scenes/images/court_text.jpg");
+        this.textTest = new CGFtexture(this.scene, "./scenes/images/court_text.jpg");
 
         this.nodes = [];
 
@@ -180,7 +180,7 @@ class MySceneGraph {
                 return error;
         }
 
-          //<Animations>
+        //<Animations>
         if ((index = nodeNames.indexOf("animations")) == -1)
             return "tag <primitives> missing";
         else {
@@ -255,9 +255,9 @@ class MySceneGraph {
             cameraVal.fov = 1;
 
             var mCamera = {
-                    id: idVal,
-                    camera: cameraVal
-                };
+                id: idVal,
+                camera: cameraVal
+            };
             this.views.push(mCamera);
         }
         for (let orthoElement of orthoElements) {
@@ -274,22 +274,22 @@ class MySceneGraph {
             var positionVal = new vec3.fromValues(6, 0, 0);
             var targetVal = new vec3.fromValues(0, 0, 0);
 
-            var cameraVal = new CGFcameraOrtho( leftVal, 
-                                                rightVal, 
-                                                bottomVal,
-                                                topVal, 
-                                                nearVal, 
-                                                farVal, 
-                                                positionVal, 
-                                                targetVal, 
-                                                upVal );
+            var cameraVal = new CGFcameraOrtho(leftVal,
+                rightVal,
+                bottomVal,
+                topVal,
+                nearVal,
+                farVal,
+                positionVal,
+                targetVal,
+                upVal);
 
             cameraVal.fov = 1;
 
             var mCamera = {
-                    id: idVal,
-                    camera: cameraVal
-                };
+                id: idVal,
+                camera: cameraVal
+            };
             this.views.push(mCamera);
         }
 
@@ -311,14 +311,14 @@ class MySceneGraph {
     /* parses the <lights> block */
     parseLights(LightNodes) {
 
-        var i=0;
+        var i = 0;
 
         var omniNodes = LightNodes.getElementsByTagName('omni');
         var spotNodes = LightNodes.getElementsByTagName('spot');
 
         for (let omni of omniNodes) {
 
-            var typeVal= 'omni';
+            var typeVal = 'omni';
 
             var idVal = this.reader.getString(omni, 'id');
             var enabledVal = this.reader.getBoolean(omni, 'enabled');
@@ -347,13 +347,13 @@ class MySceneGraph {
 
         for (let spot of spotNodes) {
 
-            var typeVal= 'spot';
+            var typeVal = 'spot';
 
             var idVal = this.reader.getString(spot, 'id');
             var enabledVal = this.reader.getBoolean(spot, 'enabled');
             var exponentVal = this.reader.getFloat(spot, 'exponent');
             var angleVal = this.reader.getFloat(spot, 'angle');
-            
+
 
             var ambientVal = this.getRGBArray(spot.getElementsByTagName('ambient')[0]);
             var diffuseVal = this.getRGBArray(spot.getElementsByTagName('diffuse')[0]);
@@ -395,7 +395,7 @@ class MySceneGraph {
             var idVal = this.reader.getString(textureElem, 'id');
             var urlVal = this.reader.getString(textureElem, 'file');
 
-            var textureVal = new CGFtexture(this.scene,"./scenes/" + urlVal);
+            var textureVal = new CGFtexture(this.scene, "./scenes/" + urlVal);
 
             var textureArray = {
                 id: idVal,
@@ -459,7 +459,7 @@ class MySceneGraph {
         }
         this.log("Parsed transformations");
     }
-    transformationBuilder(transformation, idVal){
+    transformationBuilder(transformation, idVal) {
         var mat = mat4.create();
         mat4.identity(mat);
 
@@ -467,7 +467,7 @@ class MySceneGraph {
 
         var transformsRead = [];
 
-        for(let t of transformation.children){
+        for (let t of transformation.children) {
 
             var attributeArray = [];
 
@@ -478,13 +478,13 @@ class MySceneGraph {
                 };
                 attributeArray.push(attribute);
             }
-    
+
             var trfTag = {
                 name: t.nodeName,
                 attributes: attributeArray
             };
-    
-    
+
+
             transformsRead.push(trfTag);
         }
 
@@ -555,7 +555,7 @@ class MySceneGraph {
 
             var controlPointsArray = [];
             var controlPoints = animationsNodes.getElementsByTagName('controlpoint');
-            for(let point of controlPoints){
+            for (let point of controlPoints) {
                 var xVal = this.reader.getFloat(point, 'xx');
                 var yVal = this.reader.getFloat(point, 'yy');
                 var zVal = this.reader.getFloat(point, 'zz');
@@ -568,7 +568,7 @@ class MySceneGraph {
                 span: spanVal,
                 points: controlPointsArray
             };
-            
+
             this.animations.push(object);
         }
         for (let circular of circularAnimations) {
@@ -579,11 +579,11 @@ class MySceneGraph {
             var startangVal = this.reader.getFloat(circular, 'startang');
             var rotangVal = this.reader.getFloat(circular, 'rotang');
 
-            
+
             var coord = centerVal.split(" ");
             var x = parseFloat(coord[0]);
             var centerVal = new vec3.fromValues(parseFloat(coord[0]), parseFloat(coord[1]), parseFloat(coord[2]));
-            
+
             var object = {
                 id: idVal,
                 type: "circular",
@@ -593,7 +593,7 @@ class MySceneGraph {
                 startang: startangVal,
                 rotang: rotangVal
             };
-            
+
             this.animations.push(object);
         }
         this.log("Parsed animations");
@@ -705,22 +705,30 @@ class MySceneGraph {
                 var orderV = object.attributes[1].val;
                 var partsU = object.attributes[2].val;
                 var partsV = object.attributes[3].val;
-  
-                if(((orderU+1)*(orderV+1)) != primitiveTag.length){
-                  this.onXMLError("Wrong number of control points.");
-                  return null;
-                }else{
-                  var controlPoints = [];
-                  for (let controlPoint of primitiveTag) {
-                      var xVal = controlPoint.attributes[0].nodeValue;
-                      var yVal = controlPoint.attributes[1].nodeValue;
-                      var zVal = controlPoint.attributes[2].nodeValue;
 
-                      controlPoints.push(new vec3.fromValues(xVal, yVal, zVal));
-                  }
-  
-                  primitiveBuilt = new MyPatch(this.scene, orderU, orderV, partsU, partsV,controlPoints);
+                if (((orderU + 1) * (orderV + 1)) != primitiveTag.length) {
+                    this.onXMLError("Wrong number of control points.");
+                    return null;
+                } else {
+                    var controlPoints = [];
+                    for (let controlPoint of primitiveTag) {
+                        var xVal = controlPoint.attributes[0].nodeValue;
+                        var yVal = controlPoint.attributes[1].nodeValue;
+                        var zVal = controlPoint.attributes[2].nodeValue;
+
+                        controlPoints.push(new vec3.fromValues(xVal, yVal, zVal));
+                    }
+
+                    primitiveBuilt = new MyPatch(this.scene, orderU, orderV, partsU, partsV, controlPoints);
                 }
+                break;
+            case 'cylinder2':
+                var base = object.attributes[0].val;
+                var top = object.attributes[1].val;
+                var height = object.attributes[2].val;
+                var slices = object.attributes[3].val;
+                var stacks = object.attributes[4].val;;
+                primitiveBuilt = new MyCylinder2(this.scene, base, top, height, slices, stacks);
                 break;
         }
 
@@ -755,12 +763,12 @@ class MySceneGraph {
 
 
             //Transformation         
-            if(transformationNode.children.length > 0){
+            if (transformationNode.children.length > 0) {
 
                 //var transformationTag = transformationNode.getElementsByTagName('transformationref');
                 if (transformationNode.children[0].nodeName == "transformationref") {
                     var transformationRef = transformationNode.children[0].attributes[0].nodeValue;
-                    
+
                     for (var i = 0; i < this.transforms.length; i++) {
                         if (this.transforms[i].id == transformationRef) {
                             transformationBuilt = this.transforms[i];
@@ -771,18 +779,18 @@ class MySceneGraph {
                     transformationBuilt = this.transformationBuilder(transformationNode, "null");
                 }
             }
-                
 
 
-            
+
+
             //animation
-            if(animationsNode != null){
+            if (animationsNode != null) {
                 var time = 0;
                 for (let animation of animationsNode.children) {
                     var animationRef = animation.attributes[0].nodeValue;
                     for (var i = 0; i < this.animations.length; i++) {
                         if (this.animations[i].id == animationRef) {
-                            switch(this.animations[i].type){
+                            switch (this.animations[i].type) {
                                 case "linear":
                                     animationsArray.push(new LinearAnimation(this.scene, this.animations[i].points, this.animations[i].span * 1000, time * 1000));
                                     time += this.animations[i].span;
@@ -802,38 +810,37 @@ class MySceneGraph {
             };
 
 
-            var n=0;
+            var n = 0;
             //material
-            for(let k of materialsNode.children){
+            for (let k of materialsNode.children) {
                 var materialRef = k.attributes[0].nodeValue;
-                if(materialRef == "inherit")
+                if (materialRef == "inherit")
                     materialBuilt[n] = materialRef;
-                for(let mat of this.materials){
-                    if(mat.id == materialRef){
+                for (let mat of this.materials) {
+                    if (mat.id == materialRef) {
                         materialBuilt[n] = mat.appearance;
                     }
                 }
                 n++;
             }
-           
 
-        
+
+
 
             //texture
             var lengthSRef;
             var lengthTRef;
             var textureRef = textureNode.attributes[0].nodeValue;
-            if(textureRef == "inherit" || textureRef == "none"){
+            if (textureRef == "inherit" || textureRef == "none") {
                 textureBuilt = textureRef;
-            }   
-            else{
+            } else {
                 if (textureNode.attributes.length > 1) {
                     lengthSRef = textureNode.attributes[1].nodeValue;
                     lengthTRef = textureNode.attributes[2].nodeValue;
                 }
                 var textureVal;
-                for(let text of this.textures){
-                    if(text.id == textureRef){
+                for (let text of this.textures) {
+                    if (text.id == textureRef) {
                         textureVal = text.texture;
                     }
                 }
@@ -845,7 +852,7 @@ class MySceneGraph {
                 };
                 textureBuilt = materialObj;
             }
-            
+
 
             //children
             for (let childrenChild of childrenNode.children) {
@@ -965,48 +972,48 @@ class MySceneGraph {
             console.error("The component " + root + " does not exist");
             return 1;
         }
-            
-        if(component.transformation != null)
-            this.scene.multMatrix (component.transformation.mat);
 
-        
-        if(component.texture != null && component.texture != "inherit")
+        if (component.transformation != null)
+            this.scene.multMatrix(component.transformation.mat);
+
+
+        if (component.texture != null && component.texture != "inherit")
             texture = component.texture;
-        if(component.material[this.matCounter] != null && component.material[this.matCounter] != "inherit")
-            material = component.material[this.matCounter];        
-        if(texture != "none" && texture != null && material != null)
+        if (component.material[this.matCounter] != null && component.material[this.matCounter] != "inherit")
+            material = component.material[this.matCounter];
+        if (texture != "none" && texture != null && material != null)
             material.setTexture(texture.texture);
-        if(component.texture != null && component.texture == "none")
+        if (component.texture != null && component.texture == "none")
             material.setTexture(null);
-        
+
 
 
         this.scene.pushMatrix();
-        if(component.animation.anim.length > 0){
-            for(let animation of component.animation.anim){
+        if (component.animation.anim.length > 0) {
+            for (let animation of component.animation.anim) {
                 var currentTime = new Date().getTime();
                 animation.apply(currentTime - this.startTime);
             }
-           
+
         }
 
-        for(let children of component.children){
+        for (let children of component.children) {
             this.scene.pushMatrix();
 
-            if(children.type == 'primitiveref'){
+            if (children.type == 'primitiveref') {
                 for (var i = 0; i < this.primitives.length; i++) {
                     if (this.primitives[i].id == component.children[0].ref) {
-                        if(material!= null)
+                        if (material != null)
                             material.apply();
                         this.primitives[i].object.display();
                     }
                 }
-            }else{
+            } else {
                 this.graphLoop(children.ref, texture, material);
             }
 
             this.scene.popMatrix();
-        }  
+        }
         this.scene.popMatrix();
         return 0;
 

@@ -13,7 +13,6 @@ class MyPatch extends CGFobject {
         this.controlPoints = [];
         this.controlPointsTemp = controlPointsTemp;
 
-
         var points = [];
 
         for (var j = 0; j <= this.orderU; j++) {
@@ -24,9 +23,6 @@ class MyPatch extends CGFobject {
             }
             points[j]=v;
         }
-       
-        var knotsU = this.getKnots(this.orderU);
-        var knotsV = this.getKnots(this.orderV);
 
         //Create Surface
         this.nurbsSurface = new CGFnurbsSurface(this.orderU, this.orderV, points);
@@ -45,17 +41,4 @@ class MyPatch extends CGFobject {
     display() {
         this.surface.display();
     };
-
-    getKnots(order) {
-        var knots = [];
-
-        for (var i = 0; i <= order; i++) {
-            knots.push(0);
-        }
-        for (var i = 0; i <= order; i++) {
-            knots.push(1);
-        }
-        return knots;
-    };
-
 }
