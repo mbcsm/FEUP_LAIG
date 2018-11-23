@@ -730,6 +730,13 @@ class MySceneGraph {
                 var stacks = object.attributes[4].val;;
                 primitiveBuilt = new MyCylinder2(this.scene, base, top, height, slices, stacks);
                 break;
+            case 'terrain':
+                var idtexture = object.attributes[0].val;
+                var idheightmap = object.attributes[1].val;
+                var parts = object.attributes[2].val;
+                var heightscale = object.attributes[3].val;
+                primitiveBuilt = new MyCylinder2(this.scene, base, top, height, slices, stacks);
+                break;
         }
 
 

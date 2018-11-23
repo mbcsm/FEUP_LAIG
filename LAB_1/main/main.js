@@ -25,9 +25,12 @@ serialInclude(['lib/CGF.js',
                 'primitives/MyPlane.js',
                 'primitives/MyPatch.js',
                 'primitives/MyCylinder2.js',
+                'primitives/MyTerrain.js',
                 'animations/Animation.js',
                 'animations/LinearAnimation.js',
                 'animations/CircularAnimation.js',
+                'shaders/terrain.frag',
+                'shaders/terrain.vert',
 
 
 main=function()

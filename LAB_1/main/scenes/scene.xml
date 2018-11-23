@@ -89,6 +89,8 @@
         <texture id="sidePost" file="images/sidePost.jpg" />
         <texture id="bench" file="images/bench.jpg" />
         <texture id="lamp" file="images/lamp.jpg" />
+        <texture id="terrainHeight=" file="images/heightmap.jpg" />
+        <texture id="terrainText" file="images/terrain.jpg" />
     </textures>
 
     <materials>
@@ -364,6 +366,9 @@
         </primitive>
         <primitive  id="cylinder2">
             <cylinder2 base="5" top="0" height="10" slices="100" stacks="100" />
+        </primitive>
+        <primitive id="terrain">
+            <terrain idtexture="terrainText" idheightmap="terrainHeight" parts="5" heightscale="5"/>
         </primitive>
         
     </primitives >
