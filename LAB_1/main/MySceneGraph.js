@@ -731,11 +731,23 @@ class MySceneGraph {
                 primitiveBuilt = new MyCylinder2(this.scene, base, top, height, slices, stacks);
                 break;
             case 'terrain':
-                var idtexture = object.attributes[0].val;
-                var idheightmap = object.attributes[1].val;
+                var idtexture = primitive.childNodes[1].attributes[0].nodeValue;
+                var idheightmap = primitive.childNodes[1].attributes[1].nodeValue;
                 var parts = object.attributes[2].val;
                 var heightscale = object.attributes[3].val;
-                primitiveBuilt = new MyCylinder2(this.scene, base, top, height, slices, stacks);
+
+                var texture;
+                var heightmap;
+                for (let text of this.textures) {
+                    if (text.id == idtexture) {
+                        texture = text.texture;
+                    }
+                    if (text.id == idheightmap) {
+                        heightmap = text.texture;
+                    }
+                }
+
+                primitiveBuilt = new MyTerrain(this.scene, texture, heightmap, parts, heightscale);
                 break;
         }
 
@@ -984,6 +996,7 @@ class MySceneGraph {
             this.scene.multMatrix(component.transformation.mat);
 
 
+        
         if (component.texture != null && component.texture != "inherit")
             texture = component.texture;
         if (component.material[this.matCounter] != null && component.material[this.matCounter] != "inherit")

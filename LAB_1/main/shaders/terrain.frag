@@ -2,15 +2,9 @@
 precision highp float;
 #endif
 
-varying vec4 coords;
-varying vec4 normal;
+varying vec2 vTextureCoord;
+uniform sampler2D uSampler;
 
 void main() {
-	if (coords.x > 0.0)
-		gl_FragColor =  normal;
-	else
-	{
-		gl_FragColor.rgb = abs(coords.xyz)/3.0;
-		gl_FragColor.a = 1.0;
-	}
+    gl_FragColor = texture2D(uSampler, vTextureCoord);
 }

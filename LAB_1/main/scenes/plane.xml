@@ -91,6 +91,8 @@
         <texture id="lamp" file="images/lamp.jpg" />
         <texture id="plane_panel" file="images/plane_panel.jpg" />
         <texture id="plane_glass" file="images/plane_glass.jpg" />
+        <texture id="terrain_texture" file="images/terrain_texture.jpg" />
+        <texture id="terrain_heightmap" file="images/terrain_heightmap.jpg" />
     </textures>
 
     <materials>
@@ -195,12 +197,16 @@
             <sphere radius="3" slices="40" stacks="40" />
         </primitive>
 
+        <primitive id="terrain">
+            <terrain idtexture="terrain_texture" idheightmap="terrain_heightmap" parts="10" heightscale="10"/>
+        </primitive>
+
     </primitives >
 
     <components>
         <component id="campo_tenis">
             <transformation>
-                <scale x="0.5" y="0.5" z="0.5" />
+                <transformationref id="none" />
             </transformation>
             <materials>
                 <material id="default" />
@@ -208,14 +214,15 @@
             <texture id="none" />
             <children>
                 <componentref id="plane" />
+                <componentref id="terrain" />
             </children>
         </component>
 
-
+        
 
         <component id="plane">
             <transformation>
-                <transformationref id="inherit" />
+                <translate x="0" y="30" z="0" />
             </transformation>
             <animations>
                 <animationref id="circularAnim" />
@@ -319,6 +326,23 @@
             <texture id="inherit" />
             <children>
                 <primitiveref id="plane_wings_stoppers" />
+            </children>
+        </component>
+
+
+
+
+        <component id="terrain">
+            <transformation>
+                <scale x="200" y="200" z="1" />
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="terrain" />
             </children>
         </component>
     </components>
