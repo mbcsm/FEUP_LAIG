@@ -13,19 +13,21 @@ class MyPatch extends CGFobject {
         this.controlPoints = [];
         this.controlPointsTemp = controlPointsTemp;
 
-        var points = [];
 
-        for (var j = 0; j <= this.orderU; j++) {
-            var v = [];
-            for (var i = 0; i <= this.orderV; i++) {
-                var point=this.controlPointsTemp[i + (this.orderV+1)*j]
-                v[i] = [point[0],point[1],point[2],1];
+        var pos = 0;
+        for(var i = 0; i < orderU + 1; i++) {
+            var group = [];
+            for(var j = 0; j < orderV + 1; j++) {
+                group.push(controlPointsTemp[pos]);
+                pos++;
             }
-            points[j]=v;
+            this.controlPoints.push(group);
         }
 
+    
+
         //Create Surface
-        this.nurbsSurface = new CGFnurbsSurface(this.orderU, this.orderV, points);
+        this.nurbsSurface = new CGFnurbsSurface(this.orderU, this.orderV, this.controlPoints);
 
 
 

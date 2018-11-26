@@ -693,7 +693,7 @@ class MySceneGraph {
                 var partsX = object.attributes[0].val;
                 var partsY = object.attributes[1].val;
 
-                primitiveBuilt = new MyPlane(this.scene, 1, 1, partsX, partsY);
+                primitiveBuilt = new MyPlane(this.scene, partsX, partsY);
                 break;
 
             case 'patch':
@@ -706,21 +706,18 @@ class MySceneGraph {
                 var partsU = object.attributes[2].val;
                 var partsV = object.attributes[3].val;
 
-                if (((orderU + 1) * (orderV + 1)) != primitiveTag.length) {
-                    this.onXMLError("Wrong number of control points.");
-                    return null;
-                } else {
-                    var controlPoints = [];
-                    for (let controlPoint of primitiveTag) {
-                        var xVal = controlPoint.attributes[0].nodeValue;
-                        var yVal = controlPoint.attributes[1].nodeValue;
-                        var zVal = controlPoint.attributes[2].nodeValue;
+              
+                var controlPoints = [];
+                for (let controlPoint of primitiveTag) {
+                    var xVal = controlPoint.attributes[0].nodeValue;
+                    var yVal = controlPoint.attributes[1].nodeValue;
+                    var zVal = controlPoint.attributes[2].nodeValue;
 
-                        controlPoints.push(new vec3.fromValues(xVal, yVal, zVal));
-                    }
-
-                    primitiveBuilt = new MyPatch(this.scene, orderU, orderV, partsU, partsV, controlPoints);
+                    controlPoints.push(new vec3.fromValues(xVal, yVal, zVal));
                 }
+
+                primitiveBuilt = new MyPatch(this.scene, orderU, orderV, partsU, partsV, controlPoints);
+                
                 break;
             case 'cylinder2':
                 var base = object.attributes[0].val;
@@ -748,6 +745,26 @@ class MySceneGraph {
                 }
 
                 primitiveBuilt = new MyTerrain(this.scene, texture, heightmap, parts, heightscale);
+                break;
+            case 'water':
+                var idtexture = primitive.childNodes[1].attributes[0].nodeValue;
+                var idheightmap = primitive.childNodes[1].attributes[1].nodeValue;
+                var parts = object.attributes[2].val;
+                var heightscale = object.attributes[3].val;
+
+                var texture;
+                var heightmap;
+
+                for (let text of this.textures) {
+                    if (text.id == idtexture) {
+                        texture = text.texture;
+                    }
+                    if (text.id == idheightmap) {
+                        heightmap = text.texture;
+                    }
+                }
+
+                primitiveBuilt = new MyWater(this.scene, texture, heightmap, parts, heightscale);
                 break;
         }
 

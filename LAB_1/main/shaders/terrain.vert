@@ -16,7 +16,7 @@ void main() {
     vec3 offset=vec3(0.0,0.0,0.0);
 
 	vTextureCoord = aTextureCoord;
-	vec4 grey = texture2D(uSampler2, vec2(0.0,0.1)+vTextureCoord);
+	vec4 grey = texture2D(uSampler, vec2(0.0,12)+vTextureCoord);
 
 
 	offset=aVertexNormal*(grey.r+grey.g+grey.b)*normScale;

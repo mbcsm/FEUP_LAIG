@@ -93,6 +93,7 @@
         <texture id="plane_glass" file="images/plane_glass.jpg" />
         <texture id="terrain_texture" file="images/terrain_texture.jpg" />
         <texture id="terrain_heightmap" file="images/terrain_heightmap.jpg" />
+        <texture id="terrain_water" file="images/water.jpg" />
     </textures>
 
     <materials>
@@ -141,11 +142,11 @@
     </transformations>
 
     <animations>
-        <linear id="linearAnim" span="5">
+        <linear id="linearAnim" span="15">
             <controlpoint xx="0" yy="0" zz="0" />
-            <controlpoint xx="10" yy="10" zz="10" />
+            <controlpoint xx="0" yy="0" zz="1000" />
         </linear>
-        <circular id="circularAnim" span="10" center="100 0 0" radius="10" startang="0" rotang="360" />
+        <circular id="circularAnim" span="10" center="100 0 0" radius="20" startang="0" rotang="360" />
     </animations>
 
     <primitives>
@@ -196,9 +197,11 @@
         <primitive id="plane_dome">
             <sphere radius="3" slices="40" stacks="40" />
         </primitive>
-
         <primitive id="terrain">
-            <terrain idtexture="terrain_texture" idheightmap="terrain_heightmap" parts="10" heightscale="10"/>
+            <terrain idtexture="terrain_texture" idheightmap="terrain_heightmap" parts="30" heightscale="30"/>
+        </primitive>
+        <primitive id="water">
+            <water idtexture="terrain_texture" idwavemap="terrain_water" parts="30" heightscale="5" texscale="3" />
         </primitive>
 
     </primitives >
@@ -215,6 +218,7 @@
             <children>
                 <componentref id="plane" />
                 <componentref id="terrain" />
+                <componentref id="water" />
             </children>
         </component>
 
@@ -222,10 +226,12 @@
 
         <component id="plane">
             <transformation>
-                <translate x="0" y="30" z="0" />
+                <translate x="0" y="200" z="0" />
+                <scale x="0.5" y="0.5" z="0.5" />
             </transformation>
             <animations>
                 <animationref id="circularAnim" />
+                <animationref id="linearAnim" />
             </animations>
             <materials>
                 <material id="bench"/>
@@ -343,6 +349,21 @@
             <texture id="inherit" />
             <children>
                 <primitiveref id="terrain" />
+            </children>
+        </component>
+
+        <component id="water">
+            <transformation>
+                <scale x="400" y="400" z="1" />
+                <rotate axis="x" angle="-90" />
+                <translate x="0" y="40" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="water" />
             </children>
         </component>
     </components>
