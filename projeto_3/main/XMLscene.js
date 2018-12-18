@@ -156,6 +156,9 @@ class XMLscene extends CGFscene {
                     {
                         var customId = this.pickResults[i][1];				
                         console.log("Picked object: " + obj + ", with pick id " + customId);
+
+                        this.graph.pieces = [];
+                        this.graph.createPieces();
                     }
                 }
                 this.pickResults.splice(0,this.pickResults.length);
@@ -186,7 +189,7 @@ class XMLscene extends CGFscene {
 
         if (this.sceneInited) {
             // Draw axis
-            this.axis.display();
+            //this.axis.display();
 
             var i = 0;
 

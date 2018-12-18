@@ -46,6 +46,17 @@ class MySceneGraph {
         this.transforms = [];
         this.components = [];
 
+        this.pieces = [];
+
+        this.game = [[1,1,1,1,1,1,1,1],
+                    [0,0,0,2,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,4,0,0,0],
+                    [3,3,3,3,3,3,3,3]];
+
 
 
         this.textTest = new CGFtexture(this.scene, "./scenes/images/court_text.jpg");
@@ -800,8 +811,6 @@ class MySceneGraph {
 
             //Transformation         
             if (transformationNode.children.length > 0) {
-
-                //var transformationTag = transformationNode.getElementsByTagName('transformationref');
                 if (transformationNode.children[0].nodeName == "transformationref") {
                     var transformationRef = transformationNode.children[0].attributes[0].nodeValue;
 
@@ -902,6 +911,9 @@ class MySceneGraph {
                 childrenArray.push(childrenObj);
             }
 
+            var pickingVal = false;
+            if(idVal.charAt(0) == "s")
+                pickingVal = true;
 
             var componentArray = {
                 id: idVal,
@@ -909,8 +921,11 @@ class MySceneGraph {
                 material: materialBuilt,
                 texture: textureBuilt,
                 animation: animationObj,
+                picking: pickingVal,
                 children: childrenArray
             }
+            console.log(componentArray);
+
             this.components.push(componentArray);
 
         }
@@ -985,6 +1000,67 @@ class MySceneGraph {
         console.log("   " + message);
     }
 
+
+
+    createPieces(){
+        var texture_united_states = new CGFtexture(this.scene, "/scenes/images/united_states.png");
+        var texture_shit = new CGFtexture(this.scene, "/scenes/images/shit.jpg");
+        for(var i = 0; i < 8; i++){
+            for(var j = 0; j < 8; j++){
+
+                if(this.game[i][j] == 0){
+                    var piece = {
+                        id: "blank_" + i + "_" + j,
+                        transformation: null,
+                        selected : false,
+                        moving: false,
+                        animation: null,
+                        x: i,
+                        y:j,
+                        object: null
+                    }
+                    continue;
+                }
+
+                var object;
+                switch(this.game[i][j]){
+                    case 1:
+                        object = new MyPawn_1(this.scene,texture_united_states);
+                        break;
+                    case 2:
+                        object = new MyPawn_1(this.scene,texture_united_states);
+                        break;
+                    case 3:
+                        object = new MyPawn_1(this.scene,texture_shit);
+                        break;
+                    case 4:
+                        object = new MyPawn_1(this.scene,texture_shit);
+                        break;
+                }
+
+
+                var idVal = "pawn" + i + "_" + j;
+
+                var x = 0.15*i - 0.53;
+                var y = 0;
+                var z = 0.15*j - 0.53;
+
+
+                var piece = {
+                    id: idVal,
+                    transformation: [x, y, z],
+                    selected : false,
+                    moving: false,
+                    animation: null,
+                    x: i,
+                    y:j,
+                    object: object
+                }
+                this.pieces.push(piece);
+            }
+        }
+    }
+
     /**
      * Displays the scene, processing each node, starting in the root node.
      */
@@ -992,6 +1068,7 @@ class MySceneGraph {
         this.pickingIndex = 0;
         this.startTime = startTime;
         this.graphLoop(this.root, null, null, null, startTime);
+        this.showPieces();
     }
 
 
@@ -1043,9 +1120,18 @@ class MySceneGraph {
                     if (this.primitives[i].id == component.children[0].ref) {
                         if (material != null)
                             material.apply();
-                        this.pickingIndex++;
-                        this.scene.registerForPick(this.pickingIndex+1, this.primitives[i]);
-                        this.primitives[i].object.display();
+
+
+                        if(this.scene.pickMode){
+                            if(component.picking){
+                                this.pickingIndex++;
+                                this.scene.registerForPick(this.pickingIndex, this.primitives[i]);
+                                this.primitives[i].object.display();
+                            }
+                        }
+                        else if(!component.picking)
+                            this.primitives[i].object.display();
+
                     }
                 }
             } else {
@@ -1056,6 +1142,15 @@ class MySceneGraph {
         }
         this.scene.popMatrix();
         return 0;
+    }
 
+    showPieces(){
+        for (let piece of this.pieces) {
+            this.scene.pushMatrix();
+            this.scene.translate(piece.transformation[0], piece.transformation[1], piece.transformation[2]);
+            
+            piece.object.display();
+            this.scene.popMatrix();
+        }
     }
 }
