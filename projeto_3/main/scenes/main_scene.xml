@@ -234,8 +234,6 @@
             <texture id="none" />
             <children>
                 <componentref id="board"/>
-                <componentref id="pb1"/>
-                <componentref id="pb2"/>
             </children>
         </component>
         <component id="board">
@@ -489,158 +487,13 @@
 
 
 
-        <!--======================================
-                            PIECES 
-            ======================================-->
-         <component id="pb1">
-            <transformation>
-                <translate x="0.38" y="0" z="0.38"/>
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="united_states" />
-            <children>
-                <componentref id="pawn"/>
-            </children>
-        </component>
-          <component id="pb2">
-            <transformation>
-                <translate x="0" y="0" z="0.38"/>
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="shit" />
-            <children>
-                <componentref id="pawn"/>
-            </children>
-        </component>
-        <component id="pb2">
-            <transformation>
-                <translate x="0" y="0" z="0.38"/>
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="shit" />
-            <children>
-                <componentref id="pawn"/>
-            </children>
-        </component>
-        <component id="rb1">
-            <transformation>
-                <translate x="0" y="0" z="0"/>
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="united_states" />
-            <children>
-                <componentref id="king"/>
-            </children>
-        </component>
-        <component id="rb2">
-            <transformation>
-                <translate x="0.4" y="0" z="0"/>
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="shit" />
-            <children>
-                <componentref id="king"/>
-            </children>
-        </component>
-
-
-        <component id="pawn">
-            <transformation>
-                <scale x="0.5" y="0.5" z="0.5"/>
-                <translate x="0" y="0.1" z="0"/>
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="inherit" />
-            <children>
-                <componentref id="pawn_body"/>
-                <componentref id="pawn_head"/>
-            </children>
-        </component>
-        <component id="pawn_head">
-            <transformation>
-                <rotate axis="x" angle ="0"/>
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="inherit" />
-            <children>
-                <primitiveref id="pawn_head"/>
-            </children>
-        </component>
-        <component id="pawn_body">
-            <transformation>
-                <rotate axis="x" angle ="90"/>
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="inherit" />
-            <children>
-                <primitiveref id="pawn_body"/>
-            </children>
-        </component>
-
-
-        <component id="king">
-            <transformation>
-                <scale x="0.5" y="0.5" z="0.5"/>
-                <translate x="0" y="0.1" z="0"/>
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="inherit" />
-            <children>
-                <componentref id="king_body"/>
-                <componentref id="king_head"/>
-            </children>
-        </component>
-        <component id="king_head">
-            <transformation>
-                <rotate axis="y" angle ="90"/>
-                <translate x="0" y="0.1" z="0"/>
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="inherit" />
-            <children>
-                <primitiveref id="king_head"/>
-            </children>
-        </component>
-        <component id="king_body">
-            <transformation>
-                <rotate axis="x" angle ="90"/>
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="inherit" />
-            <children>
-                <primitiveref id="king_body"/>
-            </children>
-        </component>
-
 
         <!--======================================
                             TABLE 
             ======================================-->
         <component id="table">
             <transformation>
-                <transformationref id="none"/>
+                <rotate axis="x" angle ="90"/>
             </transformation>
             <materials>
                 <material id="none" />

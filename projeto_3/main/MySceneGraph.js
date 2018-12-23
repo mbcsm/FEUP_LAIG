@@ -63,6 +63,9 @@ class MySceneGraph {
 
         this.nodes = [];
 
+        this.texture_united_states = new CGFtexture(this.scene, "scenes/images/united_states.png");
+        this.texture_shit = new CGFtexture(this.scene, "scenes/images/shit.jpg");
+
         this.axisCoords = [];
         this.axisCoords['x'] = [1, 0, 0];
         this.axisCoords['y'] = [0, 1, 0];
@@ -1003,8 +1006,6 @@ class MySceneGraph {
 
 
     createPieces(){
-        var texture_united_states = new CGFtexture(this.scene, "/scenes/images/united_states.png");
-        var texture_shit = new CGFtexture(this.scene, "/scenes/images/shit.jpg");
         for(var i = 0; i < 8; i++){
             for(var j = 0; j < 8; j++){
 
@@ -1025,16 +1026,16 @@ class MySceneGraph {
                 var object;
                 switch(this.game[i][j]){
                     case 1:
-                        object = new MyPawn_1(this.scene,texture_united_states);
+                        object = new MyPawn(this.scene,this.texture_united_states);
                         break;
                     case 2:
-                        object = new MyPawn_1(this.scene,texture_united_states);
+                        object = new MyKing(this.scene,this.texture_united_states);
                         break;
                     case 3:
-                        object = new MyPawn_1(this.scene,texture_shit);
+                        object = new MyPawn(this.scene,this.texture_shit);
                         break;
                     case 4:
-                        object = new MyPawn_1(this.scene,texture_shit);
+                        object = new MyKing(this.scene,this.texture_shit);
                         break;
                 }
 

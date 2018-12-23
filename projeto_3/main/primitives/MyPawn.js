@@ -2,7 +2,7 @@
  * MyQuad
  * @constructor
  */
-class MyPawn_1 extends CGFobject {
+class MyPawn extends CGFobject {
 
     constructor(scene, texture) {
         super(scene);
