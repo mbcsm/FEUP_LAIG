@@ -1006,6 +1006,7 @@ class MySceneGraph {
 
 
     createPieces(){
+        this.pieces = [];
         for(var i = 0; i < 8; i++){
             for(var j = 0; j < 8; j++){
 
@@ -1040,11 +1041,11 @@ class MySceneGraph {
                 }
 
 
-                var idVal = "pawn" + i + "_" + j;
+                var idVal = "piece" + i + "_" + j;
 
                 var x = 0.15*i - 0.53;
                 var y = 0;
-                var z = 0.15*j - 0.53;
+                var z = 0.15*j - 0.52;
 
 
                 var piece = {
@@ -1110,7 +1111,6 @@ class MySceneGraph {
                 var currentTime = new Date().getTime();
                 animation.apply(currentTime - this.startTime);
             }
-
         }
 
         for (let children of component.children) {
@@ -1149,7 +1149,11 @@ class MySceneGraph {
         for (let piece of this.pieces) {
             this.scene.pushMatrix();
             this.scene.translate(piece.transformation[0], piece.transformation[1], piece.transformation[2]);
-            
+
+            if (piece.animation!= null) {
+                piece.animation.apply(new Date().getTime() - this.startTime);
+            }
+    
             piece.object.display();
             this.scene.popMatrix();
         }

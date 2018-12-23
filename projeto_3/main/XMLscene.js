@@ -137,6 +137,8 @@ class XMLscene extends CGFscene {
         this.interface.addViewsGroup(this.graph.views);
 
         this.sceneInited = true;
+
+        this.graph.createPieces();
     }
 
     updateViews(id) {
@@ -157,8 +159,13 @@ class XMLscene extends CGFscene {
                         var customId = this.pickResults[i][1];				
                         console.log("Picked object: " + obj + ", with pick id " + customId);
 
-                        this.graph.pieces = [];
                         this.graph.createPieces();
+                        var controlPointsArray = [];
+                        controlPointsArray.push(new vec3.fromValues(0, 0, 0));
+                        controlPointsArray.push(new vec3.fromValues(0.5, 0, 0));
+
+                        this.graph.pieces[2].animation = new LinearAnimation(this, controlPointsArray, 2 * 1000, new Date().getTime() - this.startTime);
+
                     }
                 }
                 this.pickResults.splice(0,this.pickResults.length);
