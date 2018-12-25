@@ -1154,7 +1154,8 @@ class MySceneGraph {
                 piece.animation.apply(new Date().getTime() - this.startTime);
             }
     
-            piece.object.display();
+            if(!this.scene.pickMode)
+                piece.object.display();
             this.scene.popMatrix();
         }
     }

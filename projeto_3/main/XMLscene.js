@@ -40,6 +40,9 @@ class XMLscene extends CGFscene {
         this.startTime = new Date().getTime();
 
         this.views = 0;
+
+        this.gameState = 0;
+        this.selectedPiece;
     }
 
     /**
@@ -159,12 +162,37 @@ class XMLscene extends CGFscene {
                         var customId = this.pickResults[i][1];				
                         console.log("Picked object: " + obj + ", with pick id " + customId);
 
-                        this.graph.createPieces();
-                        var controlPointsArray = [];
-                        controlPointsArray.push(new vec3.fromValues(0, 0, 0));
-                        controlPointsArray.push(new vec3.fromValues(0.5, 0, 0));
+                        var selectedColumn = customId % 8;
+                        var selectedLine = Math.floor(customId / 8);
 
-                        this.graph.pieces[2].animation = new LinearAnimation(this, controlPointsArray, 2 * 1000, new Date().getTime() - this.startTime);
+                        
+                        
+
+
+                        if(this.graph.game[selectedLine][selectedColumn] != 0 && this.gameState == 0){
+                            for(let piece of this.graph.pieces){
+                                if(piece.y == selectedColumn && piece.x == selectedLine){
+                                    this.selectedPiece = piece;
+                                    piece.selected = true;
+                                    this.gameState = 1;
+                                }
+                                else{piece.selected = false;}
+                            }
+                        }else if(this.graph.game[selectedLine][selectedColumn] == 0 && this.gameState == 1){
+
+                            var x = 0.15*selectedColumn - 0.53;
+                            var y = 0;
+                            var z = 0.15*selectedLine - 0.52;
+    
+                            var controlPointsArray = [];
+                            controlPointsArray.push(new vec3.fromValues(0, 0, 0));
+                            controlPointsArray.push(new vec3.fromValues(x, y, z));
+                            console.log(controlPointsArray);
+
+                            this.selectedPiece.animation = new LinearAnimation(this, controlPointsArray, 2 * 1000, new Date().getTime() - this.startTime);
+                            this.gameState == 0;
+                        }
+
 
                     }
                 }
