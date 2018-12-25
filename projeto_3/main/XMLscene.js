@@ -162,7 +162,7 @@ class XMLscene extends CGFscene {
                         var customId = this.pickResults[i][1];				
                         console.log("Picked object: " + obj + ", with pick id " + customId);
 
-                        var selectedColumn = customId % 8;
+                        var selectedColumn = 8 - customId % 8;
                         var selectedLine = Math.floor(customId / 8);
 
                         
@@ -170,30 +170,30 @@ class XMLscene extends CGFscene {
 
 
                         if(this.graph.game[selectedLine][selectedColumn] != 0 && this.gameState == 0){
+                            this.selectedPiece = null;
                             for(let piece of this.graph.pieces){
                                 if(piece.y == selectedColumn && piece.x == selectedLine){
                                     this.selectedPiece = piece;
                                     piece.selected = true;
                                     this.gameState = 1;
+                                    
+                                    console.log(this.selectedPiece);
                                 }
                                 else{piece.selected = false;}
                             }
                         }else if(this.graph.game[selectedLine][selectedColumn] == 0 && this.gameState == 1){
 
-                            var x = 0.15*selectedColumn - 0.53;
+                            var x = 0.15*(selectedLine - this.selectedPiece.x);
                             var y = 0;
-                            var z = 0.15*selectedLine - 0.52;
-    
+                            var z = 0.15*(selectedColumn - this.selectedPiece.y);
+
                             var controlPointsArray = [];
                             controlPointsArray.push(new vec3.fromValues(0, 0, 0));
                             controlPointsArray.push(new vec3.fromValues(x, y, z));
-                            console.log(controlPointsArray);
 
                             this.selectedPiece.animation = new LinearAnimation(this, controlPointsArray, 2 * 1000, new Date().getTime() - this.startTime);
-                            this.gameState == 0;
+                            this.gameState = 0;
                         }
-
-
                     }
                 }
                 this.pickResults.splice(0,this.pickResults.length);
