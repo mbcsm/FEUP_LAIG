@@ -177,7 +177,6 @@ class XMLscene extends CGFscene {
                                     piece.selected = true;
                                     this.gameState = 1;
                                     
-                                    console.log(this.selectedPiece);
                                 }
                                 else{piece.selected = false;}
                             }
@@ -193,6 +192,13 @@ class XMLscene extends CGFscene {
 
                             this.selectedPiece.animation = new LinearAnimation(this, controlPointsArray, 2 * 1000, new Date().getTime() - this.startTime);
                             this.gameState = 0;
+
+                            this.graph.game[this.selectedPiece.x][this.selectedPiece.y] = 0;
+                            this.graph.game[selectedLine][selectedColumn] = this.selectedPiece.pieceVal;
+                            this.selectedPiece.x = selectedLine;
+                            this.selectedPiece.y = selectedColumn;
+                            this.selectedPiece.selected = false;
+                            this.selectedPiece.transformationAfterAnim = [this.selectedPiece.transformation[0] + x, this.selectedPiece.transformation[1] + y, this.selectedPiece.transformation[2] + z];
                         }
                     }
                 }

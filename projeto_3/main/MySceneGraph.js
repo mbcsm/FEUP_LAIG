@@ -1025,18 +1025,23 @@ class MySceneGraph {
                 }
 
                 var object;
+                var pieceVal;
                 switch(this.game[i][j]){
                     case 1:
                         object = new MyPawn(this.scene,this.texture_united_states);
+                        pieceVal = 1;
                         break;
                     case 2:
                         object = new MyKing(this.scene,this.texture_united_states);
+                        pieceVal = 2;
                         break;
                     case 3:
                         object = new MyPawn(this.scene,this.texture_shit);
+                        pieceVal = 3;
                         break;
                     case 4:
                         object = new MyKing(this.scene,this.texture_shit);
+                        pieceVal = 4;
                         break;
                 }
 
@@ -1051,11 +1056,13 @@ class MySceneGraph {
                 var piece = {
                     id: idVal,
                     transformation: [x, y, z],
+                    transformationAfterAnim: null,
                     selected : false,
                     moving: false,
                     animation: null,
                     x: i,
                     y:j,
+                    pieceVal: pieceVal,
                     object: object
                 }
                 this.pieces.push(piece);
@@ -1078,7 +1085,6 @@ class MySceneGraph {
         var component;
         var texture = text;
         var material = mat;
-        var animation = anim;
         for (var i = 0; i < this.components.length; i++) {
             if (this.components[i].id == root) {
                 component = this.components[i];
@@ -1151,7 +1157,11 @@ class MySceneGraph {
             this.scene.translate(piece.transformation[0], piece.transformation[1], piece.transformation[2]);
 
             if (piece.animation!= null) {
-                piece.animation.apply(new Date().getTime() - this.startTime);
+                var ended = piece.animation.apply(new Date().getTime() - this.startTime);
+                if(ended){
+                    piece.transformation = piece.transformationAfterAnim;
+                    piece.animation = null;
+                }
             }
     
             if(!this.scene.pickMode)

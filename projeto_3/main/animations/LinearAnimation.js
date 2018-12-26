@@ -25,12 +25,12 @@ class LinearAnimation extends Animation{
     apply(currentTime) {
         
         if(currentTime <= this.startTime){
-            return;  
+            return true;  
         }
         if(currentTime >= this.endTime){
-            this.scene.translate(this.controlPoints[this.controlPoints.length-1][0], this.controlPoints[this.controlPoints.length-1][1], this.controlPoints[this.controlPoints.length-1][2]);
+            //this.scene.translate(this.controlPoints[this.controlPoints.length-1][0], this.controlPoints[this.controlPoints.length-1][1], this.controlPoints[this.controlPoints.length-1][2]);
             this.ended = true;
-            return;  
+            return true;  
         }
         currentTime = currentTime - this.startTime;
 
@@ -57,5 +57,7 @@ class LinearAnimation extends Animation{
         var z = (controlPointEnd[2] - controlPointStart[2]) * delta + controlPointStart[2];
         //console.log([x,y,z]);
         this.scene.translate(x, y, z);
+
+        return false;
     }
 }
