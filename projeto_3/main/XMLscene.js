@@ -43,6 +43,11 @@ class XMLscene extends CGFscene {
 
         this.gameState = 0;
         this.selectedPiece;
+
+        this.playerTurn = 1;
+        this.counter = 0;
+        this.pc1 = 0;
+        this.pc2 = 0;
     }
 
     /**
@@ -164,6 +169,7 @@ class XMLscene extends CGFscene {
 
                         var selectedColumn = 8 - customId % 8;
                         var selectedLine = Math.floor(customId / 8);
+                        
 
                         
                         
@@ -181,6 +187,7 @@ class XMLscene extends CGFscene {
                                 else{piece.selected = false;}
                             }
                         }else if(this.graph.game[selectedLine][selectedColumn] == 0 && this.gameState == 1){
+                            this.makeRequest(selectedLine, selectedColumn);
 
                             var x = 0.15*(selectedLine - this.selectedPiece.x);
                             var y = 0;
@@ -260,5 +267,76 @@ class XMLscene extends CGFscene {
 
         this.popMatrix();
         // ---- END Background, camera and axis setup
+    }
+
+    getRequestString(selectedX, selectedY) {
+ 
+        var plList = "novoMovimento([";
+       
+        for (var y = 0; y < this.graph.game.length; y++) {
+            plList += "[";
+            for (var x = 0; x < this.graph.game[y].length; x++) {
+                switch(this.graph.game[y][x]){
+                    case 0:
+                        plList += 'vazio,';
+                        break;
+                    case 1:
+                        plList += 'peao-branco,';
+                        break;
+                    case 2:
+                        plList += 'rei-branco,';
+                        break;
+                    case 3:
+                        plList += 'peao-preto,';
+                        break;  
+                    case 4:
+                        plList += 'rei-preto,';
+                        break;
+                }
+            }
+            plList = plList.substring(0, plList.length - 1);
+            plList += "],";
+        }
+       
+        plList = plList.substring(0, plList.length - 1);
+       
+        plList += "]";
+        plList += ',' + this.playerTurn;
+        plList += ',' + this.counter;
+        plList += ',0';
+        plList += ',0';
+        plList += ',' + selectedX;
+        plList += ',' + selectedY;
+        plList += ',' + this.selectedPiece.x;
+        plList += ',' + this.selectedPiece.y;
+        plList += ')';
+        return plList;
+    }
+
+    getPrologRequest( requestString, onSuccess, onError, port)
+    {
+        var requestPort = port || 8081
+        var request = new XMLHttpRequest();
+        request.open('GET', 'http://localhost:'+requestPort+'/'+requestString, true);
+
+        request.onload = onSuccess || function(data){console.log("Request successful. Reply: " + data.target.response);};
+        request.onerror = onError || function(){console.log("Error waiting for response");};
+
+        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+        request.send();
+    }
+
+    makeRequest(selectedX, selectedY)
+    {
+        // Get Parameter Values
+        var requestString = this.getRequestString(selectedX, selectedY);				
+        
+        // Make Request
+        this.getPrologRequest(requestString, this.handleReply);
+    }
+    
+    //Handle the Reply
+    handleReply(data){
+       console.log(data.target.response);
     }
 }
