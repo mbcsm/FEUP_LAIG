@@ -1,18 +1,19 @@
-masd/*Pe�as*/
+/*Pe�as*/
+
+
+branco(P):- print(P), peaobranco(P); reibranco(P).
+preto(P):- peaopreto(P); reipreto(P).
+
+rei(X):- reibranco(X).
+rei(X):- reipreto(X).
+peao(X):- write('b1'), nl, peaobranco(X).
+peao(X):- peaopreto(X).
 
 peaobranco(peao-branco).
 peaopreto(peao-preto).
 reibranco(rei-branco).
 reipreto(rei-preto).
 espacovazio(vazio).
-
-branco(P):- peaobranco(P); reibranco(P).
-preto(P):- peaopreto(P); reipreto(P).
-
-rei(X):- reibranco(X).
-rei(X):- reipreto(X).
-peao(X):- peaobranco(X).
-peao(X):- peaopreto(X).
 
 
 /*Tabuleiro*/
@@ -62,30 +63,30 @@ list_empty([], true).
 list_empty([_|_], false).
 
 
-move(Board, EndBoard, Jogador, X, Y, Xfinal, Yfinal, Counter, PC, End, Pc1, Pc2):- (X =< 0; Y =< 0; Xfinal =< 0; Yfinal =< 0; X >= 9; Y >= 9; Xfinal >= 9; Yfinal >= 9), ((((Pc1 == 0, Jogador == 1);(Jogador == 2, Pc2 == 0)), write('Peca fora do tabuleiro'), nl, write('Tente Outro Movimento'), nl);((Jogador == 1, Pc1 \= 0); (Jogador == 2, Pc2 \= 0))), novoMovimento(Board, Jogador, Counter, Pc1, Pc2, 0, 0, 0, 0, -1).
-move(Board, EndBoard, Jogador, X, Y, Xfinal, Yfinal, Counter, PC, End, Pc1, Pc2):- write('move2'), nl,X > 0, Y > 0, Xfinal > 0, Yfinal > 0, X < 9, Y < 9, Xfinal < 9, Yfinal < 9, Y \= Yfinal, X \= Xfinal, ((((Pc1 == 0, Jogador == 1);(Jogador == 2, Pc2 == 0)), write('Nao pode mover na diagonal'), nl, write('Tente Outro Movimento'), nl);((Jogador == 1, Pc1 \= 0); (Jogador == 2, Pc2 \= 0))), novoMovimento(Board, Jogador, Counter, Pc1, Pc2, 0, 0, 0, 0, -1).
-move(Board, EndBoard, Jogador, X, Y, Xfinal, Yfinal, Counter, PC, End, Pc1, Pc2):- write('move3'), nl,Y == Yfinal, X == Xfinal, write('Nao pode mover para o mesmo lugar'), nl, novoMovimento(Board, Jogador, Counter, Pc1, Pc2, 0, 0, 0, 0, -1).
+move(Board, EndBoard, Jogador, X, Y, Xfinal, Yfinal, Counter, PC, End, Pc1, Pc2):- (X =< 0; Y =< 0; Xfinal =< 0; Yfinal =< 0; X >= 9; Y >= 9; Xfinal >= 9; Yfinal >= 9), ((((Pc1 == 0, Jogador == 1);(Jogador == 2, Pc2 == 0)), write('Peca fora do tabuleiro'), nl, write('Tente Outro Movimento'), nl, novoMovimento(OldBoard, EndBoard, Jogador, Counter, PC1, Pc2, -1, 0, 0, 0, -1));((Jogador == 1, Pc1 \= 0); (Jogador == 2, Pc2 \= 0))), novoMovimento(Board, EndBoard, Jogador, Counter, Pc1, Pc2, -1, 0, 0, 0, -1).
+move(Board, EndBoard, Jogador, X, Y, Xfinal, Yfinal, Counter, PC, End, Pc1, Pc2):- nl,X > 0, Y > 0, Xfinal > 0, Yfinal > 0, X < 9, Y < 9, Xfinal < 9, Yfinal < 9, Y \= Yfinal, X \= Xfinal, ((((Pc1 == 0, Jogador == 1);(Jogador == 2, Pc2 == 0)), write('Nao pode mover na diagonal'), nl, write('Tente Outro Movimento'), nl, novoMovimento(OldBoard, Jogador, Counter, PC1, Pc2, -1, 0, 0, 0, -1));((Jogador == 1, Pc1 \= 0); (Jogador == 2, Pc2 \= 0))), novoMovimento(Board, EndBoard, Jogador, Counter, Pc1, Pc2, -1, 0, 0, 0, -1).
+move(Board, EndBoard, Jogador, X, Y, Xfinal, Yfinal, Counter, PC, End, Pc1, Pc2):- nl,Y == Yfinal, X == Xfinal, write('Nao pode mover para o mesmo lugar'), nl, novoMovimento(Board, EndBoard, Jogador, Counter, Pc1, Pc2, -1, 0, 0, 0, -1).
 
-move(Board, EndBoard, Jogador, X, Y, Xfinal, Yfinal, Counter, PC, End, Pc1, Pc2):- write('move4'), nl,X > 0, Y > 0, Xfinal > 0, Yfinal > 0, X < 9, Y < 9, Xfinal < 9, Yfinal < 9, X == Xfinal, Y \= Yfinal, retira(Board, NewBoard, X, Y, P, Jogador, Board, Counter, Pc1, Pc2), coloca(NewBoard, NewBoard2, Xfinal, Yfinal, P, Board, Jogador, Counter, Pc1, Pc2), eliminicaoCheck(NewBoard2, CheckBoard, Xfinal,Yfinal,P), list_empty(CheckBoard, R), ((R == true, EndBoard = NewBoard2) ; (R == false, EndBoard = CheckBoard)), getReiLinhas(EndBoard, 1, EndBoard, RP, RB), ((RP == 1, Jogador == 2, End is 1); (RB == 1, Jogador == 1, End is 1); (((RP == 1, Jogador == 1); (RB == 1, Jogador == 2)), ((((Pc1 == 0, Jogador == 1);(Jogador == 2, Pc2 == 0)), write('Nao pode fazer Checkmate ao seu Rei'), nl, write('Tente Outro Movimento'), nl);((Jogador == 1, Pc1 \= 0); (Jogador == 2, Pc2 \= 0))), novoMovimento(Board, Jogador, Counter, Pc1, Pc2, 0, 0, 0, 0, -1)); (RP == 0, RB == 0, End is 0)), mostra(EndBoard), nl.
-move(Board, EndBoard, Jogador, X, Y, Xfinal, Yfinal, Counter, PC, End, Pc1, Pc2):- write('move5'), nl,X > 0, Y > 0, Xfinal > 0, Yfinal > 0, X < 9, Y < 9, Xfinal < 9, Yfinal < 9, Y == Yfinal, X \= Xfinal,write('8'), nl, retira(Board, NewBoard, X, Y, P, Jogador, Board, Counter, Pc1, Pc2), write('9'), nl, coloca(NewBoard, NewBoard2, Xfinal, Yfinal, P, Board, Jogador, Counter, Pc1, Pc2), write('10'), nl, eliminicaoCheck(NewBoard2, CheckBoard, Xfinal,Yfinal,P), list_empty(CheckBoard, R), ((R == true, EndBoard = NewBoard2) ; (R == false, EndBoard = CheckBoard)), getReiLinhas(EndBoard, 1, EndBoard, RP, RB), ((RP == 1, Jogador == 2, End is 1); (RB == 1, Jogador == 1, End is 1); (((RP == 1, Jogador == 1); (RB == 1, Jogador == 2)), ((((Pc1 == 0, Jogador == 1);(Jogador == 2, Pc2 == 0)), write('Nao pode fazer Checkmate ao seu Rei'), nl, write('Tente Outro Movimento'), nl);((Jogador == 1, Pc1 \= 0); (Jogador == 2, Pc2 \= 0))), novoMovimento(Board, Jogador, Counter, Pc1, Pc2, 0, 0, 0, 0, -1)); (RP == 0, RB == 0, End is 0)), mostra(EndBoard), nl.
+move(Board, EndBoard, Jogador, X, Y, Xfinal, Yfinal, Counter, PC, End, Pc1, Pc2):- nl,X > 0, Y > 0, Xfinal > 0, Yfinal > 0, X < 9, Y < 9, Xfinal < 9, Yfinal < 9, X == Xfinal, Y \= Yfinal, retira(Board, NewBoard, X, Y, P, Jogador, Board, Counter, Pc1, Pc2), coloca(NewBoard, NewBoard2, Xfinal, Yfinal, P, Board, Jogador, Counter, Pc1, Pc2), eliminicaoCheck(NewBoard2, CheckBoard, Xfinal,Yfinal,P), list_empty(CheckBoard, R), ((R == true, EndBoard = NewBoard2) ; (R == false, EndBoard = CheckBoard)), getReiLinhas(EndBoard, 1, EndBoard, RP, RB), ((RP == 1, Jogador == 2, End is 1); (RB == 1, Jogador == 1, End is 1); (((RP == 1, Jogador == 1); (RB == 1, Jogador == 2)), ((((Pc1 == 0, Jogador == 1);(Jogador == 2, Pc2 == 0)), write('Nao pode fazer Checkmate ao seu Rei'), nl, write('Tente Outro Movimento'), nl, novoMovimento(OldBoard, EndBoard, Jogador, Counter, PC1, Pc2, -1, 0, 0, 0, -1));((Jogador == 1, Pc1 \= 0); (Jogador == 2, Pc2 \= 0))), novoMovimento(Board, EndBoard, Jogador, Counter, Pc1, Pc2, -1, 0, 0, 0, -1)); (RP == 0, RB == 0, End is 0)), mostra(EndBoard), nl.
+move(Board, EndBoard, Jogador, X, Y, Xfinal, Yfinal, Counter, PC, End, Pc1, Pc2):- nl,X > 0, Y > 0, Xfinal > 0, Yfinal > 0, X < 9, Y < 9, Xfinal < 9, Yfinal < 9, Y == Yfinal, X \= Xfinal,write('8'), nl, retira(Board, NewBoard, X, Y, P, Jogador, Board, Counter, Pc1, Pc2), write('9'), nl, coloca(NewBoard, NewBoard2, Xfinal, Yfinal, P, Board, Jogador, Counter, Pc1, Pc2), write('10'), nl, eliminicaoCheck(NewBoard2, CheckBoard, Xfinal,Yfinal,P), write('11'), nl, list_empty(CheckBoard, R), ((R == true, EndBoard = NewBoard2) ; (R == false, EndBoard = CheckBoard)), getReiLinhas(EndBoard, 1, EndBoard, RP, RB), ((RP == 1, Jogador == 2, End is 1); (RB == 1, Jogador == 1, End is 1); (((RP == 1, Jogador == 1); (RB == 1, Jogador == 2)), ((((Pc1 == 0, Jogador == 1);(Jogador == 2, Pc2 == 0)), write('Nao pode fazer Checkmate ao seu Rei'), nl, write('Tente Outro Movimento'), nl, novoMovimento(OldBoard, EndBoard, Jogador, Counter, PC1, Pc2, -1, 0, 0, 0, -1));((Jogador == 1, Pc1 \= 0); (Jogador == 2, Pc2 \= 0))), novoMovimento(Board, EndBoard, Jogador, Counter, Pc1, Pc2, -1, 0, 0, 0, -1)); (RP == 0, RB == 0, End is 0)), mostra(EndBoard), nl.
 
 
 
 /*Retira Pe�a*/
 
-retira(Board, NewBoard, X, Y, P, Jogador, OldBoard, Counter, PC1, Pc2):- write('asd'), nl,  retiraLinha(Board, NewBoard, X , Y, 1, P, Jogador, OldBoard, Counter, PC1, Pc2), write('asd2'), nl.
+retira(Board, NewBoard, X, Y, P, Jogador, OldBoard, Counter, PC1, Pc2):- retiraLinha(Board, NewBoard, X , Y, 1, P, Jogador, OldBoard, Counter, PC1, Pc2).
 retira(Board, NewBoard, X, Y):- retiraLinha(Board, NewBoard, X, Y, 1).
 
-retiraLinha([H1 | T1], [H2 | T1], X, Y, N, P, Jogador, OldBoard, Counter, PC1, Pc2):- write('v'), nl, N == X, retiraColuna(H1, H2, Y, 1, P, Jogador, OldBoard, Counter, PC1, Pc2).
-retiraLinha([H1 | T1], [H2 | T2], X, Y, N, P, Jogador, OldBoard, Counter, PC1, Pc2):-write('c'), nl,  N \= X, N1 is N + 1, H2 = H1, retiraLinha(T1, T2, X, Y, N1, P, Jogador, OldBoard, Counter, PC1, Pc2).
-retiraLinha([H1 | T1], [H2 | T1], X, Y, N):-write('z'), nl,  N == X, retiraColuna(H1, H2, Y, 1).
-retiraLinha([H1 | T1], [H2 | T2], X, Y, N):- write('x'), nl, N \= X, N1 is N + 1, H2 = H1, retiraLinha(T1, T2, X, Y, N1).
+retiraLinha([H1 | T1], [H2 | T1], X, Y, N, P, Jogador, OldBoard, Counter, PC1, Pc2):- N == X, retiraColuna(H1, H2, Y, 1, P, Jogador, OldBoard, Counter, PC1, Pc2).
+retiraLinha([H1 | T1], [H2 | T2], X, Y, N, P, Jogador, OldBoard, Counter, PC1, Pc2):- N \= X, N1 is N + 1, H2 = H1, retiraLinha(T1, T2, X, Y, N1, P, Jogador, OldBoard, Counter, PC1, Pc2).
+retiraLinha([H1 | T1], [H2 | T1], X, Y, N):-  N == X, retiraColuna(H1, H2, Y, 1).
+retiraLinha([H1 | T1], [H2 | T2], X, Y, N):-  N \= X, N1 is N + 1, H2 = H1, retiraLinha(T1, T2, X, Y, N1).
 
 
 retiraColuna([H1 | T1], [H2 | T1], Y, N, P, Jogador, OldBoard, Counter, PC1, Pc2):- N == Y, H2 = 'vazio', P = H1, H1 \= 'vazio', comanda(Jogador, P).
 retiraColuna([H1 | T1], [H2 | T2], Y, N, P, Jogador, OldBoard, Counter, PC1, Pc2):- N \= Y, H2 = H1, N1 is N + 1, retiraColuna(T1, T2, Y, N1, P, Jogador, OldBoard, Counter, PC1, Pc2).
-retiraColuna([H1 | T1], [H2 | T1], Y, N, P, Jogador, OldBoard, Counter, PC1, Pc2):- N == Y, espacovazio(H1), ((((Pc1 == 0, Jogador == 1);(Jogador == 2, Pc2 == 0)), write('Nao ha nenhuma Peca nesta casa'), nl, write('Tente Outro Movimento'), nl);((Jogador == 1, Pc1 \= 0); (Jogador == 2, Pc2 \= 0))), novoMovimento(OldBoard, Jogador, Counter, PC1, Pc2, 0, 0, 0, 0, -1).
-retiraColuna([H1 | T1], [H2 | T1], Y, N, P, Jogador, OldBoard, Counter, PC1, Pc2):- N == Y, \+ comanda(Jogador, H1), ((((Pc1 == 0, Jogador == 1);(Jogador == 2, Pc2 == 0)), write('Esta a mover uma Peca que nao e sua'), nl, write('Tente Outro Movimento'), nl);((Jogador == 1, Pc1 \= 0); (Jogador == 2, Pc2 \= 0))), novoMovimento(OldBoard, Jogador, Counter, PC1, Pc2, 0, 0, 0, 0, -1).
+retiraColuna([H1 | T1], [H2 | T1], Y, N, P, Jogador, OldBoard, Counter, PC1, Pc2):- N == Y, espacovazio(H1), ((((Pc1 == 0, Jogador == 1);(Jogador == 2, Pc2 == 0)), write('Nao ha nenhuma Peca nesta casa'), nl, write('Tente Outro Movimento'), nl, novoMovimento(OldBoard, EndBoard, Jogador, Counter, PC1, Pc2, -1, 0, 0, 0, -1));((Jogador == 1, Pc1 \= 0); (Jogador == 2, Pc2 \= 0))), novoMovimento(OldBoard, EndBoard, Jogador, Counter, PC1, Pc2, -1, 0, 0, 0, -1).
+retiraColuna([H1 | T1], [H2 | T1], Y, N, P, Jogador, OldBoard, Counter, PC1, Pc2):- N == Y, \+ comanda(Jogador, H1), ((((Pc1 == 0, Jogador == 1);(Jogador == 2, Pc2 == 0)), write('Esta a mover uma Peca que nao e sua'), nl, write('Tente Outro Movimento'), nl, novoMovimento(OldBoard, EndBoard, Jogador, Counter, PC1, Pc2, -1, 0, 0, 0, -1));((Jogador == 1, Pc1 \= 0); (Jogador == 2, Pc2 \= 0))), novoMovimento(OldBoard, EndBoard, Jogador, Counter, PC1, Pc2, -1, 0, 0, 0, -1).
 retiraColuna([H1 | T1], [H2 | T1], Y, N):- N == Y, H2 = 'vazio', nl.
 retiraColuna([H1 | T1], [H2 | T2], Y, N):- N \= Y, H2 = H1, N1 is N + 1, retiraColuna(T1, T2, Y, N1).
 
@@ -99,7 +100,7 @@ colocaLinha([H1 | T1], [H2 | T2], X, Y, N, P, OldBoard, Jogador, Counter, PC1, P
 
 colocaColuna([H1 | T1], [H2 | T1], Y, N, P, OldBoard, Jogador, Counter, PC1, Pc2):- N == Y, H2 = P, H1 == 'vazio'.
 colocaColuna([H1 | T1], [H2 | T2], Y, N, P, OldBoard, Jogador, Counter, PC1, Pc2):- N \= Y, H2 = H1, N1 is N + 1, colocaColuna(T1, T2, Y, N1, P, OldBoard, Jogador, Counter, PC1, Pc2).
-colocaColuna([H1 | T1], [H2 | T1], Y, N, P, OldBoard, Jogador, Counter, PC1, Pc2):- N == Y, H1 \= 'vazio', ((((Pc1 == 0, Jogador == 1);(Jogador == 2, Pc2 == 0)),write('Casa esta ocupa por uma peca'), nl, write('Tente Outro Movimento'), nl);((Jogador == 1, Pc1 \= 0); (Jogador == 2, Pc2 \= 0))), novoMovimento(OldBoard, Jogador, Counter, PC1, Pc2, 0, 0, 0, 0, -1).
+colocaColuna([H1 | T1], [H2 | T1], Y, N, P, OldBoard, Jogador, Counter, PC1, Pc2):- N == Y, H1 \= 'vazio', ((((Pc1 == 0, Jogador == 1);(Jogador == 2, Pc2 == 0)),write('Casa esta ocupa por uma peca'), nl, write('Tente Outro Movimento'), nl, novoMovimento(OldBoard, EndBoard, Jogador, Counter, PC1, Pc2, -1, 0, 0, 0, -1));((Jogador == 1, Pc1 \= 0); (Jogador == 2, Pc2 \= 0))), novoMovimento(OldBoard, EndBoard, Jogador, Counter, PC1, Pc2, -1, 0, 0, 0, -1).
 
 
 /*Get Elem*/
@@ -177,10 +178,10 @@ eliminacaoCheckCorner(Board, CheckBoard, 8, 8):-write('').
 
 /*Check peoes*/
 
-checkPeoes(Board, Xpos, Ypos, Jogador, Counter, Pc1, Pc2):- Jogador==1, getElem(Board, Xpos, Ypos, Elem), \+peaobranco(Elem), ((Ypos==8,Xpos<8, Ypos1 is 1, Xpos1 is Xpos + 1, checkPeoes(Board, Xpos1 , Ypos1, Jogador, Counter, Pc1, Pc2)) ; (Ypos<8,Ypos1 is Ypos+1, checkPeoes(Board, Xpos , Ypos1, Jogador, Counter, Pc1, Pc2))).
-checkPeoes(Board, Xpos, Ypos, Jogador, Counter, Pc1, Pc2):- Jogador==1, getElem(Board, Xpos, Ypos, Elem), peaobranco(Elem), novoMovimento(Board, 2, Counter, Pc1, Pc2, 0, 0, 0, 0, -1), !.
+checkPeoes(Board, Xpos, Ypos, Jogador, Counter, Pc1, Pc2):- Jogador==1, getElem(Board, Xpos, Ypos, Elem), write('1'), nl, \+peaobranco(Elem), write('2'), nl,((Ypos==8,Xpos<8, Ypos1 is 1, Xpos1 is Xpos + 1, checkPeoes(Board, Xpos1 , Ypos1, Jogador, Counter, Pc1, Pc2)) ; (Ypos<8,Ypos1 is Ypos+1, checkPeoes(Board, Xpos , Ypos1, Jogador, Counter, Pc1, Pc2))).
+checkPeoes(Board, Xpos, Ypos, Jogador, Counter, Pc1, Pc2):- Jogador==1, getElem(Board, Xpos, Ypos, Elem), write('3'), nl,peaobranco(Elem), write('4'), nl,novoMovimento(Board, EndBoard, 2, Counter, Pc1, Pc2, -1, 0, 0, 0, -1), !.
 checkPeoes(Board, Xpos, Ypos, Jogador, Counter, Pc1, Pc2):- Jogador==2, getElem(Board, Xpos, Ypos, Elem), \+peaopreto(Elem), ((Ypos==8,Xpos<8, Ypos1 is 1, Xpos1 is Xpos + 1, checkPeoes(Board, Xpos1 , Ypos1, Jogador, Counter, Pc1, Pc2)) ; (Ypos<8,Ypos1 is Ypos+1, checkPeoes(Board, Xpos , Ypos1, Jogador, Counter, Pc1, Pc2))).
-checkPeoes(Board, Xpos, Ypos, Jogador, Counter, Pc1, Pc2):- Jogador==2, getElem(Board, Xpos, Ypos, Elem), peaopreto(Elem), novoMovimento(Board, 1, Counter, Pc1, Pc2, 0, 0, 0, 0, -1), !.
+checkPeoes(Board, Xpos, Ypos, Jogador, Counter, Pc1, Pc2):- Jogador==2, getElem(Board, Xpos, Ypos, Elem), peaopreto(Elem), novoMovimento(Board, EndBoard, 1, Counter, Pc1, Pc2, -1, 0, 0, 0, -1), !.
 checkPeoes(Board, Xpos, Ypos, Jogador, Counter, Pc1, Pc2):- Xpos==8, Ypos==8, Jogador==1, endGame(1), !.
 checkPeoes(Board, Xpos, Ypos, Jogador, Counter, Pc1, Pc2):- Xpos==8, Ypos==8, Jogador==2, endGame(2), !.
 
@@ -396,7 +397,7 @@ hasPieceToMoveToPosColuna(Board, Xpos, Ypos, N, Xfinal, Yfinal, Jogador, R):- N 
 comanda(Jogador, Peca):- Jogador == 1, peaopreto(Peca).
 comanda(Jogador, Peca):- Jogador == 1, reipreto(Peca).
 comanda(Jogador, Peca):- Jogador == 2, reibranco(Peca).
-comanda(Jogador, Peca):- Jogador == 2, peaobranco(Peca).
+comanda(Jogador, Peca):- Jogador == 2, write('a'), nl,peaobranco(Peca), write('b'), nl.
 
 
 /*Recome�a Jogo*/
@@ -406,8 +407,8 @@ recomecarJogo:- write('Recome�ar Jogo (s/n)'), read(YesNo), (((YesNo == 's'), 
 
 /* Novo Jogo*/
 
-novoJogo(2):-  write('PC - dificuldade(1 or 2) '), nl, read(Pc1), ((Pc1 \= 1, Pc1 \= 2, write('Dificuldade 1 ou 2'),nl , novoJogo(2)); ((Pc1 == 1; Pc1 == 2), tabuleiro(Board), mostra(Board), novoMovimento(Board, 1, 1, 0, Pc1, X, Y, Xfinal, Yfinal, Result))).
-novoJogo(3):-  write('PC1 - dificuldade(1 or 2) '), read(Pc1), write('PC2 - dificuldade(1 or 2) '), read(Pc2), ((((Pc2 \= 2, Pc2 \= 1); (Pc1 \= 2, Pc1 \= 1)), write('Dificuldade 1 ou 2'), nl, novoJogo(3)); ((Pc1 == 1; Pc1 == 2), (Pc2 == 1; Pc2 == 2), tabuleiro(Board), mostra(Board), novoMovimento(Board, 1, 1, Pc1, Pc2, X, Y, Xfinal, Yfinal, Result))).
+novoJogo(2):-  write('PC - dificuldade(1 or 2) '), nl, read(Pc1), ((Pc1 \= 1, Pc1 \= 2, write('Dificuldade 1 ou 2'),nl , novoJogo(2)); ((Pc1 == 1; Pc1 == 2), tabuleiro(Board), mostra(Board), novoMovimento(Board, EndBoard, 1, 1, 0, Pc1, X, Y, Xfinal, Yfinal, Result))).
+novoJogo(3):-  write('PC1 - dificuldade(1 or 2) '), read(Pc1), write('PC2 - dificuldade(1 or 2) '), read(Pc2), ((((Pc2 \= 2, Pc2 \= 1); (Pc1 \= 2, Pc1 \= 1)), write('Dificuldade 1 ou 2'), nl, novoJogo(3)); ((Pc1 == 1; Pc1 == 2), (Pc2 == 1; Pc2 == 2), tabuleiro(Board), mostra(Board), novoMovimento(Board, EndBoard, 1, 1, Pc1, Pc2, X, Y, Xfinal, Yfinal, Result))).
 
 startGame:- write('**********************************************************************'),nl,
 			write('*                                                                    *'),nl,
@@ -434,12 +435,9 @@ endGame(Jogador):- write('O Jogador '), write(Jogador), write(' Ganhou o Jogo!!!
 
 /*Novo Movimento*/
 
-novoMovimento(Board, Jogador, Counter, Pc1, Pc2, X, Y, Xfinal, Yfinal, Result):-not_inst(Result), write('asd'), nl, Counter < 51, ((Jogador==1,Pc1==0);(Jogador==2,Pc2==0)), print('� a vez do Jogador '), print(Jogador), nl, print(' Mover Pe�a - Jogada #'), print(Counter),nl,  print('Linha da Pe�a a Mover: '), print(X), nl, print('Coluna da Pe�a a Mover: '), print(Y), nl, print('Linha para onde a pe�a � movida: '), print(Xfinal), nl, print('Coluna para onde a pe�a � movida: '), print(Yfinal),nl, write('a'), nl, checkMovimentoHorizontal(Board, X, Xfinal, Y, Yfinal, 1, Legal),write('1'),nl, ((Legal==0, write('Nao Pode Fazer Esta Jogada'), nl, write('Tente outro movimento'), nl, Result is -1, novoMovimento(Board, Jogador, Counter, Pc1, Pc2, X, Y, Xfinal, Yfinal, Result)); (Legal==1)), write('2'),nl,checkMovimentoVertical(Board, X, Xfinal, Y, Yfinal, 1, Legal2), write('3'),nl, ((Legal2==0, write('Nao Pode Fazer Esta Jogada'), nl, write('Tente outro movimento'), nl, Result is -1, novoMovimento(Board, Jogador, Counter, Pc1, Pc2, X, Y, Xfinal, Yfinal, Result)); (Legal2==1)), write('4'),nl, move(Board, EndBoard, Jogador, X, Y, Xfinal, Yfinal, Counter, 0, R, Pc1, Pc2), write('5'),nl,  ((R == 0, NewCounter is Counter+1, Result is 1,  write('6'),nl, nextPerson(EndBoard, Jogador, NewCounter, 0, Pc1, Pc2));(R == 1, endGame(Jogador))). 
-
-novoMovimento(Board, Jogador, Counter, PC1, Pc2):- Counter >= 51, write('N�mero M�ximo de Jogadas!!!'), startGame, !.
-
-nextPerson(Board, 1, Counter, 0, Pc1, Pc2):- checkPeoes(Board, 1, 1, 1, Counter, Pc1, Pc2).
-nextPerson(Board, 2, Counter, 0, Pc1, Pc2):- checkPeoes(Board, 1, 1, 2, Counter, Pc1, Pc2).
+novoMovimento(Board, EndBoard, Jogador, Counter, Pc1, Pc2, X, Y, Xfinal, Yfinal, Result):- X >= 0, Counter < 51, ((Jogador==1,Pc1==0);(Jogador==2,Pc2==0)), print('� a vez do Jogador '), print(Jogador), nl, print(' Mover Pe�a - Jogada #'), print(Counter),nl,  print('Linha da Pe�a a Mover: '), print(X), nl, print('Coluna da Pe�a a Mover: '), print(Y), nl, print('Linha para onde a pe�a � movida: '), print(Xfinal), nl, print('Coluna para onde a pe�a � movida: '), print(Yfinal),nl, checkMovimentoHorizontal(Board, X, Xfinal, Y, Yfinal, 1, Legal),((Legal==0, write('Nao Pode Fazer Esta Jogada'), nl, write('Tente outro movimento'), nl, Result is -1, novoMovimento(Board, EndBoard, Jogador, Counter, Pc1, Pc2, X, Y, Xfinal, Yfinal, Result)); (Legal==1)),checkMovimentoVertical(Board, X, Xfinal, Y, Yfinal, 1, Legal2), ((Legal2==0, write('Nao Pode Fazer Esta Jogada'), nl, write('Tente outro movimento'), nl, Result is -1, novoMovimento(Board, EndBoard, Jogador, Counter, Pc1, Pc2, X, Y, Xfinal, Yfinal, Result)); (Legal2==1)),  move(Board, EndBoard, Jogador, X, Y, Xfinal, Yfinal, Counter, 0, R, Pc1, Pc2), ((R == 0, NewCounter is Counter+1, Result is 1);(R == 1, endGame(Jogador))). 
+novoMovimento(Board, EndBoard, Jogador, Counter, PC1, Pc2, X, Y, Xfinal, Yfinal, Result):- Counter >= 51, write('N�mero M�ximo de Jogadas!!!'), startGame, !.
+novoMovimento(Board, EndBoard, Jogador, Counter, PC1, Pc2, -1, Y, Xfinal, Yfinal, Result):- X < 0, Result is -1.
 
 
 not_inst(Var):-
@@ -476,8 +474,7 @@ server :-
 server_loop(Socket) :-
 	repeat,
 	socket_server_accept(Socket, _Client, Stream, [type(text)]),
-		% write('Accepted connection'), nl,
-	    % Parse Request
+		write('Accepted connection'), nl,
 		catch((
 			read_request(Stream, Request),
 			read_header(Stream)
@@ -488,7 +485,7 @@ server_loop(Socket) :-
 		)),
 		
 		% Generate Response
-		handle_request(Request, MyReply, Status),Request is 1,
+		handle_request(Request, MyReply, Status),nl, write('reply:asasd'), nl,
 		format('Request: ~q~n',[Request]),
 		format('Reply: ~q~n', [MyReply]),
 		
@@ -500,9 +497,10 @@ server_loop(Socket) :-
 	
 		% write('Finnished Connection'),nl,nl,
 		close_stream(Stream),
+		server_loop(Socket),
 	(Request = quit), !.
 	
-close_stream(Stream) :- flush_output(Stream), close(Stream).
+close_stream(Stream) :- flush_output(Stream),  close(Stream).
 
 % Handles parsed HTTP requests
 % Returns 200 OK on successful aplication of parse_input on request
@@ -551,10 +549,11 @@ print_header_line(_).
 
 % Require your Prolog Files here
 
-parse_input(novoMovimento(Board, Jogador, Counter, Pc1, Pc2, X, Y, Xfinal, Yfinal), Result):- write('200'), nl, novoMovimento(Board, Jogador, Counter, Pc1, Pc2, X, Y, Xfinal, Yfinal, Result), nl,write('Result'), write(Result).
 parse_input(handshake, handshake).
 parse_input(test(C,N), Res) :- test(C,Res,N).
 parse_input(quit, goodbye).
+parse_input(novoMovimento(Board, Jogador, Counter, Pc1, Pc2, X, Y, Xfinal, Yfinal), Res):- novoMovimento(Board, EndBoard, Jogador, Counter, Pc1, Pc2, X, Y, Xfinal, Yfinal, Result), ((Result == 1, Res = EndBoard);(Result\=1, Res is -1)).
+
 
 test(_,[],N) :- N =< 0.
 test(A,[A|Bs],N) :- N1 is N-1, test(A,Bs,N1).

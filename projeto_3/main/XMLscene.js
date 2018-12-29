@@ -43,6 +43,8 @@ class XMLscene extends CGFscene {
 
         this.gameState = 0;
         this.selectedPiece;
+        this.selectedLine;
+        this.selectedColumn;
 
         this.playerTurn = 1;
         this.counter = 0;
@@ -167,18 +169,18 @@ class XMLscene extends CGFscene {
                         var customId = this.pickResults[i][1];				
                         console.log("Picked object: " + obj + ", with pick id " + customId);
 
-                        var selectedColumn = 8 - customId % 8;
-                        var selectedLine = Math.floor(customId / 8);
+                        this.selectedColumn = 8 - customId % 8;
+                        this.selectedLine = Math.floor(customId / 8);
                         
 
                         
                         
 
 
-                        if(this.graph.game[selectedLine][selectedColumn] != 0 && this.gameState == 0){
+                        if(this.graph.game[this.selectedLine][this.selectedColumn] != 0 && this.gameState == 0){
                             this.selectedPiece = null;
                             for(let piece of this.graph.pieces){
-                                if(piece.y == selectedColumn && piece.x == selectedLine){
+                                if(piece.y == this.selectedColumn && piece.x == this.selectedLine){
                                     this.selectedPiece = piece;
                                     piece.selected = true;
                                     this.gameState = 1;
@@ -186,26 +188,8 @@ class XMLscene extends CGFscene {
                                 }
                                 else{piece.selected = false;}
                             }
-                        }else if(this.graph.game[selectedLine][selectedColumn] == 0 && this.gameState == 1){
-                            this.makeRequest(selectedLine, selectedColumn);
-
-                            var x = 0.15*(selectedLine - this.selectedPiece.x);
-                            var y = 0;
-                            var z = 0.15*(selectedColumn - this.selectedPiece.y);
-
-                            var controlPointsArray = [];
-                            controlPointsArray.push(new vec3.fromValues(0, 0, 0));
-                            controlPointsArray.push(new vec3.fromValues(x, y, z));
-
-                            this.selectedPiece.animation = new LinearAnimation(this, controlPointsArray, 2 * 1000, new Date().getTime() - this.startTime);
-                            this.gameState = 0;
-
-                            this.graph.game[this.selectedPiece.x][this.selectedPiece.y] = 0;
-                            this.graph.game[selectedLine][selectedColumn] = this.selectedPiece.pieceVal;
-                            this.selectedPiece.x = selectedLine;
-                            this.selectedPiece.y = selectedColumn;
-                            this.selectedPiece.selected = false;
-                            this.selectedPiece.transformationAfterAnim = [this.selectedPiece.transformation[0] + x, this.selectedPiece.transformation[1] + y, this.selectedPiece.transformation[2] + z];
+                        }else if(this.graph.game[this.selectedLine][this.selectedColumn] == 0 && this.gameState == 1){
+                            this.makeRequest(this.selectedLine, this.selectedColumn);
                         }
                     }
                 }
@@ -269,8 +253,27 @@ class XMLscene extends CGFscene {
         // ---- END Background, camera and axis setup
     }
 
+    movePiece(){
+        var x = 0.15*(this.selectedLine - this.selectedPiece.x);
+        var y = 0;
+        var z = 0.15*(this.selectedColumn - this.selectedPiece.y);
+
+        var controlPointsArray = [];
+        controlPointsArray.push(new vec3.fromValues(0, 0, 0));
+        controlPointsArray.push(new vec3.fromValues(x, y, z));
+
+        this.selectedPiece.animation = new LinearAnimation(this, controlPointsArray, 2 * 1000, new Date().getTime() - this.startTime);
+        this.gameState = 0;
+
+        this.graph.game[this.selectedPiece.x][this.selectedPiece.y] = 0;
+        this.graph.game[this.selectedLine][this.selectedColumn] = this.selectedPiece.pieceVal;
+        this.selectedPiece.x = this.selectedLine;
+        this.selectedPiece.y = this.selectedColumn;
+        this.selectedPiece.selected = false;
+        this.selectedPiece.transformationAfterAnim = [this.selectedPiece.transformation[0] + x, this.selectedPiece.transformation[1] + y, this.selectedPiece.transformation[2] + z];
+    }
+
     getRequestString(selectedX, selectedY) {
- 
         var plList = "novoMovimento([";
        
         for (var y = 0; y < this.graph.game.length; y++) {
@@ -292,24 +295,32 @@ class XMLscene extends CGFscene {
                     case 4:
                         plList += 'rei-preto,';
                         break;
+                    default:break;
                 }
             }
-            plList = plList.substring(0, plList.length - 1);
+            plList = plList.slice(0, -1);
             plList += "],";
         }
-       
-        plList = plList.substring(0, plList.length - 1);
-       
+        plList = plList.slice(0, -1);
         plList += "]";
         plList += ',' + this.playerTurn;
         plList += ',' + this.counter;
         plList += ',0';
         plList += ',0';
-        plList += ',' + selectedX;
-        plList += ',' + selectedY;
-        plList += ',' + this.selectedPiece.x;
-        plList += ',' + this.selectedPiece.y;
+       
+        plList += ',' + (this.selectedPiece.x+1);
+        plList += ',' + ((this.selectedPiece.y+1) % 8 + 1);
+        plList += ',' + (selectedX + 1);
+        plList += ',' + ((selectedY+1) % 8 + 1);
+        /*
+        plList += ',8';
+        plList += ',1';
+        plList += ',8';
+        plList += ',5';
+        */
         plList += ')';
+
+        console.log(plList);
         return plList;
     }
 
@@ -332,11 +343,48 @@ class XMLscene extends CGFscene {
         var requestString = this.getRequestString(selectedX, selectedY);				
         
         // Make Request
-        this.getPrologRequest(requestString, this.handleReply);
+        this.getPrologRequest(requestString, this.handleReply.bind(this));
     }
     
     //Handle the Reply
     handleReply(data){
-       console.log(data.target.response);
+        var str = data.target.response;
+        str = str.split(',');
+        var i = 0;
+        var j = 0;
+        for(var it = 0; it < str.length; it++){
+            var strTemp = str[it];
+            strTemp = strTemp.replace("[", "");
+            strTemp = strTemp.replace("[", "");
+            strTemp = strTemp.replace("]", "");
+            strTemp = strTemp.replace("]", "");
+            
+            switch(strTemp){
+                case "vazio":
+                    this.graph.game[j][i] = 0;
+                    break;
+                case "peao-branco":
+                    this.graph.game[j][i] = 1;
+                    break;
+                case "rei-branco":
+                    this.graph.game[j][i] = 2;
+                    break;
+                case "peao-preto":
+                    this.graph.game[j][i] = 3;
+                    break;  
+                case "rei-preto":
+                    this.graph.game[j][i] = 4;
+                    break;
+                default:break;
+            }
+            if(i<7){i++;}
+            else{
+                i = 0;
+                j++;
+            }
+        }
+        this.movePiece();
+        console.log(this.graph.game);
     }
+   
 }
