@@ -1051,7 +1051,9 @@ class MySceneGraph {
                 var x = 0.15*i - 0.53;
                 var y = 0;
                 var z = 0.15*j - 0.52;
-
+                
+                if(i == 1){z = 0.15*(j+1) - 0.52;}
+                if(i == 6){z = 0.15*(j-1) - 0.52;}
 
                 var piece = {
                     id: idVal,
@@ -1060,8 +1062,9 @@ class MySceneGraph {
                     selected : false,
                     moving: false,
                     animation: null,
+                    died: false,
                     x: i,
-                    y:j,
+                    y: this.getYForMovement(j, i),
                     pieceVal: pieceVal,
                     object: object
                 }
@@ -1069,7 +1072,29 @@ class MySceneGraph {
             }
         }
     }
+    getYForMovement(j, i){
+        if(i == 1){return 3;}
+        if(i == 6){return 4;}
+        switch(j){
+            case 0:
+                return 7;
+            case 1:
+                return 6;
+            case 2:
+                return 5;
+            case 3:
+                return 4;
+            case 4:
+                return 3;
+            case 5:
+                return 2;
+            case 6:
+                return 1;
+            case 7:
+                return 0;
 
+        }
+    }
     /**
      * Displays the scene, processing each node, starting in the root node.
      */

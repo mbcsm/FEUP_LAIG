@@ -435,9 +435,9 @@ endGame(Jogador):- write('O Jogador '), write(Jogador), write(' Ganhou o Jogo!!!
 
 /*Novo Movimento*/
 
-novoMovimento(Board, EndBoard, Jogador, Counter, Pc1, Pc2, X, Y, Xfinal, Yfinal, Result):- X >= 0, Counter < 51, ((Jogador==1,Pc1==0);(Jogador==2,Pc2==0)), print('� a vez do Jogador '), print(Jogador), nl, print(' Mover Pe�a - Jogada #'), print(Counter),nl,  print('Linha da Pe�a a Mover: '), print(X), nl, print('Coluna da Pe�a a Mover: '), print(Y), nl, print('Linha para onde a pe�a � movida: '), print(Xfinal), nl, print('Coluna para onde a pe�a � movida: '), print(Yfinal),nl, checkMovimentoHorizontal(Board, X, Xfinal, Y, Yfinal, 1, Legal),((Legal==0, write('Nao Pode Fazer Esta Jogada'), nl, write('Tente outro movimento'), nl, Result is -1, novoMovimento(Board, EndBoard, Jogador, Counter, Pc1, Pc2, X, Y, Xfinal, Yfinal, Result)); (Legal==1)),checkMovimentoVertical(Board, X, Xfinal, Y, Yfinal, 1, Legal2), ((Legal2==0, write('Nao Pode Fazer Esta Jogada'), nl, write('Tente outro movimento'), nl, Result is -1, novoMovimento(Board, EndBoard, Jogador, Counter, Pc1, Pc2, X, Y, Xfinal, Yfinal, Result)); (Legal2==1)),  move(Board, EndBoard, Jogador, X, Y, Xfinal, Yfinal, Counter, 0, R, Pc1, Pc2), ((R == 0, NewCounter is Counter+1, Result is 1);(R == 1, endGame(Jogador))). 
+novoMovimento(Board, EndBoard, Jogador, Counter, Pc1, Pc2, X, Y, Xfinal, Yfinal, Result):- X > 0, nl, write('bbb'), print(X), nl, Counter < 51, ((Jogador==1,Pc1==0);(Jogador==2,Pc2==0)), print('� a vez do Jogador '), print(Jogador), nl, print(' Mover Pe�a - Jogada #'), print(Counter),nl,  print('Linha da Pe�a a Mover: '), print(X), nl, print('Coluna da Pe�a a Mover: '), print(Y), nl, print('Linha para onde a pe�a � movida: '), print(Xfinal), nl, print('Coluna para onde a pe�a � movida: '), print(Yfinal),nl, checkMovimentoHorizontal(Board, X, Xfinal, Y, Yfinal, 1, Legal),((Legal==0, write('Nao Pode Fazer Esta Jogada'), nl, write('Tente outro movimento'), nl, Result is -1, novoMovimento(Board, EndBoard, Jogador, Counter, Pc1, Pc2, -1, Y, Xfinal, Yfinal, Result)); (Legal==1)),checkMovimentoVertical(Board, X, Xfinal, Y, Yfinal, 1, Legal2), ((Legal2==0, write('Nao Pode Fazer Esta Jogada'), nl, write('Tente outro movimento'), nl, Result is -1, novoMovimento(Board, EndBoard, Jogador, Counter, Pc1, Pc2, -1, Y, Xfinal, Yfinal, Result)); (Legal2==1)),  move(Board, EndBoard, Jogador, X, Y, Xfinal, Yfinal, Counter, 0, R, Pc1, Pc2), ((R == 0, NewCounter is Counter+1, Result is 1);(R == 1, endGame(Jogador))). 
 novoMovimento(Board, EndBoard, Jogador, Counter, PC1, Pc2, X, Y, Xfinal, Yfinal, Result):- Counter >= 51, write('N�mero M�ximo de Jogadas!!!'), startGame, !.
-novoMovimento(Board, EndBoard, Jogador, Counter, PC1, Pc2, -1, Y, Xfinal, Yfinal, Result):- X < 0, Result is -1.
+novoMovimento(Board, EndBoard, Jogador, Counter, PC1, Pc2, X, Y, Xfinal, Yfinal, Result):- X <= 0, nl, write('aaa'), nl, Result = -1.
 
 
 not_inst(Var):-
@@ -485,7 +485,7 @@ server_loop(Socket) :-
 		)),
 		
 		% Generate Response
-		handle_request(Request, MyReply, Status),nl, write('reply:asasd'), nl,
+		handle_request(Request, MyReply, Status),
 		format('Request: ~q~n',[Request]),
 		format('Reply: ~q~n', [MyReply]),
 		

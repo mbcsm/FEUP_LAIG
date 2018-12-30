@@ -12,6 +12,8 @@ function getUrlVars() {
 }	 
 //Include additional files here
 serialInclude(['lib/CGF.js', 
+                'CGFResourceReader.js',
+                'CGFOBJModel.js',
                 'XMLscene.js', 
                 'MySceneGraph.js', 
                 'MyInterface.js', 
