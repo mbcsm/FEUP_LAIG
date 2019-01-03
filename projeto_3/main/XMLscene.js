@@ -27,6 +27,8 @@ class XMLscene extends CGFscene {
 
         this.sceneInited = false;
 
+        this.cameras = [new CGFcamera(0.4, 0.1, 1000, vec3.fromValues(5, 5, 0), vec3.fromValues(0, 0, 0)), new CGFcamera(0.4, 0.1, 1000, vec3.fromValues(0, 50, 1), vec3.fromValues(0, 0, 0))];
+
         this.initCameras();
 
         this.enableTextures(true);
@@ -52,15 +54,26 @@ class XMLscene extends CGFscene {
         this.counter = 0;
         this.pc1 = 0;
         this.pc2 = 0;
+        this.unitedStatesScore = 0;
+        this.shitScore = 0;
+        this.menu = true;
 
         this.tempGameBoard;
         this.cameraMoving = false;
         this.cameraAngle = 0;
         this.cameraAngleMoved = 0;
         this.cameraMovementStarted = 0;
-        this.cameras = [new CGFcamera(0.4, 0.1, 1000, vec3.fromValues(0, 25, 1), vec3.fromValues(0, 0, 0))];
+
+        this.scores = [new CGFtexture(this, "scenes/images/0.png"), new CGFtexture(this, "scenes/images/1.png")];
+        this.scoreAppearance = new CGFappearance(this);
+        this.scoreAppearance.setAmbient(0.3, 0.3, 0.3, 1);
+        this.scoreAppearance.setDiffuse(0.7, 0.7, 0.7, 1);
+        this.scoreAppearance.setSpecular(0.0, 0.0, 0.0, 1);	
+        this.scoreAppearance.setShininess(120);
 
         this.play = new CGFOBJModel(this, 'scenes/objects/s-play.obj');
+        this.score = new MyQuad(this, 0, 0, 5, 5, 0.0, 1.0, 0.0, 1.0);
+        
         this.displayMenu();
     }
 
@@ -68,7 +81,7 @@ class XMLscene extends CGFscene {
      * Initializes the scene cameras.
      */
     initCameras() {
-        this.camera = new CGFcamera(0.4, 0.1, 1000, vec3.fromValues(0, 50, 1), vec3.fromValues(0, 0, 0));
+        this.camera = this.cameras[1];
         //this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(1, 1, 1), vec3.fromValues(0, 0, 0));
         this.camera.orbit(CGFcamera.X, 0);
     }
@@ -182,6 +195,11 @@ class XMLscene extends CGFscene {
                         var customId = this.pickResults[i][1];				
                         console.log("Picked object: " + obj + ", with pick id " + customId);
 
+                        if(customId == 64){
+                            this.menu = false;
+                            this.gameStart();
+                        }
+
                         this.selectedColumn = this.getYForProlog(customId);
                         this.selectedLine = this.getXForProlog(customId);
 
@@ -262,7 +280,7 @@ class XMLscene extends CGFscene {
             // Draw axis
             this.axis.display();
         }
-        this.displayMenu();
+        if(this.menu){this.displayMenu()};
 
         this.popMatrix();
         // ---- END Background, camera and axis setup
@@ -486,7 +504,6 @@ class XMLscene extends CGFscene {
         }
     }
     moveCameraToNextPlayer(){
-        
         if(!this.cameraMoving){return;}
         
 
@@ -507,12 +524,52 @@ class XMLscene extends CGFscene {
     }
 
     displayMenu(){
+        this.camera = this.cameras[1];
+        this.camera.orbit(CGFcamera.X, 0);
+
 		this.pushMatrix();
         this.rotate( Math.PI, 0, 1, 1);
         this.translate(0.64, -0.68, 20);
         this.scale(3, 3, 3);
         this.translate(0.41, -0.41, 5);
-		this.play.display();
-		this.popMatrix();
+        this.play.display(); 
+        this.popMatrix();
+
+
+        this.pushMatrix();
+        this.scoreAppearance.setTexture(this.scores[this.unitedStatesScore]);
+        this.scoreAppearance.apply();
+        this.rotate( Math.PI, 0, 1, 1);
+        this.translate(0.64, -0.68, 20);
+        this.translate(1.5, 0, 15);
+        this.scale(0.5, 0.5, 0.5);
+        this.score.display();
+        this.popMatrix();
+
+        this.pushMatrix();
+        this.scoreAppearance.setTexture(this.scores[this.shitScore]);
+        this.scoreAppearance.apply();
+        this.rotate( Math.PI, 0, 1, 1);
+        this.translate(0.64, -0.68, 20);
+        this.translate(-5.5, 0, 15);
+        this.scale(0.5, 0.5, 0.5);
+        this.score.display();
+        this.popMatrix();
+    }
+
+    
+    gameStart(){
+        this.camera = this.cameras[0];
+        
+        this.graph.game = [[1,1,1,1,1,1,1,1],
+                    [0,0,0,2,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,4,0,0,0],
+                    [3,3,3,3,3,3,3,3]];
+
+        this.graph.createPieces();
     }
 }
