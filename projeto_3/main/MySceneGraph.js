@@ -57,6 +57,9 @@ class MySceneGraph {
                     [0,0,0,0,4,0,0,0],
                     [3,3,3,3,3,3,3,3]];
 
+        this.shitDeadPiecesIndex = 0;
+        this.unitedStatesDeadPiecesIndex = 0;
+
 
 
         this.textTest = new CGFtexture(this.scene, "./scenes/images/court_text.jpg");
@@ -1026,22 +1029,27 @@ class MySceneGraph {
 
                 var object;
                 var pieceVal;
+                var team = 0;
                 switch(this.game[i][j]){
                     case 1:
                         object = new MyPawn(this.scene,this.texture_united_states);
                         pieceVal = 1;
+                        team = 0;
                         break;
                     case 2:
                         object = new MyKing(this.scene,this.texture_united_states);
                         pieceVal = 2;
+                        team = 0;
                         break;
                     case 3:
                         object = new MyPawn(this.scene,this.texture_shit);
                         pieceVal = 3;
+                        team = 1;
                         break;
                     case 4:
                         object = new MyKing(this.scene,this.texture_shit);
                         pieceVal = 4;
+                        team = 1;
                         break;
                 }
 
@@ -1057,6 +1065,7 @@ class MySceneGraph {
 
                 var piece = {
                     id: idVal,
+                    team: team,
                     transformation: [x, y, z],
                     transformationAfterAnim: null,
                     selected : false,
@@ -1186,6 +1195,20 @@ class MySceneGraph {
                 if(ended){
                     piece.transformation = piece.transformationAfterAnim;
                     piece.animation = null;
+                    if(this.scene.gameState == 2 && piece.pieceVal != 2 && piece.pieceVal != 4){
+                        if(piece.team == 0  ){
+                            this.gameState = 2;
+                            this.scene.killKing(2);
+                            this.shitScore++;
+                            return;
+                        }
+                        if(piece.team == 1){
+                            this.gameState = 2;
+                            this.scene.killKing(1);
+                            this.unitedStatesScore++;
+                            return;
+                        }
+                    }
                 }
             }
     

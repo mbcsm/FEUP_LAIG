@@ -57,6 +57,7 @@ class XMLscene extends CGFscene {
         this.unitedStatesScore = 0;
         this.shitScore = 0;
         this.menu = true;
+        this.gameState = 0;
 
         this.tempGameBoard;
         this.cameraMoving = false;
@@ -65,6 +66,8 @@ class XMLscene extends CGFscene {
         this.cameraMovementStarted = 0;
 
         this.scores = [new CGFtexture(this, "scenes/images/0.png"), new CGFtexture(this, "scenes/images/1.png")];
+        this.unitedStatesTexture = new CGFtexture(this, "scenes/images/united_states.png");
+        this.shitTexture = new CGFtexture(this, "scenes/images/shit.jpg");
         this.scoreAppearance = new CGFappearance(this);
         this.scoreAppearance.setAmbient(0.3, 0.3, 0.3, 1);
         this.scoreAppearance.setDiffuse(0.7, 0.7, 0.7, 1);
@@ -73,6 +76,8 @@ class XMLscene extends CGFscene {
 
         this.play = new CGFOBJModel(this, 'scenes/objects/s-play.obj');
         this.score = new MyQuad(this, 0, 0, 5, 5, 0.0, 1.0, 0.0, 1.0);
+        this.score = new MyQuad(this, 0, 0, 5, 5, 0.0, 1.0, 0.0, 1.0);
+        this.flag = new MyQuad(this, 0, 0, 2.5, 5, 0.0, 1.0, 0.0, 1.0);
         
         this.displayMenu();
     }
@@ -82,8 +87,8 @@ class XMLscene extends CGFscene {
      */
     initCameras() {
         this.camera = this.cameras[1];
-        //this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(1, 1, 1), vec3.fromValues(0, 0, 0));
-        this.camera.orbit(CGFcamera.X, 0);
+        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(1, 1, 1), vec3.fromValues(0, 0, 0));
+        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(1, 4, 1), vec3.fromValues(0, 0, 0));
     }
     /**
      * Initializes the scene lights with the values read from the XML file.
@@ -194,20 +199,29 @@ class XMLscene extends CGFscene {
                     {
                         var customId = this.pickResults[i][1];				
                         console.log("Picked object: " + obj + ", with pick id " + customId);
+                        
+                        if(this.gameState == 2){
+                            this.menu = true;
+                            this.gameState = 0;
+                            return;
+                        }
 
-                        if(customId == 64){
+                        if(customId == 65){
                             this.menu = false;
                             this.gameStart();
+                            return;
                         }
 
                         this.selectedColumn = this.getYForProlog(customId);
                         this.selectedLine = this.getXForProlog(customId);
 
 
-                        if(this.graph.game[this.selectedLine][this.selectedColumn] != 0 && this.gameState == 0){
+                        if(this.graph.game[this.selectedLine][this.selectedColumn] != 0){
                             this.selectedPiece = null;
                             for(let piece of this.graph.pieces){
                                 if(piece.y == this.selectedColumn && piece.x == this.selectedLine){
+                                    if((piece.pieceVal == 1 || piece.pieceVal == 2) && this.playerTurn != 2){return;}
+                                    if((piece.pieceVal == 3 || piece.pieceVal == 4) && this.playerTurn != 1){return;}
                                     this.selectedPiece = piece;
                                     piece.selected = true;
                                     this.gameState = 1;
@@ -288,6 +302,7 @@ class XMLscene extends CGFscene {
 
     movePiece(){
         this.hasAnyPlayerDied(this.selectedLine, this.selectedColumn, this.selectedPiece);
+
         var x = 0.15*(this.selectedLine - this.selectedPiece.x);
         var y = 0;
         var z = 0.15*(this.selectedPiece.y - this.selectedColumn);
@@ -297,7 +312,6 @@ class XMLscene extends CGFscene {
         controlPointsArray.push(new vec3.fromValues(x, y, z));
 
         this.selectedPiece.animation = new LinearAnimation(this, controlPointsArray, 1 * 1000, new Date().getTime() - this.startTime);
-        this.gameState = 0;
 
         this.selectedPiece.x = this.selectedLine;
         this.selectedPiece.y = this.selectedColumn;
@@ -313,26 +327,62 @@ class XMLscene extends CGFscene {
         this.cameraMovementStarted = new Date().getTime();
         this.cameraMoving = true;
     }
+
+    killKing(kingTeam){
+        if(this.gameState != 2){return;}
+        var kingVal = 0;
+
+        if(kingTeam == 1){kingVal = 2}
+        if(kingTeam == 2){kingVal = 4}
+
+        for(let piece of this.graph.pieces){
+            if(piece.pieceVal == kingVal){
+                piece.died = true;
+
+                var controlPointsArray = [];
+                var x = 0;
+                var y = 10;
+                var z = 0;
+
+                controlPointsArray.push(new vec3.fromValues(0, 0, 0));
+                controlPointsArray.push(new vec3.fromValues(x, y, z));
+                piece.animation = new LinearAnimation(this, controlPointsArray, 2 * 1000, new Date().getTime() - this.startTime);
+                piece.transformationAfterAnim = [piece.transformation[0] + x, piece.transformation[1] + y, piece.transformation[2] + z];                            
+            }
+        }
+    }
     //TODO: Make this shit Work
     hasAnyPlayerDied(selectedColumn, selectedLine, piece){
+        if(this.gameState == 2){return;}
+
         for(var i=0; i< this.graph.game.length; i++){
             for(var j=0; j< this.graph.game.length; j++){
-                if((selectedColumn != j && selectedLine != i) && (piece.x != i && piece.y != j)){
-                    if(this.tempGameBoard[i][j] == this.graph.game[i][j]){
-                        for(let piece of this.graph.pieces){
-                            if(piece.y == j && piece.x == i){
-                                piece.died = true;
-                                var controlPointsArray = [];
-                                var x = 0;
-                                var y = 10;
-                                var z = 0;
-                                controlPointsArray.push(new vec3.fromValues(0, 0, 0));
-                                controlPointsArray.push(new vec3.fromValues(x, y, z));
-                                this.selectedPiece.animation = new LinearAnimation(this, controlPointsArray, 2 * 1000, new Date().getTime() - this.startTime);
-                                
+                if((selectedColumn == j && selectedLine == i) || (piece.x == i && piece.y == j)){continue;}
+                if(this.tempGameBoard[i][j] != this.graph.game[i][j]){
+                    for(let piece of this.graph.pieces){
+                        if(piece.y == j && piece.x == i && !piece.died){
+                            piece.died = true;
+
+                            var controlPointsArray = [];
+                            var x = 0;
+                            var y = 0;
+                            var z = 0;
+                            if(piece.team == 0){
+                                z = 0.15*(piece.y + 2);
+                                x = 0.15*(this.graph.unitedStatesDeadPiecesIndex - piece.x);
+                                this.graph.unitedStatesDeadPiecesIndex++;
+                            }else{
+                                z = -0.15*(8 - piece.y + 1);
+                                x = 0.15*(this.graph.shitDeadPiecesIndex - piece.x);
+                                this.graph.shitDeadPiecesIndex++;
                             }
+                            controlPointsArray.push(new vec3.fromValues(0, 0, 0));
+                            controlPointsArray.push(new vec3.fromValues(x, y, z));
+                            piece.animation = new LinearAnimation(this, controlPointsArray, 2 * 1000, new Date().getTime() - this.startTime);
+                            piece.transformationAfterAnim = [piece.transformation[0] + x, piece.transformation[1] + y, piece.transformation[2] + z];                            
                         }
                     }
+                    
                 }
             }
         }
@@ -422,7 +472,19 @@ class XMLscene extends CGFscene {
             return;
 
         }
-        this.tempGameBoard = [].concat(this.graph.game);
+        if(str == "2"){
+            this.gameState = 2;
+            this.movePiece();
+            this.shitScore++;
+            return;
+        }
+        if(str == "3"){
+            this.gameState = 2;
+            this.movePiece();
+            this.unitedStatesScore++;
+            return;
+        }
+        this.tempGameBoard = this.duplicateArray( this.graph.game );
         str = str.split(',');
         var i = 0;
         var j = 0;
@@ -460,6 +522,23 @@ class XMLscene extends CGFscene {
         this.movePiece();
         console.log(this.graph.game);
     }
+    duplicateArray( arr ) {
+        var i, copy;
+    
+        if( Array.isArray( arr ) ) {
+            copy = arr.slice( 0 );
+            for( i = 0; i < copy.length; i++ ) {
+                copy[ i ] = this.duplicateArray( copy[ i ] );
+            }
+            return copy;
+        } else if( typeof arr === 'object' ) {
+            throw 'Cannot clone array containing an object!';
+        } else {
+            return arr;
+        }
+    
+    }
+    
 
     getXForProlog(pos){
         var y = 0;
@@ -507,7 +586,9 @@ class XMLscene extends CGFscene {
         if(!this.cameraMoving){return;}
         
 
-        if( this.cameraAngleMoved >= Math.PI - 0.05){
+        if(this.cameraAngleMoved >= Math.PI){
+
+            this.camera.orbit(CGFcamera.X, Math.PI - this.cameraAngleMoved);  
             this.cameraAngleMoved = 0;
             this.cameraMoving = false;
             return;
@@ -524,14 +605,21 @@ class XMLscene extends CGFscene {
     }
 
     displayMenu(){
-        this.camera = this.cameras[1];
-        this.camera.orbit(CGFcamera.X, 0);
+        if(this.playerTurn == 2){
+            this.camera.orbit(CGFcamera.X, Math.PI);  
+            this.playerTurn = 1;
+        }
+        this.camera = new CGFcamera(0.4, 0.1, 1000, vec3.fromValues(0, 50, 1), vec3.fromValues(0, 0, 0));
 
 		this.pushMatrix();
         this.rotate( Math.PI, 0, 1, 1);
         this.translate(0.64, -0.68, 20);
         this.scale(3, 3, 3);
         this.translate(0.41, -0.41, 5);
+        if(this.pickMode){
+            this.registerForPick(65, this.play);
+            this.play.display();
+        }
         this.play.display(); 
         this.popMatrix();
 
@@ -543,7 +631,7 @@ class XMLscene extends CGFscene {
         this.translate(0.64, -0.68, 20);
         this.translate(1.5, 0, 15);
         this.scale(0.5, 0.5, 0.5);
-        this.score.display();
+        if(!this.pickMode){this.score.display();}
         this.popMatrix();
 
         this.pushMatrix();
@@ -553,12 +641,40 @@ class XMLscene extends CGFscene {
         this.translate(0.64, -0.68, 20);
         this.translate(-5.5, 0, 15);
         this.scale(0.5, 0.5, 0.5);
-        this.score.display();
+        if(!this.pickMode){this.score.display();}
         this.popMatrix();
+
+
+        this.pushMatrix();
+        this.scoreAppearance.setTexture(this.unitedStatesTexture);
+        this.scoreAppearance.apply();
+        this.rotate( Math.PI, 0, 1, 1);
+        this.translate(0.64, -0.68, 20);
+        this.translate(4, 0, 15);
+        this.scale(0.5, 0.5, 0.5);
+        if(!this.pickMode){this.flag.display();}
+        this.popMatrix();
+
+        this.pushMatrix();
+        this.scoreAppearance.setTexture(this.shitTexture);
+        this.scoreAppearance.apply();
+        this.rotate( Math.PI, 0, 1, 1);
+        this.translate(0.64, -0.68, 20);
+        this.translate(-6.3, 0, 15.5);
+        this.scale(0.5, 0.5, 0.5);
+        if(!this.pickMode){this.flag.display();}
+        this.popMatrix();
+        
     }
 
     
     gameStart(){
+        this.playerTurn = 1;
+        this.counter = 0;
+        this.pc1 = 0;
+        this.pc2 = 0;
+        this.menu = false;
+        this.gameState = 1;
         this.camera = this.cameras[0];
         
         this.graph.game = [[1,1,1,1,1,1,1,1],
