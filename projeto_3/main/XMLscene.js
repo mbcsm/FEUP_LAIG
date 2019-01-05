@@ -57,6 +57,7 @@ class XMLscene extends CGFscene {
         this.unitedStatesScore = 0;
         this.shitScore = 0;
         this.menu = true;
+        this.sceneDisplay= false;
         this.gameState = 0;
 
         this.tempGameBoard;
@@ -68,17 +69,30 @@ class XMLscene extends CGFscene {
         this.scores = [new CGFtexture(this, "scenes/images/0.png"), new CGFtexture(this, "scenes/images/1.png")];
         this.unitedStatesTexture = new CGFtexture(this, "scenes/images/united_states.png");
         this.shitTexture = new CGFtexture(this, "scenes/images/shit.jpg");
+        this.cameraTexture = new CGFtexture(this, "scenes/images/camera.png");
+        this.wallTexture = new CGFtexture(this, "scenes/images/wall.jpg");
+        this.floorTexture = new CGFtexture(this, "scenes/images/floor.jpeg");
+        this.grassTexture = new CGFtexture(this, "scenes/images/grass.jpg");
+        this.blackTexture = new CGFtexture(this, "scenes/images/black.png");
         this.scoreAppearance = new CGFappearance(this);
         this.scoreAppearance.setAmbient(0.3, 0.3, 0.3, 1);
         this.scoreAppearance.setDiffuse(0.7, 0.7, 0.7, 1);
         this.scoreAppearance.setSpecular(0.0, 0.0, 0.0, 1);	
         this.scoreAppearance.setShininess(120);
+        this.defaultAppearance = new CGFappearance(this);
+        this.defaultAppearance.setAmbient(0.3, 0.3, 0.3, 1);
+        this.defaultAppearance.setDiffuse(0.7, 0.7, 0.7, 1);
+        this.defaultAppearance.setSpecular(0.0, 0.0, 0.0, 1);	
+        this.defaultAppearance.setShininess(120);
 
         this.play = new CGFOBJModel(this, 'scenes/objects/s-play.obj');
         this.score = new MyQuad(this, 0, 0, 5, 5, 0.0, 1.0, 0.0, 1.0);
         this.score = new MyQuad(this, 0, 0, 5, 5, 0.0, 1.0, 0.0, 1.0);
         this.flag = new MyQuad(this, 0, 0, 2.5, 5, 0.0, 1.0, 0.0, 1.0);
-        
+        this.cameraObj = new MyQuad(this, 0, 0, 1, 1, 0.0, 1.0, 0.0, 1.0);
+
+        this.quadObj = new MyQuad(this, 0, 0, 1, 1, 0.0, 1.0, 0.0, 1.0);
+
         this.displayMenu();
     }
 
@@ -205,11 +219,17 @@ class XMLscene extends CGFscene {
                             this.gameState = 0;
                             return;
                         }
+                        
+                        switch(customId){
+                            case 65:
+                                this.menu = false;
+                                this.gameStart();
+                                return;
+                            case 66:
+                                this.sceneDisplay = true;
+                                this.displayScene();
+                                return;
 
-                        if(customId == 65){
-                            this.menu = false;
-                            this.gameStart();
-                            return;
                         }
 
                         this.selectedColumn = this.getYForProlog(customId);
@@ -294,6 +314,7 @@ class XMLscene extends CGFscene {
             // Draw axis
             this.axis.display();
         }
+        this.displayRoom();
         if(this.menu){this.displayMenu()};
 
         this.popMatrix();
@@ -604,6 +625,27 @@ class XMLscene extends CGFscene {
         this.cameraAngleMoved += degree;
     }
 
+    gameStart(){
+        this.playerTurn = 1;
+        this.counter = 0;
+        this.pc1 = 0;
+        this.pc2 = 0;
+        this.menu = false;
+        this.gameState = 1;
+        this.camera = this.cameras[0];
+        
+        this.graph.game = [[1,1,1,1,1,1,1,1],
+                    [0,0,0,2,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,4,0,0,0],
+                    [3,3,3,3,3,3,3,3]];
+
+        this.graph.createPieces();
+    }
+
     displayMenu(){
         if(this.playerTurn == 2){
             this.camera.orbit(CGFcamera.X, Math.PI);  
@@ -665,27 +707,73 @@ class XMLscene extends CGFscene {
         if(!this.pickMode){this.flag.display();}
         this.popMatrix();
         
-    }
+        this.pushMatrix();
+        this.scoreAppearance.setTexture(this.cameraTexture);
+        this.scoreAppearance.apply();
+        this.rotate( Math.PI, 0, 1, 1);
+        this.translate(-0.3, 3, 20);
+        this.translate(0, 0, 15.5);
+        this.scale(0.5, 0.5, 0.5);
+        if(this.pickMode){
+            this.registerForPick(66, this.cameraObj);
+            this.cameraObj.display();
+        }else{this.cameraObj.display();}
+        this.popMatrix();
 
-    
-    gameStart(){
-        this.playerTurn = 1;
-        this.counter = 0;
-        this.pc1 = 0;
-        this.pc2 = 0;
-        this.menu = false;
-        this.gameState = 1;
-        this.camera = this.cameras[0];
         
-        this.graph.game = [[1,1,1,1,1,1,1,1],
-                    [0,0,0,2,0,0,0,0],
-                    [0,0,0,0,0,0,0,0],
-                    [0,0,0,0,0,0,0,0],
-                    [0,0,0,0,0,0,0,0],
-                    [0,0,0,0,0,0,0,0],
-                    [0,0,0,0,4,0,0,0],
-                    [3,3,3,3,3,3,3,3]];
-
-        this.graph.createPieces();
+        this.pushMatrix();
+        this.defaultAppearance.setTexture(this.blackTexture);
+        this.defaultAppearance.apply();
+        this.rotate( Math.PI, 0, 1, 1);
+        this.translate(-20, -20, 20);
+        this.scale(60, 60, 60);
+        if(!this.pickMode){this.quadObj.display();}
+        this.popMatrix();
+        
     }
+    displayScene(){
+        this.camera = new CGFcamera(0.4, 0.1, 1000, vec3.fromValues(20, 20, 20), vec3.fromValues(0, 0, 0));
+    }
+    displayRoom(){
+        //Wall1
+        this.pushMatrix();
+        this.defaultAppearance.setTexture(this.wallTexture);
+        this.defaultAppearance.apply();
+        this.translate(-2.5, -2.5, -2.5);
+        this.scale(5, 5, 5);
+        if(!this.pickMode){this.quadObj.display();}
+        this.popMatrix();
+        //wall2
+        this.pushMatrix();
+        this.defaultAppearance.setTexture(this.wallTexture);
+        this.defaultAppearance.apply();
+        this.rotate( Math.PI, 1, 0, 1);
+        this.translate(-2.5, -2.5, -2.5);
+        this.scale(5, 5, 5);
+        if(!this.pickMode){this.quadObj.display();}
+        this.popMatrix();
+        //floor
+        this.pushMatrix();
+        this.defaultAppearance.setTexture(this.floorTexture);
+        this.defaultAppearance.apply();
+        this.rotate( Math.PI, 0, 1, 1);
+        this.translate(-2.5, -2.5, -2.5);
+        this.scale(5, 5, 5);
+        if(!this.pickMode){this.quadObj.display();}
+        this.popMatrix();
+        //grass
+        this.pushMatrix();
+        this.defaultAppearance.setTexture(this.grassTexture);
+        this.defaultAppearance.apply();
+        this.rotate( Math.PI, 0, 1, 1);
+        this.translate(-15, -25, -2.6);
+        this.scale(40, 40, 1);
+        if(!this.pickMode){this.quadObj.display();}
+        this.popMatrix();
+    }
+    
+    
+
+
+
 }

@@ -163,7 +163,7 @@
             <rectangle x1="0" y1="0" x2="5" y2="5" />
         </primitive >
         <primitive id="cylinder">
-            <cylinder2 base="0.1" top="0.1" height="2" slices="40" stacks="40" />
+            <cylinder2 base="1" top="1" height="5" slices="40" stacks="40" />
         </primitive>
         <primitive id="ball">
             <sphere radius="12" slices="40" stacks="40" />
@@ -188,20 +188,12 @@
         <primitive id="square">
             <rectangle x1="0" y1="0" x2="0.15" y2="0.15" />
         </primitive >
-
-        <primitive id="pawn_body">
-            <cylinder2 base="0.02" top="0.05" height="0.2" slices="40" stacks="40" />
-        </primitive>
-        <primitive id="pawn_head">
-            <sphere radius="0.05" slices="40" stacks="40" />
-        </primitive>
-
-        <primitive id="king_body">
-            <cylinder2 base="0.02" top="0.1" height="0.5" slices="40" stacks="40" />
-        </primitive>
-        <primitive id="king_head">
-            <torus inner="0.05" outer="0.10" slices="100" loops="100" />
-        </primitive>
+         <primitive id="wall">
+            <rectangle x1="0" y1="0" x2="5" y2="5" />
+        </primitive >
+         <primitive id="floor">
+            <rectangle x1="0" y1="0" x2="5" y2="5" />
+        </primitive >
 
     </primitives >
 
@@ -501,6 +493,7 @@
             <texture id="table" />
             <children>
                 <componentref id="table_top"/>
+                <componentref id="table_leg"/>
             </children>
         </component>
         
@@ -517,6 +510,25 @@
                 <primitiveref id="table_top" />
             </children>
         </component>
+         <component id="table_leg">
+            <transformation>
+                <translate x="-0.1" y="0.25" z="0"/>
+                <scale x="0.5" y ="0.5" z ="0.5"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="cylinder" />
+            </children>
+        </component>
+
+      <!--======================================
+                            ROOM 
+        ======================================-->
+
+       
     </components>
 
 </yas>
